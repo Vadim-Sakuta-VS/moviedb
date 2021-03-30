@@ -27,6 +27,29 @@ const MovieList = () => {
         }
     }
 
+    const firstLinkClickHandler = async () => {
+        try {
+            let data = await getMoviesData(1);
+            setMovies(data.results);
+            setCurrentPage(data.page);
+            setTotalPages(data.total_pages);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const lastLinkClickHandler = async () => {
+        try {
+            let data = await getMoviesData(totalPages);
+            setMovies(data.results);
+            setCurrentPage(data.page);
+            setTotalPages(data.total_pages);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
     const prevLinkClickHandler = async () => {
         try {
             if (currentPage > 1) {
@@ -88,6 +111,8 @@ const MovieList = () => {
                 onLinkClick={clickLinkHandler}
                 onPrevLinkClick={prevLinkClickHandler}
                 onNextLinkClick={nextLinkClickHandler}
+                onFirstLinkClick={firstLinkClickHandler}
+                onLastLinkClick={lastLinkClickHandler}
             />
         </Container>
     );

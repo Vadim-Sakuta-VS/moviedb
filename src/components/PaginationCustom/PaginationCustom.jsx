@@ -2,7 +2,11 @@ import React, {useEffect, useState} from 'react';
 import './PaginationCustom.scss';
 import {Pagination} from "react-bootstrap";
 
-const PaginationCustom = ({currentPage, totalPages, pagesToShow, onLinkClick, onPrevLinkClick, onNextLinkClick}) => {
+const PaginationCustom = (
+    {currentPage, totalPages, pagesToShow, onLinkClick,
+        onPrevLinkClick, onNextLinkClick, onFirstLinkClick, onLastLinkClick
+    }) => {
+
     const [pagesNumbers, setPagesNumbers] = useState([]);
 
     useEffect(() => {
@@ -46,9 +50,11 @@ const PaginationCustom = ({currentPage, totalPages, pagesToShow, onLinkClick, on
 
     return (
         <Pagination className='justify-content-center'>
+            <Pagination.First onClick={() => onFirstLinkClick()}/>
             {totalPages > pagesToShow && <Pagination.Prev onClick={() => onPrevLinkClick()}/>}
             {pageNumbersItemsElements}
             {totalPages > pagesToShow && <Pagination.Next onClick={() => onNextLinkClick()}/>}
+            <Pagination.Last onClick={() => onLastLinkClick()}/>
         </Pagination>
     );
 };
