@@ -4,7 +4,7 @@ import {Card, Col, Container, Row} from "react-bootstrap";
 
 const MovieCard = ({title, genres, overview, releaseDate, voteAverage, voteCount, posterPath}) => {
     return (
-        <Card style={{ width: '18rem' }} className='mb-4 movie-card flex-grow-1'>
+        <Card className='mb-4 movie-card flex-grow-1'>
             <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${posterPath}`} />
             <Card.Body>
                 <Card.Title className='font-weight-bold border-bottom border-success'>{title}</Card.Title>

@@ -50,11 +50,11 @@ const PaginationCustom = (
 
     return (
         <Pagination className='justify-content-center'>
-            <Pagination.First onClick={() => onFirstLinkClick()}/>
-            {totalPages > pagesToShow && <Pagination.Prev onClick={() => onPrevLinkClick()}/>}
+            {totalPages > 1 && <Pagination.First onClick={() => onFirstLinkClick()}/>}
+            {totalPages > 1 && <Pagination.Prev onClick={() => onPrevLinkClick()}/>}
             {pageNumbersItemsElements}
-            {totalPages > pagesToShow && <Pagination.Next onClick={() => onNextLinkClick()}/>}
-            <Pagination.Last onClick={() => onLastLinkClick()}/>
+            {totalPages > 1 && <Pagination.Next onClick={() => onNextLinkClick()}/>}
+            {totalPages > 1 && <Pagination.Last onClick={() => onLastLinkClick()}/>}
         </Pagination>
     );
 };

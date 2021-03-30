@@ -10,26 +10,13 @@ const MovieList = () => {
     const [movies, setMovies] = useState([]);
 
     useEffect(() => {
-        (async function () {
-            let data = await getMoviesData(1);
-            setMovies(data.results);
-            setCurrentPage(data.page);
-            setTotalPages(data.total_pages);
-        })();
+        setMoviesData(1);
     }, []);
 
-    async function getMoviesData(pageNumber) {
+    async function setMoviesData(pageNumber) {
         try {
             let res = await fetch(API.getPopularMoviesURL(pageNumber));
-            return await res.json();
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    const firstLinkClickHandler = async () => {
-        try {
-            let data = await getMoviesData(1);
+            let data = await res.json();
             setMovies(data.results);
             setCurrentPage(data.page);
             setTotalPages(data.total_pages);
@@ -38,53 +25,28 @@ const MovieList = () => {
         }
     }
 
-    const lastLinkClickHandler = async () => {
-        try {
-            let data = await getMoviesData(totalPages);
-            setMovies(data.results);
-            setCurrentPage(data.page);
-            setTotalPages(data.total_pages);
-        } catch (e) {
-            console.log(e);
+    const firstLinkClickHandler = () => {
+        setMoviesData(1);
+    }
+
+    const lastLinkClickHandler = () => {
+        setMoviesData(totalPages);
+    }
+
+    const prevLinkClickHandler = () => {
+        if (currentPage > 1) {
+            setMoviesData(currentPage - 1);
         }
     }
 
-
-    const prevLinkClickHandler = async () => {
-        try {
-            if (currentPage > 1) {
-                let data = await getMoviesData(currentPage - 1);
-                setMovies(data.results);
-                setCurrentPage(data.page);
-                setTotalPages(data.total_pages);
-            }
-        } catch (e) {
-            console.log(e);
+    const nextLinkClickHandler = () => {
+        if (currentPage < totalPages) {
+            setMoviesData(currentPage + 1);
         }
     }
 
-    const nextLinkClickHandler = async () => {
-        try {
-            if (currentPage < totalPages) {
-                let data = await getMoviesData(currentPage + 1);
-                setMovies(data.results);
-                setCurrentPage(data.page);
-                setTotalPages(data.total_pages);
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    const clickLinkHandler = async (pageNumber) => {
-        try {
-            let data = await getMoviesData(pageNumber);
-            setMovies(data.results);
-            setCurrentPage(data.page);
-            setTotalPages(data.total_pages);
-        } catch (e) {
-            console.log(e);
-        }
+    const clickLinkHandler = (pageNumber) => {
+        setMoviesData(pageNumber);
     }
 
     let movieCardsElements = movies.map(m => (
