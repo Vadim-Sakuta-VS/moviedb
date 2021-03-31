@@ -1,9 +1,9 @@
 export function fillArrayFromTo(from, to) {
-    const arr = [];
+  const arr = [];
 
-    for (let i = from; i <= to; i++) {
-        arr.push(i);
-    }
+  for (let i = from; i <= to; i++) {
+    arr.push(i);
+  }
 
-    return arr;
+  return arr;
 }

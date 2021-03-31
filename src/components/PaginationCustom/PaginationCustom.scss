@@ -1,20 +1,20 @@
 .pagination > li > a {
-    color: #000;
+  color: #000;
 }
 
 .pagination > li > a:focus,
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-    color: #28a745;
+  color: #28a745;
 }
 
 .page-item.active .page-link {
-    color: white;
-    background-color: #28a745 !important;
-    border: solid 1px #28a745 !important;
+  color: white;
+  background-color: #28a745 !important;
+  border: solid 1px #28a745 !important;
 }
 
 .page-item.disabled .page-link {
-    color: #949798;
+  color: #949798;
 }
