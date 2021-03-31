@@ -1,48 +1,56 @@
 import React, {useEffect, useState} from 'react';
 import './PaginationCustom.scss';
 import {Pagination} from "react-bootstrap";
+import {fillArrayFromTo} from "../../utils/utils";
 
-const PaginationCustom = (
-    {currentPage, totalPages, pagesToShow, onLinkClick,
-        onPrevLinkClick, onNextLinkClick, onFirstLinkClick, onLastLinkClick
-    }) => {
-
+const PaginationCustom = ({currentPage, totalPages, pagesToShow, onChangePage}) => {
     const [pagesNumbers, setPagesNumbers] = useState([]);
 
     useEffect(() => {
-
-        const fillPageNumbers = (from, to) => {
-            const pageNumbers = [];
-
-            for (let i = from; i <= to; i++) {
-                pageNumbers.push(i);
-            }
-
-            return pageNumbers;
-        }
-
         const averagePage = Math.round(pagesToShow / 2);
 
         if (currentPage <= averagePage) {
             const to = totalPages < pagesToShow ? totalPages : pagesToShow;
             setPagesNumbers(
-                fillPageNumbers(1, to)
+                fillArrayFromTo(1, to)
             );
         } else if (currentPage >= totalPages - averagePage + 1) {
             const from = totalPages - pagesToShow + 1;
-            setPagesNumbers(fillPageNumbers(from, totalPages));
+            setPagesNumbers(fillArrayFromTo(from, totalPages));
         } else {
             const from = pagesToShow % 2 === 0 ? currentPage - averagePage : currentPage - averagePage + 1;
-            setPagesNumbers(fillPageNumbers(from, currentPage + averagePage - 1));
+            setPagesNumbers(fillArrayFromTo(from, currentPage + averagePage - 1));
         }
 
     }, [currentPage, totalPages, pagesToShow]);
+
+    const onFirstLinkClickHandler = () => {
+        onChangePage(1);
+    }
+
+    const onLastLinkClickHandler = () => {
+        onChangePage(totalPages);
+    }
+
+    const onPrevLinkClickHandler = () => {
+        if (currentPage > 1) {
+            onChangePage(currentPage - 1);
+        }
+    }
+
+    const onNextLinkClickHandler = () => {
+        if (currentPage < totalPages) {
+            onChangePage(currentPage + 1);
+        }
+    }
+
+    const isShowArrows = totalPages > 1;
 
     const pageNumbersItemsElements = pagesNumbers.map(pageNumber => (
         <Pagination.Item
             key={pageNumber}
             active={pageNumber === currentPage}
-            onClick={() => onLinkClick(pageNumber)}
+            onClick={() => onChangePage(pageNumber)}
         >
             {pageNumber}
         </Pagination.Item>
@@ -50,11 +58,21 @@ const PaginationCustom = (
 
     return (
         <Pagination className='justify-content-center'>
-            {totalPages > 1 && <Pagination.First onClick={() => onFirstLinkClick()}/>}
-            {totalPages > 1 && <Pagination.Prev onClick={() => onPrevLinkClick()}/>}
+            {
+                isShowArrows &&
+                    <>
+                        <Pagination.First onClick={onFirstLinkClickHandler}/>
+                        <Pagination.Prev onClick={onPrevLinkClickHandler}/>
+                    </>
+            }
             {pageNumbersItemsElements}
-            {totalPages > 1 && <Pagination.Next onClick={() => onNextLinkClick()}/>}
-            {totalPages > 1 && <Pagination.Last onClick={() => onLastLinkClick()}/>}
+            {
+                isShowArrows &&
+                <>
+                    <Pagination.Next onClick={onNextLinkClickHandler}/>
+                    <Pagination.Last onClick={onLastLinkClickHandler}/>
+                </>
+            }
         </Pagination>
     );
 };
