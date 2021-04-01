@@ -1,13 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
 import { ApiMovies } from '../../api/apiMovies';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCurrentPage,
+  selectMovieList,
+  selectTotalPages,
+} from '../../store/movieList/selectors';
+import {
+  changePage,
+  setPopularMovies,
+  setTotalPages,
+} from '../../store/movieList/actions';
 
 const MovieList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [movies, setMovies] = useState([]);
+  const currentPage = useSelector(selectCurrentPage);
+  const totalPages = useSelector(selectTotalPages);
+  const movies = useSelector(selectMovieList);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     ApiMovies.loadPopularMovieList(currentPage)
@@ -16,16 +28,16 @@ const MovieList = () => {
           throw new Error('Missed data');
         }
 
-        setMovies(data.results);
-        setTotalPages(data.total_pages);
+        dispatch(setPopularMovies(data.results));
+        dispatch(setTotalPages(data.total_pages));
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [currentPage]);
+  }, [currentPage, dispatch]);
 
   const onChangePage = (page) => {
-    setCurrentPage(page);
+    dispatch(changePage(page));
   };
 
   const movieCardsElements = movies.map((m) => (
