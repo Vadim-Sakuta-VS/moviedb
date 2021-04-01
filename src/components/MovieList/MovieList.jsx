@@ -2,18 +2,13 @@ import React, { useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
-import { ApiMovies } from '../../api/apiMovies';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPage,
   selectMovieList,
   selectTotalPages,
 } from '../../store/movieList/selectors';
-import {
-  changePage,
-  setPopularMovies,
-  setTotalPages,
-} from '../../store/movieList/actions';
+import { changePage, loadPopularMovies } from '../../store/movieList/actions';
 
 const MovieList = () => {
   const currentPage = useSelector(selectCurrentPage);
@@ -22,18 +17,7 @@ const MovieList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    ApiMovies.loadPopularMovieList(currentPage)
-      .then((data) => {
-        if (!data) {
-          throw new Error('Missed data');
-        }
-
-        dispatch(setPopularMovies(data.results));
-        dispatch(setTotalPages(data.total_pages));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(loadPopularMovies(currentPage));
   }, [currentPage, dispatch]);
 
   const onChangePage = (page) => {
