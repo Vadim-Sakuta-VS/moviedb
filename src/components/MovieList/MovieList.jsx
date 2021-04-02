@@ -8,7 +8,8 @@ import {
   selectMovieList,
   selectTotalPages,
 } from '../../store/movieList/selectors';
-import { changePage, loadPopularMovies } from '../../store/movieList/actions';
+import { changePage } from '../../store/movieList/actions';
+import { loadPopularMovies } from '../../store/movieList/effects';
 
 const MovieList = () => {
   const currentPage = useSelector(selectCurrentPage);
@@ -17,7 +18,7 @@ const MovieList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadPopularMovies(currentPage));
+    dispatch(loadPopularMovies());
   }, [currentPage, dispatch]);
 
   const onChangePage = (page) => {
