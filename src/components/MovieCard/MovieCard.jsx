@@ -3,6 +3,7 @@ import './MovieCard.scss';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const MovieCard = ({ movie }) => {
   return (
@@ -10,7 +11,7 @@ const MovieCard = ({ movie }) => {
       <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
       <Card.Body>
         <Card.Title className='font-weight-bold border-bottom border-success'>
-          {movie.title}
+          <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
         </Card.Title>
         <Container className='p-0 mb-2'>
           <Col className='p-0 font-weight-bold h5 mb-1'>Overview:</Col>
