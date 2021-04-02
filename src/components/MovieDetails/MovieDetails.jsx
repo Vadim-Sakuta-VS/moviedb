@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './MovieDetails.scss';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
+import { loadMovieDetails } from '../../store/movieDetails/effects';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectMovieDetails } from '../../store/movieDetails/selectors';
 
 const MovieDetailsRow = ({ title, value, children, rowClassAdditional }) => {
   const resultValue = value || children;
@@ -29,15 +32,40 @@ const MovieProductionCompany = ({ logoPath, companyName }) => {
   );
 };
 
-const MovieDetails = (props) => {
-  console.log(props);
+const MovieDetails = ({ match: { params } }) => {
+  const movie = useSelector(selectMovieDetails);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadMovieDetails(params.id));
+  }, [params.id, dispatch]);
+
+  if (!movie.id || +params.id !== movie.id) {
+    return null;
+  }
+
+  const budget = `${movie.budget}$`;
+  const genres = movie.genres.map((g) => g.name).join(', ');
+  const revenue = `${movie.revenue}$`;
+  const runtime = `${movie.runtime}min`;
+  const tagline = movie.tagline ? `"${movie.tagline}"` : '---';
+  const productionCountriesElements = movie.production_countries.map((c) => (
+    <li key={c.iso_3166_1}>{c.name}</li>
+  ));
+  const productionCompaniesElements = movie.production_companies.map((c) => (
+    <MovieProductionCompany
+      key={c.id}
+      logoPath={c.logo_path}
+      companyName={c.name}
+    />
+  ));
 
   return (
     <Container className='pt-2 pb-2 movie-details'>
       <Row className='pb-2 mb-3 border-bottom movie-details__main-row'>
         <Col>
           <Image
-            src='https://image.tmdb.org/t/p/w500/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg'
+            src={`${ApiMovies.getImage(movie.poster_path)}`}
             alt='Poster image'
             rounded
             className='w-100'
@@ -45,23 +73,21 @@ const MovieDetails = (props) => {
         </Col>
         <Col>
           <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
-            Godzilla vs. Kong
+            {movie.title}
           </Col>
           <Container>
-            <MovieDetailsRow title='Budget' value='200000000$' />
-            <MovieDetailsRow title='Genres' value='Action, Science Fiction' />
+            <MovieDetailsRow title='Budget' value={budget} />
+            <MovieDetailsRow title='Genres' value={genres} />
             <MovieDetailsRow title='Production countries'>
               <ul className='m-0 p-0' style={{ listStyle: 'none' }}>
-                <li>United States of America</li>
-                <li>France</li>
-                <li>Russia</li>
+                {productionCountriesElements}
               </ul>
             </MovieDetailsRow>
-            <MovieDetailsRow title='Revenue' value='131532239$' />
-            <MovieDetailsRow title='Runtime' value='113m' />
-            <MovieDetailsRow title='Status' value='Released' />
-            <MovieDetailsRow title='Release date' value='2021-03-24' />
-            <MovieDetailsRow title='Tagline' value='"One Will Fall"' />
+            <MovieDetailsRow title='Revenue' value={revenue} />
+            <MovieDetailsRow title='Runtime' value={runtime} />
+            <MovieDetailsRow title='Status' value={movie.status} />
+            <MovieDetailsRow title='Release date' value={movie.release_date} />
+            <MovieDetailsRow title='Tagline' value={tagline} />
             <MovieDetailsRow title='Vote average'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -73,19 +99,16 @@ const MovieDetails = (props) => {
               >
                 <path d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z' />
               </svg>
-              8.6
+              {movie.vote_average}
             </MovieDetailsRow>
-            <MovieDetailsRow title='Vote count' value='2334' />
+            <MovieDetailsRow title='Vote count' value={movie.vote_count} />
             <MovieDetailsRow
               title='Overview'
-              value='In a time when monsters walk the Earth, humanity’s fight for its
-                future sets Godzilla and Kong on a collision course that will
-                see the two most powerful forces of nature on the planet collide
-                in a spectacular battle for the ages.'
+              value={movie.overview}
               rowClassAdditional='flex-column'
             />
             <MovieDetailsRow>
-              <a href='#' target='_blank'>
+              <a href={movie.homepage} target='_blank' rel='noreferrer'>
                 Home page
               </a>
             </MovieDetailsRow>
@@ -99,14 +122,7 @@ const MovieDetails = (props) => {
         <Col>
           <Container className='pl-5 pr-5'>
             <Row className='justify-content-center production-companies'>
-              <MovieProductionCompany
-                logoPath='/ky0xOc5OrhzkZ1N6KyUxacfQsCk.png'
-                companyName='Warner Bros. Pictures'
-              />
-              <MovieProductionCompany
-                logoPath='/5UQsZrfbfG2dYJbx8DxfoTr2Bvu.png'
-                companyName='Legendary Pictures'
-              />
+              {productionCompaniesElements}
             </Row>
           </Container>
         </Col>
