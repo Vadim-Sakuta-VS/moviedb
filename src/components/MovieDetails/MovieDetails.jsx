@@ -1,66 +1,59 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './MovieDetails.scss';
 import { Container, Row, Col, Image } from 'react-bootstrap';
+import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductionCompany';
+import { MovieDetailsRow } from './MovieDetailsRow';
 import { ApiMovies } from '../../api/apiMovies';
 import { loadMovieDetails } from '../../store/movieDetails/effects';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMovieDetails } from '../../store/movieDetails/selectors';
+import {
+  selectMovieDetails,
+  selectMovieDetailsLoading,
+} from '../../store/movieDetails/selectors';
+import { Redirect, useParams } from 'react-router-dom';
+import Loader from '../Loader/Loader';
 
-const MovieDetailsRow = ({ title, value, children, rowClassAdditional }) => {
-  const resultValue = value || children;
-  const classAdditional = rowClassAdditional || '';
-
-  return (
-    <Row className={`h5 ${classAdditional}`}>
-      {title && <Col className='pr-0 col-auto font-weight-bold'>{title}:</Col>}
-      {resultValue && <Col className='pr-0'>{value || children}</Col>}
-    </Row>
-  );
-};
-
-const MovieProductionCompany = ({ logoPath, companyName }) => {
-  return (
-    <Col className='col-auto production-company production-companies__item'>
-      <Image
-        src={`${ApiMovies.getImage(logoPath)}`}
-        width={100}
-        height={100}
-        rounded
-      />
-      <p className='mt-2'>{companyName}</p>
-    </Col>
-  );
-};
-
-const MovieDetails = ({ match: { params } }) => {
+const MovieDetails = () => {
+  const [isMounted, setIsMounted] = useState(false);
+  const { id } = useParams();
   const movie = useSelector(selectMovieDetails);
+  const isLoading = useSelector(selectMovieDetailsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadMovieDetails(params.id));
-  }, [params.id, dispatch]);
+    setIsMounted(true);
+  }, []);
 
-  if (!movie.id || +params.id !== movie.id) {
-    return null;
+  useEffect(() => {
+    dispatch(loadMovieDetails(id));
+  }, [id, dispatch]);
+
+  if (isMounted && !isLoading && !movie.id) {
+    return <Redirect to='/page404' />;
   }
 
   const budget = `${movie.budget}$`;
-  const genres = movie.genres.map((g) => g.name).join(', ');
+  const genres = movie.genres && movie.genres.map((g) => g.name).join(', ');
   const revenue = `${movie.revenue}$`;
   const runtime = `${movie.runtime}min`;
   const tagline = movie.tagline ? `"${movie.tagline}"` : '---';
-  const productionCountriesElements = movie.production_countries.map((c) => (
-    <li key={c.iso_3166_1}>{c.name}</li>
-  ));
-  const productionCompaniesElements = movie.production_companies.map((c) => (
-    <MovieProductionCompany
-      key={c.id}
-      logoPath={c.logo_path}
-      companyName={c.name}
-    />
-  ));
+  const productionCountriesElements =
+    movie.production_countries &&
+    movie.production_countries.map((c) => <li key={c.iso_3166_1}>{c.name}</li>);
+  const productionCompaniesElements =
+    movie.production_companies &&
+    movie.production_companies.map((c) => (
+      <MovieProductionCompany
+        key={c.id}
+        logoPath={c.logo_path}
+        companyName={c.name}
+        colClassAdditional='production-companies__item'
+      />
+    ));
 
-  return (
+  return isLoading || !movie.id ? (
+    <Loader isLoading={isLoading} />
+  ) : (
     <Container className='pt-2 pb-2 movie-details'>
       <Row className='pb-2 mb-3 border-bottom movie-details__main-row'>
         <Col>

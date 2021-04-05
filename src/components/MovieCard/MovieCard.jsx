@@ -8,7 +8,9 @@ import { Link } from 'react-router-dom';
 const MovieCard = ({ movie }) => {
   return (
     <Card className='mb-4 movie-card flex-grow-1'>
-      <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
+      <Link to={`/movie/${movie.id}`}>
+        <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
+      </Link>
       <Card.Body>
         <Card.Title className='font-weight-bold border-bottom border-success'>
           <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
