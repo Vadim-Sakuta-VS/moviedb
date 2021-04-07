@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './MovieDetails.scss';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductionCompany';
@@ -14,21 +14,18 @@ import { Redirect, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 
 const MovieDetails = () => {
-  const [isMounted, setIsMounted] = useState(false);
   const { id } = useParams();
   const movie = useSelector(selectMovieDetails);
   const isLoading = useSelector(selectMovieDetailsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    dispatch(loadMovieDetails(id));
+    if (!isNaN(id) && id > 0) {
+      dispatch(loadMovieDetails(id));
+    }
   }, [id, dispatch]);
 
-  if (isMounted && !isLoading && !movie.id) {
+  if (isNaN(id) || (!isNaN(id) && id < 1)) {
     return <Redirect to='/page404' />;
   }
 
@@ -51,7 +48,7 @@ const MovieDetails = () => {
       />
     ));
 
-  return isLoading || !movie.id ? (
+  return isLoading || movie.id !== +id ? (
     <Loader isLoading={isLoading} />
   ) : (
     <Container className='pt-2 pb-2 movie-details'>

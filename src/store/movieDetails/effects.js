@@ -6,8 +6,8 @@ export const loadMovieDetails = (id) => {
     try {
       dispatch(showLoading());
       const data = await ApiMovies.loadMovieDetails(id);
-      if (!data) {
-        throw new Error('Missed data');
+      if (!data.id) {
+        window.location.replace('/page404');
       }
 
       dispatch(setMovieDetails(data));
