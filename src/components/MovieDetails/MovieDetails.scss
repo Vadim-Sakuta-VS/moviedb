@@ -2,16 +2,14 @@
 @import '~bootstrap/scss/_variables.scss';
 @import '~bootstrap/scss/mixins/_breakpoints.scss';
 
-.movie-details {
-  &__main-row {
-    border-bottom: 3px dashed grey !important;
-  }
-}
-
 .production-companies {
   &__item {
     margin: 0 20px;
   }
+}
+
+.divider {
+  border-top: 3px dashed grey !important;
 }
 
 @include media-breakpoint-down(sm) {
