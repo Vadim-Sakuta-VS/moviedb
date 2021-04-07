@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 export const MovieDetailsRow = ({
   title,
@@ -17,4 +18,11 @@ export const MovieDetailsRow = ({
       {resultValue && <Col className='pr-0'>{resultValue}</Col>}
     </Row>
   );
+};
+
+MovieDetailsRow.propTypes = {
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  children: PropTypes.any,
+  rowClassAdditional: PropTypes.string,
 };

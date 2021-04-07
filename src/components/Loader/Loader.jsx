@@ -1,5 +1,6 @@
 import React from 'react';
 import { Spinner } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const Loader = ({ isLoading }) => {
   return isLoading ? (
@@ -7,6 +8,10 @@ const Loader = ({ isLoading }) => {
       <Spinner animation='border' variant='success' />
     </div>
   ) : null;
+};
+
+Loader.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default Loader;
