@@ -4,11 +4,17 @@ import PropTypes from 'prop-types';
 import { ApiMovies } from '../../api/apiMovies';
 
 const UserAvatar = ({ username, avatarPath }) => {
+  const imageSrc =
+    avatarPath && avatarPath.includes('http')
+      ? avatarPath.slice(1)
+      : ApiMovies.getImage(avatarPath);
+
   return (
     <Col className='col-auto d-flex flex-column align-items-center'>
       <Image
         width={100}
-        src={ApiMovies.getImage(avatarPath)}
+        height={100}
+        src={imageSrc}
         roundedCircle
         className='mb-1'
       />
