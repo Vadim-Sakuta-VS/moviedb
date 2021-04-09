@@ -32,22 +32,19 @@ const MovieReviews = ({ id }) => {
     dispatch(changePage(currentPage + 1));
   };
 
-  const movieReviewsElements = movieReviews.map((r) => {
-    console.log(r);
-    return (
-      <MovieReview
-        key={r.id}
-        author={r.author_details}
-        content={r.content}
-        createdAt={r.created_at}
-        updatedAt={r.updated_at}
-        maxContentSymbolsToShow={900}
-      />
-    );
-  });
+  const movieReviewsElements = movieReviews.map((r) => (
+    <MovieReview
+      key={r.id}
+      author={r.author_details}
+      content={r.content}
+      createdAt={r.created_at}
+      updatedAt={r.updated_at}
+      maxContentSymbolsToShow={900}
+    />
+  ));
 
   return (
-    <Row className=''>
+    <Row>
       <Col xs={12}>
         <Row className='flex-column reviews'>
           <Col className='h4 mb-4 text-center font-weight-bold'>Reviews</Col>
