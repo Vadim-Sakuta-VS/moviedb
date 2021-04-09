@@ -10,6 +10,7 @@ import {
 } from '../../store/movieList/selectors';
 import { changePage } from '../../store/movieList/actions';
 import { loadPopularMovies } from '../../store/movieList/effects';
+import Header from '../Header/Header';
 
 const MovieList = () => {
   const currentPage = useSelector(selectCurrentPage);
@@ -30,15 +31,18 @@ const MovieList = () => {
   ));
 
   return (
-    <Container className='p-2'>
-      <Row className='justify-content-center'>{movieCardsElements}</Row>
-      <PaginationCustom
-        currentPage={currentPage}
-        totalPages={totalPages}
-        pagesToShow={7}
-        onChangePage={onChangePage}
-      />
-    </Container>
+    <>
+      <Header />
+      <Container className='p-2'>
+        <Row className='justify-content-center'>{movieCardsElements}</Row>
+        <PaginationCustom
+          currentPage={currentPage}
+          totalPages={totalPages}
+          pagesToShow={7}
+          onChangePage={onChangePage}
+        />
+      </Container>
+    </>
   );
 };
 
