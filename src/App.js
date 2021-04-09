@@ -1,18 +1,26 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 import MovieList from './components/MovieList/MovieList';
 import MovieDetails from './components/MovieDetails/MovieDetails';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Page404 from './components/Page404/Page404';
+import { withHeaderLayout } from './components/HOC/withHeaderLayout';
 
 function App() {
   return (
     <Router>
       <div className='App'>
-        <Switch>
-          <Route exact path='/' component={MovieList} />
-          <Route exact path='/movie/:id' component={MovieDetails} />
-          <Route path='*' component={Page404} />
-        </Switch>
+        <main className='page'>
+          <Switch>
+            <Route exact path='/' render={() => withHeaderLayout(MovieList)} />
+            <Route
+              exact
+              path='/movie/:id'
+              render={() => withHeaderLayout(MovieDetails)}
+            />
+            <Route path='*' component={Page404} />
+          </Switch>
+        </main>
       </div>
     </Router>
   );

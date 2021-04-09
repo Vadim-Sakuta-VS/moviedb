@@ -43,7 +43,7 @@ const Header = () => {
 
   return (
     <>
-      <header ref={headerRef} className='header p-2'>
+      <header ref={headerRef} className='header p-1'>
         <Container>
           <Row className='align-items-center'>
             <Col>
