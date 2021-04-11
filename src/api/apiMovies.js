@@ -48,4 +48,13 @@ export class ApiMovies {
       console.log(e);
     }
   }
+
+  static async loadCompanyDetails(id) {
+    try {
+      const res = await fetch(`${SERVER}/company/${id}?api_key=${API_KEY}`);
+      return res.json();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

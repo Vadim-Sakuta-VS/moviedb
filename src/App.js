@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Page404 from './components/Page404/Page404';
 import { withHeaderLayout } from './components/HOC/withHeaderLayout';
 import CompaniesList from './components/CompaniesList/CompaniesList';
+import CompanyDetails from './components/CompanyDetails/CompanyDetails';
 
 function App() {
   return (
@@ -23,6 +24,11 @@ function App() {
               exact
               path='/companies'
               render={() => withHeaderLayout(CompaniesList)}
+            />
+            <Route
+              exact
+              path='/company/:id'
+              render={() => withHeaderLayout(CompanyDetails)}
             />
             <Route path='*' component={Page404} />
           </Switch>

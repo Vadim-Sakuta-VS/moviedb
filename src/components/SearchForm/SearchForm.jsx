@@ -33,7 +33,7 @@ const SearchForm = ({
           <Controller
             name='query'
             control={control}
-            defaultValue=''
+            defaultValue={queryValue}
             rules={{ required: 'Required field!' }}
             render={({ field }) => (
               <Row className='m-0' style={{ position: 'relative' }}>
