@@ -37,4 +37,15 @@ export class ApiMovies {
       console.log(e);
     }
   }
+
+  static async loadCompaniesByQuery(query, page) {
+    try {
+      const res = await fetch(
+        `${SERVER}/search/company?query=${query}&api_key=${API_KEY}&page=${page}`
+      );
+      return res.json();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }

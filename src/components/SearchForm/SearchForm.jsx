@@ -2,13 +2,25 @@ import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Controller, useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
+import PropTypes from 'prop-types';
 
-const SearchForm = ({ onSubmit, isLoading, ...props }) => {
+const SearchForm = ({
+  queryValue,
+  onChange,
+  onSubmit,
+  isLoading,
+  ...props
+}) => {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const onChangeHandler = (e, filedOnChange) => {
+    onChange(e.target.value);
+    filedOnChange(e);
+  };
 
   const onSubmitHandler = (data) => {
     onSubmit(data);
@@ -29,6 +41,11 @@ const SearchForm = ({ onSubmit, isLoading, ...props }) => {
                   placeholder='Query...'
                   isInvalid={errors.query}
                   {...field}
+                  onChange={
+                    onChange
+                      ? (e) => onChangeHandler(e, field.onChange)
+                      : field.onChange
+                  }
                 />
                 {errors.query && (
                   <Form.Text
@@ -53,6 +70,13 @@ const SearchForm = ({ onSubmit, isLoading, ...props }) => {
       </Row>
     </Form>
   );
+};
+
+SearchForm.propTypes = {
+  queryValue: PropTypes.string,
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default SearchForm;
