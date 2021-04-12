@@ -7,17 +7,19 @@ import {
   showLoadingMore,
   updateCompanies,
 } from './actions';
-import { ApiMovies } from '../../api/apiMovies';
+import { ApiCompanies } from '../../api/apiCompanies';
+import { selectCompaniesCurrentPage, selectQuery } from './selectors';
 
 export const searchCompaniesByQuery = () => {
   return async (dispatch, getState) => {
     try {
       dispatch(showLoading());
 
-      const query = getState().companiesList.query;
-      const data = await ApiMovies.loadCompaniesByQuery(query, 1);
+      const query = selectQuery(getState());
+      const data = await ApiCompanies.loadCompaniesByQuery(query, 1);
 
-      const result = data.results.length ? data.results : 'Nothing found';
+      const result =
+        data.results && data.results.length ? data.results : 'Nothing found';
 
       dispatch(setCompanies(result));
       dispatch(setTotalPages(data.total_pages));
@@ -33,9 +35,12 @@ export const loadMoreCompaniesByQuery = () => {
     try {
       dispatch(showLoadingMore());
 
-      const query = getState().companiesList.query;
-      const currentPage = getState().companiesList.currentPage;
-      const data = await ApiMovies.loadCompaniesByQuery(query, currentPage + 1);
+      const query = selectQuery(getState());
+      const currentPage = selectCompaniesCurrentPage(getState());
+      const data = await ApiCompanies.loadCompaniesByQuery(
+        query,
+        currentPage + 1
+      );
 
       dispatch(updateCompanies(data.results));
       dispatch(setTotalPages(data.total_pages));

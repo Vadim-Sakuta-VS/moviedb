@@ -1,8 +1,9 @@
 import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import PropTypes from 'prop-types';
+import Control from '../Control/Control';
 
 const SearchForm = ({
   queryValue,
@@ -11,16 +12,7 @@ const SearchForm = ({
   isLoading,
   ...props
 }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onChangeHandler = (e, filedOnChange) => {
-    onChange(e.target.value);
-    filedOnChange(e);
-  };
+  const { control, handleSubmit } = useForm();
 
   const onSubmitHandler = (data) => {
     onSubmit(data);
@@ -30,33 +22,13 @@ const SearchForm = ({
     <Form onSubmit={handleSubmit(onSubmitHandler)} className='w-100' {...props}>
       <Row>
         <Col className='p-0'>
-          <Controller
+          <Control
             name='query'
-            control={control}
-            defaultValue={queryValue}
             rules={{ required: 'Required field!' }}
-            render={({ field }) => (
-              <Row className='m-0' style={{ position: 'relative' }}>
-                <Form.Control
-                  placeholder='Query...'
-                  isInvalid={errors.query}
-                  {...field}
-                  onChange={
-                    onChange
-                      ? (e) => onChangeHandler(e, field.onChange)
-                      : field.onChange
-                  }
-                />
-                {errors.query && (
-                  <Form.Text
-                    className='text-danger'
-                    style={{ position: 'absolute', top: '100%', left: 0 }}
-                  >
-                    {errors.query.message}
-                  </Form.Text>
-                )}
-              </Row>
-            )}
+            defaultValue={queryValue}
+            placeholder='Query...'
+            onChange={onChange}
+            control={control}
           />
         </Col>
         <Col className='col-auto p-0'>
