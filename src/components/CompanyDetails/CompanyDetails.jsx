@@ -8,7 +8,7 @@ import {
   selectCompanyDetails,
   selectCompanyDetailsLoading,
 } from '../../store/companyDetails/selectors';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { loadCompanyDetails } from '../../store/companyDetails/effects';
 
 const CompanyDetails = () => {
@@ -18,8 +18,14 @@ const CompanyDetails = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadCompanyDetails(id));
+    if (!isNaN(id) && id > 0) {
+      dispatch(loadCompanyDetails(id));
+    }
   }, [id, dispatch]);
+
+  if (isNaN(id) || (!isNaN(id) && id < 1)) {
+    return <Redirect to='/page404' />;
+  }
 
   const headquarters = company.headquarters || '---';
   const originCountry = company.origin_country || '---';
