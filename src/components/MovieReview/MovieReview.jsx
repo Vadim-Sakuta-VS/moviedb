@@ -28,10 +28,12 @@ const MovieReview = ({
   return (
     <Alert variant='secondary'>
       <Row className='review flex-column flex-md-row'>
-        <UserAvatar
-          username={author.username}
-          avatarPath={author.avatar_path}
-        />
+        <Col className='d-flex justify-content-center col-md-auto p-0'>
+          <UserAvatar
+            username={author.username}
+            avatarPath={author.avatar_path}
+          />
+        </Col>
         <Col>
           {author.rating && (
             <MovieDetailsRow title='Rating'>

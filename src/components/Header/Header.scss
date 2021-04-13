@@ -1,0 +1,25 @@
+.header {
+  min-height: 10vh;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #212121;
+
+  &-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-120%);
+    background-color: #fff;
+    box-shadow: 0 0 10px 1px #212121;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 1;
+
+    &--visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

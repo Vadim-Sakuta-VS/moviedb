@@ -23,7 +23,7 @@ const ButtonLoad = ({ isLoading, textValue, handleOnClick, ...props }) => {
 ButtonLoad.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   textValue: PropTypes.string.isRequired,
-  handleOnClick: PropTypes.func.isRequired,
+  handleOnClick: PropTypes.func,
 };
 
 export default ButtonLoad;

@@ -1,0 +1,8 @@
+.user-avatar {
+  max-width: 130px;
+
+  &__name {
+    width: 100%;
+    word-wrap: break-word;
+  }
+}
