@@ -7,6 +7,7 @@ import Page404 from './components/Page404/Page404';
 import { withHeaderLayout } from './components/HOC/withHeaderLayout';
 import CompaniesList from './components/CompaniesList/CompaniesList';
 import CompanyDetails from './components/CompanyDetails/CompanyDetails';
+import HomePage from './components/HomePage/HomePage';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div className='App'>
         <main className='page'>
           <Switch>
+            <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
             <Route exact path='/' render={() => withHeaderLayout(MovieList)} />
             <Route
               exact
