@@ -1,10 +1,13 @@
 import { requiredGetParams, SERVER } from './constants';
-import { createGetParamsStr } from '../utils/utils';
+import { stringifyGetParamsObj } from '../utils/utils';
 
 export class ApiCompanies {
   static async loadCompaniesByQuery(paramsGETObj) {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams, paramsGETObj);
+      const paramsStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        ...paramsGETObj,
+      });
       const res = await fetch(`${SERVER}/search/company${paramsStr}`);
       return res.json();
     } catch (e) {
@@ -14,7 +17,7 @@ export class ApiCompanies {
 
   static async loadCompanyDetails(id) {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams);
+      const paramsStr = stringifyGetParamsObj(requiredGetParams);
       const res = await fetch(`${SERVER}/company/${id}${paramsStr}`);
       return res.json();
     } catch (e) {

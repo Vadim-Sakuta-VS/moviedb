@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 export function fillArrayFromTo(from, to) {
   const arr = [];
 
@@ -8,11 +10,6 @@ export function fillArrayFromTo(from, to) {
   return arr;
 }
 
-export function createGetParamsStr(...rest) {
-  const params = rest.map((paramObj) => {
-    const paramObjArr = Object.entries(paramObj).map((arr) => arr.join('='));
-    return paramObjArr.join('&');
-  });
-
-  return `?${params.join('&')}`;
+export function stringifyGetParamsObj(obj) {
+  return qs.stringify(obj, { addQueryPrefix: true });
 }

@@ -46,7 +46,6 @@ export const loadMoviesData = (movieType) => {
         const data = await ApiMovies.loadMovieList(URL, {
           page: 1,
         });
-        console.log(data);
 
         dispatch(setMoviesData(movieType, data.results.slice(0, 10)));
       }

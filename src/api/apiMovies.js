@@ -1,5 +1,5 @@
 import { requiredGetParams, SERVER, SERVER_IMAGE } from './constants';
-import { createGetParamsStr } from '../utils/utils';
+import { stringifyGetParamsObj } from '../utils/utils';
 
 export class ApiMovies {
   static GET_NOW_PLAYING = `${SERVER}/movie/now_playing`;
@@ -9,7 +9,7 @@ export class ApiMovies {
 
   static async loadGenres() {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams);
+      const paramsStr = stringifyGetParamsObj(requiredGetParams);
       const res = await fetch(`${SERVER}/genre/movie/list${paramsStr}`);
       return res.json();
     } catch (e) {
@@ -19,7 +19,10 @@ export class ApiMovies {
 
   static async loadMovieList(URL, paramsGETObj) {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams, paramsGETObj);
+      const paramsStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        ...paramsGETObj,
+      });
       const res = await fetch(`${URL}${paramsStr}`);
       return res.json();
     } catch (e) {
@@ -33,7 +36,7 @@ export class ApiMovies {
 
   static async loadMovieDetails(id) {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams);
+      const paramsStr = stringifyGetParamsObj(requiredGetParams);
       const res = await fetch(`${SERVER}/movie/${id}${paramsStr}`);
       return res.json();
     } catch (e) {
@@ -43,7 +46,10 @@ export class ApiMovies {
 
   static async loadMovieReviews(id, paramsGETObj) {
     try {
-      const paramsStr = createGetParamsStr(requiredGetParams, paramsGETObj);
+      const paramsStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        ...paramsGETObj,
+      });
       const res = await fetch(`${SERVER}/movie/${id}/reviews${paramsStr}`);
       return res.json();
     } catch (e) {
