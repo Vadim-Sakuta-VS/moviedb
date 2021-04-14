@@ -1,5 +1,4 @@
 export const selectGenres = (state) => state.home.genres;
-export const selectNowPlayingMovies = (state) => state.home.nowPlayingMovies;
-export const selectPopularMovies = (state) => state.home.popularMovies;
-export const selectTopRatedMovies = (state) => state.home.topRatedMovies;
-export const selectUpcomingMovies = (state) => state.home.upcomingMovies;
+export const selectMoviesDataByType = (type) => (state) =>
+  state.home.data[type];
+export const selectMoviesData = (state) => state.home.data;

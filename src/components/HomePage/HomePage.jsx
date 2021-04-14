@@ -7,61 +7,51 @@ import 'swiper/components/scrollbar/scrollbar.scss';
 import MoviesSliderRow from '../MoviesSliderRow/MoviesSliderRow';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  loadGenres,
-  loadNowPlayingMovies,
-  loadPopularMovies,
-  loadTopRatedMovies,
-  loadUpcomingMovies,
-} from '../../store/home/effects';
-import {
-  selectGenres,
-  selectNowPlayingMovies,
-  selectPopularMovies,
-  selectTopRatedMovies,
-  selectUpcomingMovies,
-} from '../../store/home/selectors';
+import { loadGenres, loadMoviesData } from '../../store/home/effects';
+import { selectGenres, selectMoviesData } from '../../store/home/selectors';
+import { MOVIE_TYPES } from '../../store/home/reducers';
 
 const HomePage = () => {
   const { data: genres, isLoading: isLoadingGenres } = useSelector(
     selectGenres
   );
-  const {
-    data: nowPlayingMovies,
-    isLoading: isLoadingNowPlayingMovies,
-  } = useSelector(selectNowPlayingMovies);
-  const {
-    data: popularMovies,
-    isLoading: isLoadingPopularMovies,
-  } = useSelector(selectPopularMovies);
-  const {
-    data: topRatedMovies,
-    isLoading: isLoadingTopRatedMovies,
-  } = useSelector(selectTopRatedMovies);
-  const {
-    data: upcomingMovies,
-    isLoading: isLoadingUpcomingMovies,
-  } = useSelector(selectUpcomingMovies);
+  const data = useSelector(selectMoviesData);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadGenres());
-    dispatch(loadNowPlayingMovies());
-    dispatch(loadPopularMovies());
-    dispatch(loadTopRatedMovies());
-    dispatch(loadUpcomingMovies());
+    dispatch(loadMoviesData(MOVIE_TYPES.NOW_PLAYING));
+    dispatch(loadMoviesData(MOVIE_TYPES.POPULAR));
+    dispatch(loadMoviesData(MOVIE_TYPES.TOP_RATED));
+    dispatch(loadMoviesData(MOVIE_TYPES.UPCOMING));
   }, [dispatch]);
 
   const genresLinks = genres.map((g) => (
     <Col key={g.id} className='col-6 col-lg-3 col-xl-2 col-md-4 mb-2'>
       <Link
-        to={`/movies?with_genres=${g.id}`}
+        to={{
+          pathname: '/movies',
+          search: `?with_genres=${g.id}`,
+        }}
         className='d-flex justify-content-center align-items-center btn btn-light w-100 h-100 pt-4 pb-4'
         style={{ fontSize: '1.2rem' }}
       >
         {g.name}
       </Link>
     </Col>
+  ));
+
+  const movieRows = Object.keys(data).map((key) => (
+    <Row className='mb-5' key={key}>
+      <Col>
+        <MoviesSliderRow
+          title={key}
+          movies={data[key].data}
+          isLoading={data[key].isLoading}
+          // typeMovies='now_playing'
+        />
+      </Col>
+    </Row>
   ));
 
   return (
@@ -78,42 +68,7 @@ const HomePage = () => {
           )}
         </Col>
       </Row>
-      <Row className='mb-5'>
-        <Col>
-          <MoviesSliderRow
-            title='Now Playing'
-            movies={nowPlayingMovies}
-            isLoading={isLoadingNowPlayingMovies}
-          />
-        </Col>
-      </Row>
-      <Row className='mb-5'>
-        <Col>
-          <MoviesSliderRow
-            title='Popular'
-            movies={popularMovies}
-            isLoading={isLoadingPopularMovies}
-          />
-        </Col>
-      </Row>
-      <Row className='mb-5'>
-        <Col>
-          <MoviesSliderRow
-            title='Top Rated'
-            movies={topRatedMovies}
-            isLoading={isLoadingTopRatedMovies}
-          />
-        </Col>
-      </Row>
-      <Row className='mb-5'>
-        <Col>
-          <MoviesSliderRow
-            title='Upcoming'
-            movies={upcomingMovies}
-            isLoading={isLoadingUpcomingMovies}
-          />
-        </Col>
-      </Row>
+      {movieRows}
     </Container>
   );
 };

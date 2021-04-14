@@ -10,10 +10,11 @@ import './MoviesSliderRow.scss';
 import MovieSlide from './MovieSlide';
 import PropTypes from 'prop-types';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
+import { Link } from 'react-router-dom';
 
 SwiperCore.use([Pagination]);
 
-const MoviesSliderRow = ({ title, movies, isLoading }) => {
+const MoviesSliderRow = ({ title, movies, isLoading, typeMovies }) => {
   const breakpoints = {
     320: {
       slidesPerView: 2,
@@ -40,8 +41,11 @@ const MoviesSliderRow = ({ title, movies, isLoading }) => {
 
   return (
     <Row className='flex-column'>
-      <Col>
+      <Col className='d-flex align-items-center justify-content-between'>
         <h2 className='font-weight-bold'>{title}</h2>
+        <Link to={`/movies/${typeMovies}`} className='text-danger'>
+          Все
+        </Link>
       </Col>
       <Col className='d-flex justify-content-center'>
         {isLoading ? (

@@ -1,22 +1,13 @@
 import {
   hideGenresLoading,
-  hideNowPlayingMoviesLoading,
-  hidePopularMoviesLoading,
-  hideTopRatedMoviesLoading,
-  hideUpcomingMoviesLoading,
   setGenres,
-  setNowPlayingMovies,
-  setPopularMovies,
-  setTopRatedMovies,
-  setUpcomingMovies,
+  setMoviesData,
+  setMovieTypeLoading,
   showGenresLoading,
-  showNowPlayingMoviesLoading,
-  showPopularMoviesLoading,
-  showTopRatedMoviesLoading,
-  showUpcomingMoviesLoading,
 } from './actions';
 import { ApiMovies } from '../../api/apiMovies';
-import { selectGenres, selectNowPlayingMovies } from './selectors';
+import { selectGenres, selectMoviesDataByType } from './selectors';
+import { MOVIE_TYPES } from './reducers';
 
 export const loadGenres = () => {
   return async (dispatch, getState) => {
@@ -34,73 +25,33 @@ export const loadGenres = () => {
   };
 };
 
-export const loadNowPlayingMovies = () => {
+export const loadMoviesData = (movieType) => {
   return async (dispatch, getState) => {
     try {
-      const nowPlayingMovies = selectNowPlayingMovies(getState());
-      if (!nowPlayingMovies.data.length) {
-        dispatch(showNowPlayingMoviesLoading());
-        const data = await ApiMovies.loadMovieList(ApiMovies.GET_NOW_PLAYING, {
-          page: 1,
-        });
-        dispatch(setNowPlayingMovies(data.results.slice(0, 10)));
-      }
-    } catch (e) {
-      dispatch(hideNowPlayingMoviesLoading());
-      console.log(e);
-    }
-  };
-};
+      const { data } = selectMoviesDataByType(movieType)(getState());
+      if (!data.length) {
+        dispatch(setMovieTypeLoading(movieType, true));
 
-export const loadPopularMovies = () => {
-  return async (dispatch, getState) => {
-    try {
-      const popularMovies = selectNowPlayingMovies(getState());
-      if (!popularMovies.data.length) {
-        dispatch(showPopularMoviesLoading());
-        const data = await ApiMovies.loadMovieList(ApiMovies.GET_POPULAR, {
-          page: 1,
-        });
-        dispatch(setPopularMovies(data.results.slice(0, 10)));
-      }
-    } catch (e) {
-      dispatch(hidePopularMoviesLoading());
-      console.log(e);
-    }
-  };
-};
+        let URL;
+        if (movieType === MOVIE_TYPES.NOW_PLAYING) {
+          URL = ApiMovies.GET_NOW_PLAYING;
+        } else if (movieType === MOVIE_TYPES.POPULAR) {
+          URL = ApiMovies.GET_POPULAR;
+        } else if (movieType === MOVIE_TYPES.TOP_RATED) {
+          URL = ApiMovies.GET_TOP_RATED;
+        } else if (movieType === MOVIE_TYPES.UPCOMING) {
+          URL = ApiMovies.GET_UPCOMING;
+        }
 
-export const loadTopRatedMovies = () => {
-  return async (dispatch, getState) => {
-    try {
-      const topRatedMovies = selectNowPlayingMovies(getState());
-      if (!topRatedMovies.data.length) {
-        dispatch(showTopRatedMoviesLoading());
-        const data = await ApiMovies.loadMovieList(ApiMovies.GET_TOP_RATED, {
+        const data = await ApiMovies.loadMovieList(URL, {
           page: 1,
         });
-        dispatch(setTopRatedMovies(data.results.slice(0, 10)));
-      }
-    } catch (e) {
-      dispatch(hideTopRatedMoviesLoading());
-      console.log(e);
-    }
-  };
-};
+        console.log(data);
 
-export const loadUpcomingMovies = () => {
-  return async (dispatch, getState) => {
-    try {
-      const upcomingMovies = selectNowPlayingMovies(getState());
-      if (!upcomingMovies.data.length) {
-        dispatch(showUpcomingMoviesLoading());
-        const data = await ApiMovies.loadMovieList(ApiMovies.GET_UPCOMING, {
-          page: 1,
-        });
-        dispatch(setUpcomingMovies(data.results.slice(0, 10)));
+        dispatch(setMoviesData(movieType, data.results.slice(0, 10)));
       }
     } catch (e) {
-      dispatch(hideUpcomingMoviesLoading());
+      dispatch(setMovieTypeLoading(movieType, false));
       console.log(e);
     }
   };
