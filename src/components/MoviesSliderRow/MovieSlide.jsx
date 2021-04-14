@@ -9,7 +9,9 @@ const MovieSlide = ({ title, posterPath }) => {
     <div className='movie-slide'>
       <Image src={ApiMovies.getImage(posterPath)} className='w-100' rounded />
       <div className='movie-slide__inner'>
-        <h5 className='movie-slide_inner-title text-center'>{title}</h5>
+        <h5 className='movie-slide_inner-title text-center pl-1 pr-1'>
+          {title}
+        </h5>
       </div>
     </div>
   );

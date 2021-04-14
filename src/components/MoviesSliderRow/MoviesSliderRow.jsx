@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Spinner } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination } from 'swiper';
 import 'swiper/swiper.scss';
@@ -13,7 +13,7 @@ import { withLinkWrapper } from '../HOC/withLinkWrapper';
 
 SwiperCore.use([Pagination]);
 
-const MoviesSliderRow = ({ title, movies }) => {
+const MoviesSliderRow = ({ title, movies, isLoading }) => {
   const breakpoints = {
     320: {
       slidesPerView: 2,
@@ -43,14 +43,18 @@ const MoviesSliderRow = ({ title, movies }) => {
       <Col>
         <h2 className='font-weight-bold'>{title}</h2>
       </Col>
-      <Col>
-        <Swiper
-          spaceBetween={10}
-          pagination={{ clickable: true }}
-          breakpoints={breakpoints}
-        >
-          {slidersElements}
-        </Swiper>
+      <Col className='d-flex justify-content-center'>
+        {isLoading ? (
+          <Spinner animation='border' variant='success' />
+        ) : (
+          <Swiper
+            spaceBetween={10}
+            pagination={{ clickable: true }}
+            breakpoints={breakpoints}
+          >
+            {slidersElements}
+          </Swiper>
+        )}
       </Col>
     </Row>
   );
@@ -68,6 +72,7 @@ MoviesSliderRow.propTypes = {
       ]),
     })
   ),
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default MoviesSliderRow;
