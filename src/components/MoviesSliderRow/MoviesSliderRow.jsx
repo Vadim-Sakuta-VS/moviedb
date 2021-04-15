@@ -77,6 +77,7 @@ MoviesSliderRow.propTypes = {
     })
   ),
   isLoading: PropTypes.bool.isRequired,
+  typeMovies: PropTypes.string.isRequired,
 };
 
 export default MoviesSliderRow;

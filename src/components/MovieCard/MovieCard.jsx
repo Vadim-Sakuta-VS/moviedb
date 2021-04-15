@@ -68,7 +68,10 @@ MovieCard.propTypes = {
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
     release_date: PropTypes.string,
-    poster_path: PropTypes.string,
+    poster_path: PropTypes.oneOfType([
+      PropTypes.string.isRequired,
+      PropTypes.oneOf([null]).isRequired,
+    ]),
   }),
 };
 

@@ -45,6 +45,7 @@ const HomePage = () => {
           title={key}
           movies={data[key].data}
           isLoading={data[key].isLoading}
+          typeMovies={key}
         />
       </Col>
     </Row>
