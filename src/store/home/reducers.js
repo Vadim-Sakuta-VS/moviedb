@@ -19,11 +19,7 @@ const initialState = {
     data: [],
   },
   data: Object.keys(MOVIE_TYPES).reduce((acc, prop) => {
-    acc[MOVIE_TYPES[prop]] = {
-      data: [],
-      isLoading: false,
-    };
-    return acc;
+    return { ...acc, [MOVIE_TYPES[prop]]: { data: [], isLoading: false } };
   }, {}),
 };
 

@@ -2,10 +2,12 @@ import { requiredGetParams, SERVER, SERVER_IMAGE } from './constants';
 import { stringifyGetParamsObj } from '../utils/utils';
 
 export class ApiMovies {
-  static GET_NOW_PLAYING = `${SERVER}/movie/now_playing`;
-  static GET_POPULAR = `${SERVER}/movie/popular`;
-  static GET_TOP_RATED = `${SERVER}/movie/top_rated`;
-  static GET_UPCOMING = `${SERVER}/movie/upcoming`;
+  static GET = {
+    NOW_PLAYING: `${SERVER}/movie/now_playing`,
+    POPULAR: `${SERVER}/movie/popular`,
+    TOP_RATED: `${SERVER}/movie/top_rated`,
+    UPCOMING: `${SERVER}/movie/upcoming`,
+  };
 
   static async loadGenres() {
     try {
