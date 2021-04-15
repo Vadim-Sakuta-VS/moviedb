@@ -16,7 +16,11 @@ function App() {
         <main className='page'>
           <Switch>
             <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
-            <Route exact path='/' render={() => withHeaderLayout(MovieList)} />
+            <Route
+              exact
+              path='/movies'
+              render={() => withHeaderLayout(MovieList)}
+            />
             <Route
               exact
               path='/movie/:id'

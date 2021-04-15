@@ -30,8 +30,10 @@ const MovieList = () => {
   ));
 
   return (
-    <Container className='p-2'>
-      <Row className='justify-content-center'>{movieCardsElements}</Row>
+    <Container className='pt-2 pb-2'>
+      <Row className='justify-content-center align-items-stretch'>
+        {movieCardsElements}
+      </Row>
       <PaginationCustom
         currentPage={currentPage}
         totalPages={totalPages}

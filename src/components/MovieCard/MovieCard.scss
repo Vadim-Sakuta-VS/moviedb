@@ -3,8 +3,39 @@
 @import '~bootstrap/scss/mixins/_breakpoints.scss';
 
 .movie-card {
-  max-width: 364px;
-  margin: 0 0.5rem;
+  max-width: 400px;
+
+  & > a {
+    height: 100%;
+    img {
+      height: inherit;
+    }
+
+    @media (max-width: 1023px) {
+      height: auto;
+    }
+  }
+
+  &__body {
+    position: absolute;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    overflow: auto;
+
+    @media (max-width: 1023px) {
+      position: static;
+      height: auto;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &:hover &__body {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 @include media-breakpoint-down(sm) {
