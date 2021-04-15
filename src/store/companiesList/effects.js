@@ -16,7 +16,10 @@ export const searchCompaniesByQuery = () => {
       dispatch(showLoading());
 
       const query = selectQuery(getState());
-      const data = await ApiCompanies.loadCompaniesByQuery(query, 1);
+      const data = await ApiCompanies.loadCompaniesByQuery({
+        query,
+        page: 1,
+      });
 
       const result =
         data.results && data.results.length ? data.results : 'Nothing found';
@@ -37,10 +40,10 @@ export const loadMoreCompaniesByQuery = () => {
 
       const query = selectQuery(getState());
       const currentPage = selectCompaniesCurrentPage(getState());
-      const data = await ApiCompanies.loadCompaniesByQuery(
+      const data = await ApiCompanies.loadCompaniesByQuery({
         query,
-        currentPage + 1
-      );
+        page: currentPage + 1,
+      });
 
       dispatch(updateCompanies(data.results));
       dispatch(setTotalPages(data.total_pages));

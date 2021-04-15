@@ -13,7 +13,9 @@ export const loadMovieReviews = () => {
 
       const movieId = getState().movieReviews.movieId;
       const currentPage = getState().movieReviews.currentPage;
-      const data = await ApiMovies.loadMovieReviews(movieId, currentPage);
+      const data = await ApiMovies.loadMovieReviews(movieId, {
+        page: currentPage,
+      });
 
       dispatch(setMovieReviews(data.results));
       dispatch(setTotalPages(data.total_pages));

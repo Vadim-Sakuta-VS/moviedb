@@ -1,11 +1,14 @@
-import { API_KEY, SERVER } from './constants';
+import { requiredGetParams, SERVER } from './constants';
+import { stringifyGetParamsObj } from '../utils/utils';
 
 export class ApiCompanies {
-  static async loadCompaniesByQuery(query, page) {
+  static async loadCompaniesByQuery(paramsGETObj) {
     try {
-      const res = await fetch(
-        `${SERVER}/search/company?query=${query}&api_key=${API_KEY}&page=${page}`
-      );
+      const paramsStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        ...paramsGETObj,
+      });
+      const res = await fetch(`${SERVER}/search/company${paramsStr}`);
       return res.json();
     } catch (e) {
       console.log(e);
@@ -14,7 +17,8 @@ export class ApiCompanies {
 
   static async loadCompanyDetails(id) {
     try {
-      const res = await fetch(`${SERVER}/company/${id}?api_key=${API_KEY}`);
+      const paramsStr = stringifyGetParamsObj(requiredGetParams);
+      const res = await fetch(`${SERVER}/company/${id}${paramsStr}`);
       return res.json();
     } catch (e) {
       console.log(e);

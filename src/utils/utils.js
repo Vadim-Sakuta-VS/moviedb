@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 export function fillArrayFromTo(from, to) {
   const arr = [];
 
@@ -6,4 +8,8 @@ export function fillArrayFromTo(from, to) {
   }
 
   return arr;
+}
+
+export function stringifyGetParamsObj(obj) {
+  return qs.stringify(obj, { addQueryPrefix: true });
 }
