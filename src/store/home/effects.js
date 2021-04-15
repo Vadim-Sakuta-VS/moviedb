@@ -32,18 +32,11 @@ export const loadMoviesData = (movieType) => {
       if (!data.length) {
         dispatch(setMovieTypeLoading(movieType, true));
 
-        let URL;
-        if (movieType === MOVIE_TYPES.NOW_PLAYING) {
-          URL = ApiMovies.GET_NOW_PLAYING;
-        } else if (movieType === MOVIE_TYPES.POPULAR) {
-          URL = ApiMovies.GET_POPULAR;
-        } else if (movieType === MOVIE_TYPES.TOP_RATED) {
-          URL = ApiMovies.GET_TOP_RATED;
-        } else if (movieType === MOVIE_TYPES.UPCOMING) {
-          URL = ApiMovies.GET_UPCOMING;
-        }
+        const objMovieURL = Object.keys(MOVIE_TYPES).reduce((acc, key) => {
+          return { ...acc, [MOVIE_TYPES[key]]: ApiMovies.GET[key] };
+        }, {});
 
-        const data = await ApiMovies.loadMovieList(URL, {
+        const data = await ApiMovies.loadMovieList(objMovieURL[movieType], {
           page: 1,
         });
 

@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGenres, loadMoviesData } from '../../store/home/effects';
 import { selectGenres, selectMoviesData } from '../../store/home/selectors';
-import { MOVIE_TYPES } from '../../store/home/reducers';
 
 const HomePage = () => {
   const { data: genres, isLoading: isLoadingGenres } = useSelector(
@@ -17,13 +16,11 @@ const HomePage = () => {
   );
   const data = useSelector(selectMoviesData);
   const dispatch = useDispatch();
+  const movieTypes = Object.keys(data);
 
   useEffect(() => {
     dispatch(loadGenres());
-    dispatch(loadMoviesData(MOVIE_TYPES.NOW_PLAYING));
-    dispatch(loadMoviesData(MOVIE_TYPES.POPULAR));
-    dispatch(loadMoviesData(MOVIE_TYPES.TOP_RATED));
-    dispatch(loadMoviesData(MOVIE_TYPES.UPCOMING));
+    movieTypes.forEach((type) => dispatch(loadMoviesData(type)));
   }, [dispatch]);
 
   const genresLinks = genres.map((g) => (
@@ -41,14 +38,13 @@ const HomePage = () => {
     </Col>
   ));
 
-  const movieRows = Object.keys(data).map((key) => (
+  const movieRows = movieTypes.map((key) => (
     <Row className='mb-5' key={key}>
       <Col>
         <MoviesSliderRow
           title={key}
           movies={data[key].data}
           isLoading={data[key].isLoading}
-          // typeMovies='now_playing'
         />
       </Col>
     </Row>
