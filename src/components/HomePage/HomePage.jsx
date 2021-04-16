@@ -10,12 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadGenres } from '../../store/genres/effects';
 import { loadMoviesData } from '../../store/home/effects';
 import { selectMoviesData } from '../../store/home/selectors';
-import { MOVIE_TYPES } from '../../store/home/reducers';
 import { stringifyGetParamsObj } from '../../utils/utils';
 import {
   selectGenresData,
   selectGenresLoading,
 } from '../../store/genres/selectors';
+import { getMovieTypeTitle } from '../../utils/movieUtils';
 
 const HomePage = () => {
   const isLoadingGenres = useSelector(selectGenresLoading);
@@ -50,7 +50,7 @@ const HomePage = () => {
     <Row className='mb-5' key={key}>
       <Col>
         <MoviesSliderRow
-          title={MOVIE_TYPES.getTitle(key)}
+          title={getMovieTypeTitle(key)}
           movies={data[key].data}
           isLoading={data[key].isLoading}
           typeMovies={key}

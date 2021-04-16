@@ -1,6 +1,5 @@
 import { requiredGetParams, SERVER, SERVER_IMAGE } from './constants';
 import { stringifyGetParamsObj } from '../utils/utils';
-import { MOVIE_TYPES } from '../store/home/reducers';
 
 export class ApiMovies {
   static GET = {
@@ -9,13 +8,6 @@ export class ApiMovies {
     TOP_RATED: `${SERVER}/movie/top_rated`,
     UPCOMING: `${SERVER}/movie/upcoming`,
   };
-
-  static getMovieURLByType(type) {
-    const objMovieURL = Object.keys(MOVIE_TYPES).reduce((acc, key) => {
-      return { ...acc, [key]: ApiMovies.GET[key] };
-    }, {});
-    return objMovieURL[type.toUpperCase()];
-  }
 
   static async loadGenres() {
     try {

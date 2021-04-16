@@ -7,10 +7,12 @@ export const loadMovies = (movieType) => {
     try {
       const currentPage = selectCurrentPage(getState());
 
-      const URL = ApiMovies.getMovieURLByType(movieType);
-      const data = await ApiMovies.loadMovieList(URL, {
-        page: currentPage,
-      });
+      const data = await ApiMovies.loadMovieList(
+        ApiMovies.GET[movieType.toUpperCase()],
+        {
+          page: currentPage,
+        }
+      );
 
       if (!data) {
         throw new Error('Missed data');

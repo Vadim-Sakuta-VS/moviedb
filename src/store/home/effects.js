@@ -9,16 +9,19 @@ export const loadMoviesData = (movieType) => {
       if (!data.length) {
         dispatch(setMovieTypeLoading(movieType, true));
 
-        const URL = ApiMovies.getMovieURLByType(movieType);
-        const data = await ApiMovies.loadMovieList(URL, {
-          page: 1,
-        });
+        const data = await ApiMovies.loadMovieList(
+          ApiMovies.GET[movieType.toUpperCase()],
+          {
+            page: 1,
+          }
+        );
 
         dispatch(setMoviesData(movieType, data.results.slice(0, 10)));
       }
     } catch (e) {
-      dispatch(setMovieTypeLoading(movieType, false));
       console.log(e);
+    } finally {
+      dispatch(setMovieTypeLoading(movieType, false));
     }
   };
 };

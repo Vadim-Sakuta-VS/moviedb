@@ -12,7 +12,6 @@ const initialState = {
 };
 
 function movieListReducer(state = initialState, action) {
-  console.log(initialState);
   switch (action.type) {
     case CHANGE_PAGE:
       return { ...state, currentPage: action.payload };

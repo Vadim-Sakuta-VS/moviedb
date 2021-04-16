@@ -12,8 +12,9 @@ export const loadGenres = () => {
         dispatch(setGenres(data.genres));
       }
     } catch (e) {
-      dispatch(setGenresTypeLoading(false));
       console.log(e);
+    } finally {
+      dispatch(setGenresTypeLoading(false));
     }
   };
 };

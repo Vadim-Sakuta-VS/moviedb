@@ -7,12 +7,6 @@ export const MOVIE_TYPES = {
   UPCOMING: 'Upcoming',
 };
 
-Object.defineProperty(MOVIE_TYPES, 'getTitle', {
-  value: function (type) {
-    return this[type.toUpperCase()];
-  },
-});
-
 const initialState = {
   data: Object.keys(MOVIE_TYPES).reduce((acc, key) => {
     return { ...acc, [key.toLowerCase()]: { data: [], isLoading: false } };
