@@ -7,15 +7,19 @@ import 'swiper/components/scrollbar/scrollbar.scss';
 import MoviesSliderRow from '../MoviesSliderRow/MoviesSliderRow';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadGenres, loadMoviesData } from '../../store/home/effects';
-import { selectGenres, selectMoviesData } from '../../store/home/selectors';
+import { loadGenres } from '../../store/genres/effects';
+import { loadMoviesData } from '../../store/home/effects';
+import { selectMoviesData } from '../../store/home/selectors';
 import { MOVIE_TYPES } from '../../store/home/reducers';
 import { stringifyGetParamsObj } from '../../utils/utils';
+import {
+  selectGenresData,
+  selectGenresLoading,
+} from '../../store/genres/selectors';
 
 const HomePage = () => {
-  const { data: genres, isLoading: isLoadingGenres } = useSelector(
-    selectGenres
-  );
+  const isLoadingGenres = useSelector(selectGenresLoading);
+  const genres = useSelector(selectGenresData);
   const data = useSelector(selectMoviesData);
   const dispatch = useDispatch();
   const movieTypes = Object.keys(data);

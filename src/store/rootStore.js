@@ -7,6 +7,7 @@ import { movieReviewsReducer } from './movieReviews/reducers';
 import { companiesListReducer } from './companiesList/reducers';
 import { companyDetailsReducer } from './companyDetails/reducers';
 import { homeReducer } from './home/reducers';
+import { genresReducer } from './genres/reducers';
 
 const rootReducer = combineReducers({
   movieList: movieListReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   companiesList: companiesListReducer,
   companyDetails: companyDetailsReducer,
   home: homeReducer,
+  genres: genresReducer,
 });
 
 const store = createStore(

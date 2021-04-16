@@ -1,28 +1,6 @@
-import {
-  hideGenresLoading,
-  setGenres,
-  setMoviesData,
-  setMovieTypeLoading,
-  showGenresLoading,
-} from './actions';
+import { setMoviesData, setMovieTypeLoading } from './actions';
 import { ApiMovies } from '../../api/apiMovies';
-import { selectGenres, selectMoviesDataByType } from './selectors';
-
-export const loadGenres = () => {
-  return async (dispatch, getState) => {
-    try {
-      const genres = selectGenres(getState());
-      if (!genres.data.length) {
-        dispatch(showGenresLoading());
-        const data = await ApiMovies.loadGenres();
-        dispatch(setGenres(data.genres));
-      }
-    } catch (e) {
-      dispatch(hideGenresLoading());
-      console.log(e);
-    }
-  };
-};
+import { selectMoviesDataByType } from './selectors';
 
 export const loadMoviesData = (movieType) => {
   return async (dispatch, getState) => {

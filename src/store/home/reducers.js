@@ -1,10 +1,4 @@
-import {
-  HIDE_GENRES_LOADING,
-  SET_GENRES,
-  SET_MOVIES_DATA,
-  SET_MOVIES_TYPE_LOADING,
-  SHOW_GENRES_LOADING,
-} from './actions';
+import { SET_MOVIES_DATA, SET_MOVIES_TYPE_LOADING } from './actions';
 
 export const MOVIE_TYPES = {
   NOW_PLAYING: 'Now playing',
@@ -20,10 +14,6 @@ Object.defineProperty(MOVIE_TYPES, 'getTitle', {
 });
 
 const initialState = {
-  genres: {
-    isLoading: false,
-    data: [],
-  },
   data: Object.keys(MOVIE_TYPES).reduce((acc, key) => {
     return { ...acc, [key.toLowerCase()]: { data: [], isLoading: false } };
   }, {}),
@@ -31,18 +21,6 @@ const initialState = {
 
 function homeReducer(state = initialState, action) {
   switch (action.type) {
-    case SHOW_GENRES_LOADING:
-      return { ...state, genres: { ...state.genres, isLoading: true } };
-    case HIDE_GENRES_LOADING:
-      return { ...state, genres: { ...state.genres, isLoading: false } };
-    case SET_GENRES:
-      return {
-        ...state,
-        genres: {
-          data: action.payload,
-          isLoading: false,
-        },
-      };
     case SET_MOVIES_TYPE_LOADING:
       return {
         ...state,
