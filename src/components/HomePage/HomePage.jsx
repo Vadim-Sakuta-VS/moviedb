@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadGenres, loadMoviesData } from '../../store/home/effects';
 import { selectGenres, selectMoviesData } from '../../store/home/selectors';
+import { MOVIE_TYPES } from '../../store/home/reducers';
+import { stringifyGetParamsObj } from '../../utils/utils';
 
 const HomePage = () => {
   const { data: genres, isLoading: isLoadingGenres } = useSelector(
@@ -28,7 +30,9 @@ const HomePage = () => {
       <Link
         to={{
           pathname: '/movies',
-          search: `?with_genres=${g.id}`,
+          search: stringifyGetParamsObj({
+            with_genres: g.id,
+          }),
         }}
         className='d-flex justify-content-center align-items-center btn btn-light w-100 h-100 pt-4 pb-4'
         style={{ fontSize: '1.2rem' }}
@@ -42,7 +46,7 @@ const HomePage = () => {
     <Row className='mb-5' key={key}>
       <Col>
         <MoviesSliderRow
-          title={key}
+          title={MOVIE_TYPES.getTitle(key)}
           movies={data[key].data}
           isLoading={data[key].isLoading}
           typeMovies={key}

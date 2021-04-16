@@ -7,7 +7,6 @@ import {
 } from './actions';
 import { ApiMovies } from '../../api/apiMovies';
 import { selectGenres, selectMoviesDataByType } from './selectors';
-import { MOVIE_TYPES } from './reducers';
 
 export const loadGenres = () => {
   return async (dispatch, getState) => {
@@ -32,11 +31,8 @@ export const loadMoviesData = (movieType) => {
       if (!data.length) {
         dispatch(setMovieTypeLoading(movieType, true));
 
-        const objMovieURL = Object.keys(MOVIE_TYPES).reduce((acc, key) => {
-          return { ...acc, [MOVIE_TYPES[key]]: ApiMovies.GET[key] };
-        }, {});
-
-        const data = await ApiMovies.loadMovieList(objMovieURL[movieType], {
+        const URL = ApiMovies.getMovieURLByType(movieType);
+        const data = await ApiMovies.loadMovieList(URL, {
           page: 1,
         });
 

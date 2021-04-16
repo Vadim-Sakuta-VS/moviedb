@@ -10,6 +10,7 @@ import {
 } from '../../store/movieList/selectors';
 import { changePage, updateData } from '../../store/movieList/actions';
 import { loadMovies } from '../../store/movieList/effects';
+import { MOVIE_TYPES } from '../../store/home/reducers';
 
 const MovieListByTypePage = () => {
   const { type } = useParams();
@@ -17,6 +18,7 @@ const MovieListByTypePage = () => {
   const totalPages = useSelector(selectTotalPages);
   const movies = useSelector(selectMovieList);
   const dispatch = useDispatch();
+  const title = MOVIE_TYPES.getTitle(type);
 
   useEffect(() => {
     dispatch(updateData());
@@ -34,13 +36,12 @@ const MovieListByTypePage = () => {
     <Container className='pt-2 pb-2'>
       <Row className='flex-column'>
         <Col>
-          <h1 className='font-weight-bold'>{type}</h1>
+          <h1 className='font-weight-bold'>{title}</h1>
         </Col>
         <Col className='p-0'>
           <MovieList
             currentPage={currentPage}
             totalPages={totalPages}
-            type={type}
             movies={movies}
             onChangePage={onChangePage}
           />
