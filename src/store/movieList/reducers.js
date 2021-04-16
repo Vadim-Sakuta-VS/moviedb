@@ -1,4 +1,9 @@
-import { CHANGE_PAGE, SET_POPULAR_MOVIES, SET_TOTAL_PAGES } from './actions';
+import {
+  CHANGE_PAGE,
+  SET_MOVIES,
+  SET_TOTAL_PAGES,
+  UPDATE_DATA,
+} from './actions';
 
 const initialState = {
   data: [],
@@ -12,8 +17,10 @@ function movieListReducer(state = initialState, action) {
       return { ...state, currentPage: action.payload };
     case SET_TOTAL_PAGES:
       return { ...state, totalPages: action.payload };
-    case SET_POPULAR_MOVIES:
+    case SET_MOVIES:
       return { ...state, data: action.payload };
+    case UPDATE_DATA:
+      return initialState;
     default:
       return state;
   }

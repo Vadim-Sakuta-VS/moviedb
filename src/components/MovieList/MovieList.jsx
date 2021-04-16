@@ -1,37 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectCurrentPage,
-  selectMovieList,
-  selectTotalPages,
-} from '../../store/movieList/selectors';
-import { changePage } from '../../store/movieList/actions';
-import { loadPopularMovies } from '../../store/movieList/effects';
+import PropTypes from 'prop-types';
 
-const MovieList = () => {
-  const currentPage = useSelector(selectCurrentPage);
-  const totalPages = useSelector(selectTotalPages);
-  const movies = useSelector(selectMovieList);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadPopularMovies());
-  }, [currentPage, dispatch]);
-
-  const onChangePage = (page) => {
-    dispatch(changePage(page));
-  };
-
+const MovieList = ({ currentPage, totalPages, movies, onChangePage }) => {
   const movieCardsElements = movies.map((m) => (
     <MovieCard key={m.id} movie={m} />
   ));
 
   return (
-    <Container className='p-2'>
-      <Row className='justify-content-center'>{movieCardsElements}</Row>
+    <Container className='pt-2 pb-2'>
+      <Row className='justify-content-center align-items-stretch'>
+        {movieCardsElements}
+      </Row>
       <PaginationCustom
         currentPage={currentPage}
         totalPages={totalPages}
@@ -40,6 +22,25 @@ const MovieList = () => {
       />
     </Container>
   );
+};
+
+MovieList.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onChangePage: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      overview: PropTypes.string,
+      vote_average: PropTypes.number,
+      vote_count: PropTypes.number,
+      release_date: PropTypes.string,
+      poster_path: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.oneOf([null]).isRequired,
+      ]),
+    })
+  ),
 };
 
 export default MovieList;

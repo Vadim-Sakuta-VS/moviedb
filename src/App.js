@@ -8,6 +8,7 @@ import { withHeaderLayout } from './components/HOC/withHeaderLayout';
 import CompaniesList from './components/CompaniesList/CompaniesList';
 import CompanyDetails from './components/CompanyDetails/CompanyDetails';
 import HomePage from './components/HomePage/HomePage';
+import MovieListByTypePage from './components/MovieListByTypePage/MovieListByTypePage';
 
 function App() {
   return (
@@ -16,7 +17,16 @@ function App() {
         <main className='page'>
           <Switch>
             <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
-            <Route exact path='/' render={() => withHeaderLayout(MovieList)} />
+            <Route
+              exact
+              path='/movies/:type'
+              render={() => withHeaderLayout(MovieListByTypePage)}
+            />
+            <Route
+              exact
+              path='/movies'
+              render={() => withHeaderLayout(MovieList)}
+            />
             <Route
               exact
               path='/movie/:id'

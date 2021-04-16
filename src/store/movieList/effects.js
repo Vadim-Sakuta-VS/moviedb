@@ -1,16 +1,24 @@
 import { ApiMovies } from '../../api/apiMovies';
-import { setPopularMovies, setTotalPages } from './actions';
+import { setMovies, setTotalPages } from './actions';
+import { selectCurrentPage } from './selectors';
 
-export const loadPopularMovies = () => {
+export const loadMovies = (movieType) => {
   return async (dispatch, getState) => {
     try {
-      const currentPage = getState().movieList.currentPage;
-      const data = await ApiMovies.loadPopularMovieList(currentPage);
+      const currentPage = selectCurrentPage(getState());
+
+      const data = await ApiMovies.loadMovieList(
+        ApiMovies.GET[movieType.toUpperCase()],
+        {
+          page: currentPage,
+        }
+      );
+
       if (!data) {
         throw new Error('Missed data');
       }
 
-      dispatch(setPopularMovies(data.results));
+      dispatch(setMovies(data.results));
       dispatch(setTotalPages(data.total_pages));
     } catch (e) {
       console.log(e);
