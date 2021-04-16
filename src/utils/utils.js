@@ -13,3 +13,7 @@ export function fillArrayFromTo(from, to) {
 export function stringifyGetParamsObj(obj) {
   return qs.stringify(obj, { addQueryPrefix: true });
 }
+
+export function parseGetParamsStr(str) {
+  return qs.parse(str, { ignoreQueryPrefix: true });
+}
