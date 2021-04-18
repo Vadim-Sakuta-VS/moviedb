@@ -7,7 +7,7 @@ import ButtonLoad from '../ButtonLoad/ButtonLoad';
 const FilterForm = ({ onSubmit, defaultValues, values }) => {
   console.log(defaultValues);
   const { control, handleSubmit, reset } = useForm({
-    defaultValues: { example: 'hello', ...defaultValues },
+    defaultValues,
   });
 
   useEffect(() => {
@@ -28,10 +28,9 @@ const FilterForm = ({ onSubmit, defaultValues, values }) => {
           <Controller
             name='with_genres'
             control={control}
-            render={({ field }) => {
-              console.log(field);
-              return <Select {...field} isMulti options={values.with_genres} />;
-            }}
+            render={({ field }) => (
+              <Select {...field} isMulti options={values.with_genres} />
+            )}
           />
         </Col>
       </Row>

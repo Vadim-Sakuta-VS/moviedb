@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import { Accordion, Container, Row, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  selectGenresData,
-} from '../../store/genres/selectors';
+import { selectGenresData } from '../../store/genres/selectors';
 import { loadGenres } from '../../store/genres/effects';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
@@ -15,44 +13,43 @@ const MovieListFilterPage = () => {
   const genres = useSelector(selectGenresData);
   const dispatch = useDispatch();
 
-  // const parseSearchStr = () => {
-  //   const paramObj = parseGetParamsStr(search);
-  //
-  //   console.log(paramObj);
-  // };
-  //
   useEffect(() => {
     dispatch(loadGenres());
   }, []);
-  //
-  // useEffect(() => {
-  //   console.log('effect search');
-  // }, [search]);
-  //
+
+  useEffect(() => {}, [search]);
+
   const onSubmit = (data) => {
-    console.log('submit');
-    history.replace({ pathname, search: '?with_genres=1|12|3' });
+    const paramObj = Object.entries(data).reduce((acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        return { ...acc, [key]: value.map((v) => v.value).join('|') };
+      }
+      return { ...acc, [key]: value };
+    }, {});
+    history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
 
-  const paramObj = parseGetParamsStr(search);
-  Object.entries(paramObj).forEach(([key, value]) => {
-    let arrValues = paramObj[key].split('|');
-    // if (arrValues.length > 1) {
-    paramObj[key] = arrValues;
-    // }
-  });
+  const getParamObj = () => {
+    const paramObj = parseGetParamsStr(search);
+    Object.entries(paramObj).forEach(([key, value]) => {
+      paramObj[key] = value.split('|');
+    });
+    return paramObj;
+  };
 
-  console.log(paramObj);
+  const getDefaultGenres = () => {
+    const with_genres = paramObj.with_genres;
+    return genres.reduce((acc, g) => {
+      if (with_genres && with_genres.includes(g.id.toString())) {
+        return [...acc, { value: g.id, label: g.name }];
+      }
+      return acc;
+    }, []);
+  };
 
+  const paramObj = getParamObj();
   const genresOptions = genres.map((g) => ({ value: g.id, label: g.name }));
-  const defaultGenres = genres.reduce((acc, g) => {
-    console.log(g);
-    if (paramObj.with_genres.includes(g.id.toString())) {
-      return [...acc, { value: g.id, label: g.name }];
-    }
-    return acc;
-  }, []);
-  console.log(defaultGenres);
+  const defaultGenres = getDefaultGenres();
 
   return (
     <Container className='pt-2 pb-2'>
