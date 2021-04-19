@@ -1,23 +1,49 @@
 import React, { useEffect } from 'react';
-import { Accordion, Container, Row, Button, Col } from 'react-bootstrap';
+import {
+  Accordion,
+  Container,
+  Row,
+  Button,
+  Col,
+  Spinner,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGenresData } from '../../store/genres/selectors';
 import { loadGenres } from '../../store/genres/effects';
 import { useHistory, useLocation } from 'react-router-dom';
 import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
 import FilterForm from '../FilterForm/FilterForm';
+import { loadDiscoverMovies } from '../../store/movieList/effects';
+import {
+  selectCurrentPage,
+  selectMovieList,
+  selectMovieListLoading,
+  selectTotalPages,
+} from '../../store/movieList/selectors';
+import MovieList from '../MovieList/MovieList';
+import { changePage, updateData } from '../../store/movieList/actions';
 
 const MovieListFilterPage = () => {
   const { search, pathname } = useLocation();
   const history = useHistory();
   const genres = useSelector(selectGenresData);
+  const movies = useSelector(selectMovieList);
+  const isMoviesLoading = useSelector(selectMovieListLoading);
+  const currentPage = useSelector(selectCurrentPage);
+  const totalPages = useSelector(selectTotalPages);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadGenres());
   }, []);
 
-  useEffect(() => {}, [search]);
+  useEffect(() => {
+    dispatch(updateData());
+  }, [search, dispatch]);
+
+  useEffect(() => {
+    dispatch(loadDiscoverMovies(search));
+  }, [search, currentPage, dispatch]);
 
   const onSubmit = (data) => {
     const paramObj = Object.entries(data).reduce((acc, [key, value]) => {
@@ -39,17 +65,28 @@ const MovieListFilterPage = () => {
 
   const getDefaultGenres = () => {
     const with_genres = paramObj.with_genres;
-    return genres.reduce((acc, g) => {
-      if (with_genres && with_genres.includes(g.id.toString())) {
-        return [...acc, { value: g.id, label: g.name }];
-      }
-      return acc;
-    }, []);
+    if (with_genres) {
+      return with_genres.reduce((acc, gParam) => {
+        const index = genres.findIndex((g) => +gParam === g.id);
+        if (index !== -1) {
+          return [
+            ...acc,
+            { value: genres[index].id, label: genres[index].name },
+          ];
+        }
+        return acc;
+      }, []);
+    }
+    return [];
   };
 
   const paramObj = getParamObj();
   const genresOptions = genres.map((g) => ({ value: g.id, label: g.name }));
   const defaultGenres = getDefaultGenres();
+
+  const onChangePage = (page) => {
+    dispatch(changePage(page));
+  };
 
   return (
     <Container className='pt-2 pb-2'>
@@ -87,11 +124,26 @@ const MovieListFilterPage = () => {
                     values={{
                       with_genres: genresOptions,
                     }}
+                    isLoading={isMoviesLoading}
                   />
                 </Accordion.Collapse>
               </Col>
             </Row>
           </Accordion>
+        </Col>
+      </Row>
+      <Row>
+        <Col className='p-0 pt-1 d-flex justify-content-center'>
+          {isMoviesLoading ? (
+            <Spinner animation='border' variant='success' />
+          ) : (
+            <MovieList
+              currentPage={currentPage}
+              totalPages={totalPages}
+              movies={movies}
+              onChangePage={onChangePage}
+            />
+          )}
         </Col>
       </Row>
     </Container>

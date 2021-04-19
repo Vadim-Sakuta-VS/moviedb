@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Controller, useForm } from 'react-hook-form';
-import Select from 'react-select';
+import { useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
+import ControlSelect from '../ControlSelect/ControlSelect';
 
-const FilterForm = ({ onSubmit, defaultValues, values }) => {
-  console.log(defaultValues);
+const FilterForm = ({ onSubmit, defaultValues, values, isLoading }) => {
   const { control, handleSubmit, reset } = useForm({
     defaultValues,
   });
@@ -20,26 +19,19 @@ const FilterForm = ({ onSubmit, defaultValues, values }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmitHandler)} className='bg-light p-2'>
-      <Row className='flex-column mb-2'>
-        <Col>
-          <h6 className='mb-1'>Genres</h6>
-        </Col>
-        <Col>
-          <Controller
-            name='with_genres'
-            control={control}
-            render={({ field }) => (
-              <Select {...field} isMulti options={values.with_genres} />
-            )}
-          />
-        </Col>
-      </Row>
+      <ControlSelect
+        control={control}
+        name='with_genres'
+        label='Genres'
+        isMulti={true}
+        options={values.with_genres}
+      />
       <Row className='justify-content-end'>
         <Col className='col-auto'>
           <ButtonLoad
             type='submit'
             textValue='Search'
-            isLoading={false}
+            isLoading={isLoading}
             style={{ minWidth: '6rem', minHeight: '38px' }}
           />
         </Col>

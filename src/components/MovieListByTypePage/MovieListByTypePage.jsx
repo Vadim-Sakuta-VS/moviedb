@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import MovieList from '../MovieList/MovieList';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectCurrentPage,
   selectMovieList,
+  selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import { changePage, updateData } from '../../store/movieList/actions';
-import { loadMovies } from '../../store/movieList/effects';
+import { loadMoviesByType } from '../../store/movieList/effects';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
 
 const MovieListByTypePage = () => {
@@ -17,6 +18,7 @@ const MovieListByTypePage = () => {
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const movies = useSelector(selectMovieList);
+  const isMoviesLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const typeTitle = getMovieTypeTitle(type);
 
@@ -25,7 +27,7 @@ const MovieListByTypePage = () => {
   }, [type, dispatch]);
 
   useEffect(() => {
-    dispatch(loadMovies(type));
+    dispatch(loadMoviesByType(type));
   }, [currentPage, type, dispatch]);
 
   const onChangePage = (page) => {
@@ -38,13 +40,17 @@ const MovieListByTypePage = () => {
         <Col>
           <h1 className='font-weight-bold'>{typeTitle}</h1>
         </Col>
-        <Col className='p-0'>
-          <MovieList
-            currentPage={currentPage}
-            totalPages={totalPages}
-            movies={movies}
-            onChangePage={onChangePage}
-          />
+        <Col className='p-0 d-flex justify-content-center'>
+          {isMoviesLoading ? (
+            <Spinner animation='border' variant='success' />
+          ) : (
+            <MovieList
+              currentPage={currentPage}
+              totalPages={totalPages}
+              movies={movies}
+              onChangePage={onChangePage}
+            />
+          )}
         </Col>
       </Row>
     </Container>
