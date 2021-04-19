@@ -22,6 +22,7 @@ import {
 } from '../../store/movieList/selectors';
 import MovieList from '../MovieList/MovieList';
 import { changePage, updateData } from '../../store/movieList/actions';
+import { createParamObj, getSelectedValues } from '../../utils/selectUtils';
 
 const MovieListFilterPage = () => {
   const { search, pathname } = useLocation();
@@ -35,64 +36,48 @@ const MovieListFilterPage = () => {
 
   useEffect(() => {
     dispatch(loadGenres());
+    const paramObj = parseGetParamsStr(search);
+    if (paramObj.page) {
+      dispatch(changePage(+paramObj.page));
+    }
   }, []);
 
   useEffect(() => {
-    dispatch(updateData());
+    const paramObj = parseGetParamsStr(search);
+    if (!paramObj.page) {
+      paramObj.page = 1;
+      dispatch(updateData());
+    }
+    dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramObj)));
   }, [search, dispatch]);
 
-  useEffect(() => {
-    dispatch(loadDiscoverMovies(search));
-  }, [search, currentPage, dispatch]);
-
   const onSubmit = (data) => {
-    const paramObj = Object.entries(data).reduce((acc, [key, value]) => {
-      if (Array.isArray(value)) {
-        return { ...acc, [key]: value.map((v) => v.value).join('|') };
-      }
-      return { ...acc, [key]: value };
-    }, {});
+    dispatch(updateData());
+    const paramObj = createParamObj(data);
+    paramObj.page = 1;
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
 
-  const getParamObj = () => {
-    const paramObj = parseGetParamsStr(search);
-    Object.entries(paramObj).forEach(([key, value]) => {
-      paramObj[key] = value.split('|');
-    });
-    return paramObj;
-  };
-
-  const getDefaultGenres = () => {
-    const with_genres = paramObj.with_genres;
-    if (with_genres) {
-      return with_genres.reduce((acc, gParam) => {
-        const index = genres.findIndex((g) => +gParam === g.id);
-        if (index !== -1) {
-          return [
-            ...acc,
-            { value: genres[index].id, label: genres[index].name },
-          ];
-        }
-        return acc;
-      }, []);
-    }
-    return [];
-  };
-
-  const paramObj = getParamObj();
-  const genresOptions = genres.map((g) => ({ value: g.id, label: g.name }));
-  const defaultGenres = getDefaultGenres();
-
   const onChangePage = (page) => {
+    const paramObj = parseGetParamsStr(search);
+    paramObj.page = page;
     dispatch(changePage(page));
+    history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
+
+  const selectedValues = getSelectedValues({
+    with_genres: {
+      data: genres,
+      isShouldArray: true,
+    },
+  });
+  const genresOptions = genres.map((g) => ({ value: g.id, label: g.name }));
 
   return (
     <Container className='pt-2 pb-2'>
       <Row>
         <Col>
-          <Accordion defaultActiveKey='0'>
+          <Accordion>
             <Row className='mb-1'>
               <Col>
                 <Accordion.Toggle
@@ -120,7 +105,7 @@ const MovieListFilterPage = () => {
                 <Accordion.Collapse eventKey='0'>
                   <FilterForm
                     onSubmit={onSubmit}
-                    defaultValues={{ with_genres: defaultGenres }}
+                    defaultValues={selectedValues}
                     values={{
                       with_genres: genresOptions,
                     }}

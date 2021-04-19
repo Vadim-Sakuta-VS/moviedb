@@ -22,8 +22,8 @@ export const loadMovies = (URL, paramsObj = {}) => {
       const currentPage = selectCurrentPage(getState());
 
       const data = await ApiMovies.loadMovieList(URL, {
-        ...paramsObj,
         page: currentPage,
+        ...paramsObj,
       });
 
       dispatch(setMovies(data.results));
