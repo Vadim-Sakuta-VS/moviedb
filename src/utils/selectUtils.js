@@ -14,8 +14,12 @@ export const getParamObj = () => {
 
 export const createParamObj = (data) => {
   return Object.entries(data).reduce((acc, [key, value]) => {
+    key = key.replace('-', '.');
+
     if (Array.isArray(value)) {
       return { ...acc, [key]: value.map((v) => v.value).join('|') };
+    } else if (typeof value === 'object') {
+      return { ...acc, [key]: value.value };
     }
     return { ...acc, [key]: value };
   }, {});
@@ -26,6 +30,7 @@ export function getSelectedValues(valuesObj) {
 
   return Object.entries(paramObj).reduce((acc, [key, value]) => {
     const getSelectedObj = (id) => {
+      id = id !== '' ? +id : id;
       const index = valuesObj[key].data.findIndex((v) => id === v.id);
       if (index !== -1) {
         return {
@@ -39,15 +44,15 @@ export function getSelectedValues(valuesObj) {
     if (Array.isArray(value)) {
       return {
         ...acc,
-        [key]: value.reduce((acc, vParam) => {
-          let obj = getSelectedObj(+vParam);
+        [key.replace('.', '-')]: value.reduce((acc, vParam) => {
+          let obj = getSelectedObj(vParam);
           return obj ? [...acc, obj] : acc;
         }, []),
       };
     } else if (valuesObj[key] && valuesObj[key].isShouldArray) {
-      let obj = getSelectedObj(+value);
-      return obj ? { ...acc, [key]: obj } : acc;
+      let obj = getSelectedObj(value);
+      return obj ? { ...acc, [key.replace('.', '-')]: [obj] } : acc;
     }
-    return { ...acc, [key]: value };
+    return { ...acc, [key.replace('.', '-')]: value };
   }, {});
 }

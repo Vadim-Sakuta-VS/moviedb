@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectGenresData } from '../../store/genres/selectors';
 import { loadGenres } from '../../store/genres/effects';
 import { useHistory, useLocation } from 'react-router-dom';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
+import {
+  fillArrayFromTo,
+  parseGetParamsStr,
+  stringifyGetParamsObj,
+} from '../../utils/utils';
 import FilterForm from '../FilterForm/FilterForm';
 import { loadDiscoverMovies } from '../../store/movieList/effects';
 import {
@@ -52,8 +56,11 @@ const MovieListFilterPage = () => {
   }, [search, dispatch]);
 
   const onSubmit = (data) => {
-    dispatch(updateData());
     const paramObj = createParamObj(data);
+    const paramStr = stringifyGetParamsObj(paramObj);
+    if (paramStr !== search) {
+      dispatch(updateData());
+    }
     paramObj.page = 1;
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
@@ -65,13 +72,32 @@ const MovieListFilterPage = () => {
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
 
-  const selectedValues = getSelectedValues({
+  const votesAverageArr = fillArrayFromTo(0, 10).map((el) => ({
+    id: el,
+    name: el,
+  }));
+
+  const fieldsStructure = {
     with_genres: {
       data: genres,
       isShouldArray: true,
     },
-  });
+    'vote_average.gte': {
+      data: votesAverageArr,
+      isShouldArray: true,
+    },
+    'vote_average.lte': {
+      data: votesAverageArr,
+      isShouldArray: true,
+    },
+  };
+
+  const selectedValues = getSelectedValues(fieldsStructure);
   const genresOptions = genres.map((g) => ({ value: g.id, label: g.name }));
+  const voteAverageOptions = votesAverageArr.map((v) => ({
+    value: v.id,
+    label: v.name,
+  }));
 
   return (
     <Container className='pt-2 pb-2'>
@@ -108,6 +134,8 @@ const MovieListFilterPage = () => {
                     defaultValues={selectedValues}
                     values={{
                       with_genres: genresOptions,
+                      'vote_average-gte': voteAverageOptions,
+                      'vote_average-lte': voteAverageOptions,
                     }}
                     isLoading={isMoviesLoading}
                   />
@@ -121,13 +149,17 @@ const MovieListFilterPage = () => {
         <Col className='p-0 pt-1 d-flex justify-content-center'>
           {isMoviesLoading ? (
             <Spinner animation='border' variant='success' />
-          ) : (
+          ) : movies.length ? (
             <MovieList
               currentPage={currentPage}
               totalPages={totalPages}
               movies={movies}
               onChangePage={onChangePage}
             />
+          ) : (
+            <span className='text-center font-weight-bold text-secondary'>
+              Nothing found
+            </span>
           )}
         </Col>
       </Row>

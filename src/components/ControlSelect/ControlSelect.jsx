@@ -2,6 +2,8 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 const ControlSelect = ({
   control,
@@ -9,11 +11,18 @@ const ControlSelect = ({
   label,
   isMulti,
   options,
+  asRow,
   ...props
 }) => {
+  const classes = clsx(
+    'mb-2',
+    asRow && 'align-items-center',
+    !asRow && 'flex-column'
+  );
+
   return (
-    <Row className='flex-column mb-2'>
-      <Col>
+    <Row className={classes}>
+      <Col className='col-auto pr-0'>
         <h6 className='mb-1'>{label}</h6>
       </Col>
       <Col>
@@ -27,6 +36,22 @@ const ControlSelect = ({
       </Col>
     </Row>
   );
+};
+
+ControlSelect.propTypes = {
+  control: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  isMulti: PropTypes.bool.isRequired,
+  asRow: PropTypes.bool,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+      label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        .isRequired,
+    })
+  ),
 };
 
 export default ControlSelect;
