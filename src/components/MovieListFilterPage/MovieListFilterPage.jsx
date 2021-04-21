@@ -118,7 +118,6 @@ const MovieListFilterPage = () => {
     defaultValues.sort_by,
     ApiMovies.SORTING_TYPES
   );
-  console.log(defaultSorting);
 
   return (
     <Container className={containerClasses}>
