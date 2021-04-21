@@ -1,7 +1,7 @@
 export const createParamObj = (data) => {
   return Object.entries(data).reduce((acc, [key, value]) => {
     if (Array.isArray(value) && value.length) {
-      return { ...acc, [key]: value.map((v) => v.value).join('|') };
+      return { ...acc, [key]: value.map((v) => v.value).join(',') };
     } else if (typeof value === 'object' && value.value) {
       return { ...acc, [key]: value.value };
     } else if (typeof value === 'object' && Object.keys(value).length) {
@@ -41,10 +41,12 @@ export function getDefaultValuesSelectField(defaultStr = '', values) {
     defaultStr = '';
   }
 
-  const ids = defaultStr.split('|');
+  const ids = defaultStr.split(',');
   return ids.reduce((acc, id) => {
     if (id) {
-      const defaultValueIndex = values.findIndex((v) => v.id === +id);
+      const defaultValueIndex = values.findIndex(
+        (v) => v.id === +id || v.id === id
+      );
       if (defaultValueIndex !== -1) {
         return [
           ...acc,

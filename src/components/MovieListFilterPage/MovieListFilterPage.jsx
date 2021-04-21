@@ -38,6 +38,7 @@ import {
   getDefaultValuesSelectField,
 } from '../../utils/selectUtils';
 import clsx from 'clsx';
+import { ApiMovies } from '../../api/apiMovies';
 
 const MovieListFilterPage = () => {
   const { search, pathname } = useLocation();
@@ -113,6 +114,11 @@ const MovieListFilterPage = () => {
     defaultValues.primary_release_year,
     releaseYearsArr
   );
+  const defaultSorting = getDefaultValuesSelectField(
+    defaultValues.sort_by,
+    ApiMovies.SORTING_TYPES
+  );
+  console.log(defaultSorting);
 
   return (
     <Container className={containerClasses}>
@@ -157,6 +163,7 @@ const MovieListFilterPage = () => {
                             lte: defaultVoteAverageLte,
                           },
                           primary_release_year: defaultReleaseYear,
+                          sort_by: defaultSorting,
                           page: defaultValues.page,
                         }}
                         values={{
@@ -167,6 +174,9 @@ const MovieListFilterPage = () => {
                           },
                           primary_release_year: createValuesSelectField(
                             releaseYearsArr
+                          ),
+                          sort_by: createValuesSelectField(
+                            ApiMovies.SORTING_TYPES
                           ),
                         }}
                         isLoading={isMoviesLoading}

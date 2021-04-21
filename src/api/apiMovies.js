@@ -10,6 +10,23 @@ export class ApiMovies {
     DISCOVER: `${SERVER}/discover/movie`,
   };
 
+  static SORTING_TYPES = [
+    { id: 'popularity.asc', name: 'Popularity (Asc)' },
+    { id: 'popularity.desc', name: 'Popularity (Desc)' },
+    { id: 'release_date.asc', name: 'Release date (Asc)' },
+    { id: 'release_date.desc', name: 'Release date (Desc)' },
+    { id: 'revenue.asc', name: 'Revenue (Asc)' },
+    { id: 'revenue.desc', name: 'Revenue (Desc)' },
+    { id: 'primary_release_date.asc', name: 'Primary release date (Asc)' },
+    { id: 'primary_release_date.desc', name: 'Primary release date (Desc)' },
+    { id: 'original_title.asc', name: 'Original title (Asc)' },
+    { id: 'original_title.desc', name: 'Original title (Desc)' },
+    { id: 'vote_average.asc', name: 'Vote average (Asc)' },
+    { id: 'vote_average.desc', name: 'Vote average (Desc)' },
+    { id: 'vote_count.asc', name: 'Vote count (Asc)' },
+    { id: 'vote_count.desc', name: 'Vote count (Desc)' },
+  ];
+
   static async loadGenres() {
     try {
       const paramsStr = stringifyGetParamsObj(requiredGetParams);

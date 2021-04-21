@@ -54,6 +54,17 @@ const FilterForm = ({ onSubmit, defaultValues, values, isLoading }) => {
           options: values.vote_average.lte,
         }}
       />
+      <Row>
+        <Col className='col-12 col-sm-6'>
+          <ControlSelect
+            control={control}
+            name='sort_by'
+            label='Sort by'
+            isMulti={false}
+            options={values.sort_by}
+          />
+        </Col>
+      </Row>
       <Row className='justify-content-end'>
         <Col className='col-auto'>
           <ButtonLoad
