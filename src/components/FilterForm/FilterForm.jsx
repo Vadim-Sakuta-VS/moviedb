@@ -36,13 +36,13 @@ const FilterForm = ({ onSubmit, defaultValues, values, isLoading }) => {
         title='Vote average'
         fromSelectProps={{
           label: 'Greater:',
-          name: 'vote_average-gte',
-          options: values['vote_average-gte'],
+          name: 'vote_average.gte',
+          options: values.vote_average.gte,
         }}
         toSelectProps={{
           label: 'Less:',
-          name: 'vote_average-lte',
-          options: values['vote_average-lte'],
+          name: 'vote_average.lte',
+          options: values.vote_average.lte,
         }}
       />
       <Row className='justify-content-end'>

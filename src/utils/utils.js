@@ -11,9 +11,12 @@ export function fillArrayFromTo(from, to) {
 }
 
 export function stringifyGetParamsObj(obj) {
-  return qs.stringify(obj, { addQueryPrefix: true });
+  return qs.stringify(obj, {
+    addQueryPrefix: true,
+    allowDots: true,
+  });
 }
 
 export function parseGetParamsStr(str) {
-  return qs.parse(str, { ignoreQueryPrefix: true });
+  return qs.parse(str, { ignoreQueryPrefix: true, allowDots: true });
 }

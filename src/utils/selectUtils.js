@@ -1,11 +1,11 @@
 export const createParamObj = (data) => {
   return Object.entries(data).reduce((acc, [key, value]) => {
-    key = key.replace('-', '.');
-
     if (Array.isArray(value) && value.length) {
       return { ...acc, [key]: value.map((v) => v.value).join('|') };
-    } else if (typeof value === 'object' && value.hasOwnProperty('value')) {
+    } else if (typeof value === 'object' && value.value) {
       return { ...acc, [key]: value.value };
+    } else if (typeof value === 'object' && Object.keys(value).length) {
+      return { ...acc, [key]: createParamObj(value) };
     }
     return { ...acc, [key]: value };
   }, {});

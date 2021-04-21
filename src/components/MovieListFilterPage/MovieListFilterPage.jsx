@@ -95,11 +95,11 @@ const MovieListFilterPage = () => {
     genres
   );
   const defaultVoteAverageGte = getDefaultValuesSelectField(
-    defaultValues['vote_average.gte'],
+    defaultValues.vote_average?.gte,
     votesAverageArr
   );
   const defaultVoteAverageLte = getDefaultValuesSelectField(
-    defaultValues['vote_average.lte'],
+    defaultValues.vote_average?.lte,
     votesAverageArr
   );
 
@@ -141,18 +141,18 @@ const MovieListFilterPage = () => {
                         onSubmit={onSubmit}
                         defaultValues={{
                           with_genres: defaultGenres,
-                          'vote_average-gte': defaultVoteAverageGte,
-                          'vote_average-lte': defaultVoteAverageLte,
+                          vote_average: {
+                            gte: defaultVoteAverageGte,
+                            lte: defaultVoteAverageLte,
+                          },
                           page: defaultValues.page,
                         }}
                         values={{
                           with_genres: createValuesSelectField(genres),
-                          'vote_average-gte': createValuesSelectField(
-                            votesAverageArr
-                          ),
-                          'vote_average-lte': createValuesSelectField(
-                            votesAverageArr
-                          ),
+                          vote_average: {
+                            gte: createValuesSelectField(votesAverageArr),
+                            lte: createValuesSelectField(votesAverageArr),
+                          },
                         }}
                         isLoading={isMoviesLoading}
                       />
