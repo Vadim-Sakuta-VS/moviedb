@@ -7,6 +7,7 @@ export class ApiMovies {
     POPULAR: `${SERVER}/movie/popular`,
     TOP_RATED: `${SERVER}/movie/top_rated`,
     UPCOMING: `${SERVER}/movie/upcoming`,
+    DISCOVER: `${SERVER}/discover/movie`,
   };
 
   static async loadGenres() {

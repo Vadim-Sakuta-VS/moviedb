@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import MovieList from './components/MovieList/MovieList';
 import MovieDetails from './components/MovieDetails/MovieDetails';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Page404 from './components/Page404/Page404';
@@ -9,6 +8,7 @@ import CompaniesList from './components/CompaniesList/CompaniesList';
 import CompanyDetails from './components/CompanyDetails/CompanyDetails';
 import HomePage from './components/HomePage/HomePage';
 import MovieListByTypePage from './components/MovieListByTypePage/MovieListByTypePage';
+import MovieListFilterPage from './components/MovieListFilterPage/MovieListFilterPage';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
             <Route
               exact
               path='/movies'
-              render={() => withHeaderLayout(MovieList)}
+              render={() => withHeaderLayout(MovieListFilterPage)}
             />
             <Route
               exact
