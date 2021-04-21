@@ -21,13 +21,22 @@ const FilterForm = ({ onSubmit, defaultValues, values, isLoading }) => {
   return (
     <Form onSubmit={handleSubmit(onSubmitHandler)} className='bg-light p-2'>
       <Row className='mb-2'>
-        <Col>
+        <Col className='col-12 col-sm-6'>
           <ControlSelect
             control={control}
             name='with_genres'
             label='Genres'
             isMulti={true}
             options={values.with_genres}
+          />
+        </Col>
+        <Col className='col-12 col-sm-6'>
+          <ControlSelect
+            control={control}
+            name='primary_release_year'
+            label='Release year'
+            isMulti={false}
+            options={values.primary_release_year}
           />
         </Col>
       </Row>

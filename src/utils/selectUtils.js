@@ -12,6 +12,17 @@ export const createParamObj = (data) => {
 };
 
 /**
+ * @param numbers is array of numbers
+ * @return array of objects [{id:, name:}...]
+ */
+export function createValuesStructureNumbers(numbers) {
+  return numbers.map((el) => ({
+    id: el,
+    name: el,
+  }));
+}
+
+/**
  * @param initialValues should have such structure as [{id:, name:}...]
  */
 export function createValuesSelectField(initialValues) {
@@ -26,6 +37,10 @@ export function createValuesSelectField(initialValues) {
  * @param values should have such structure as [{id:, name:}...]
  */
 export function getDefaultValuesSelectField(defaultStr = '', values) {
+  if (typeof defaultStr !== 'string') {
+    defaultStr = '';
+  }
+
   const ids = defaultStr.split('|');
   return ids.reduce((acc, id) => {
     if (id) {

@@ -17,7 +17,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import {
   fillArrayFromTo,
   parseGetParamsStr,
+  sortArray,
   stringifyGetParamsObj,
+  TYPES_SORTING,
 } from '../../utils/utils';
 import FilterForm from '../FilterForm/FilterForm';
 import { loadDiscoverMovies } from '../../store/movieList/effects';
@@ -32,6 +34,7 @@ import { changePage, updateData } from '../../store/movieList/actions';
 import {
   createParamObj,
   createValuesSelectField,
+  createValuesStructureNumbers,
   getDefaultValuesSelectField,
 } from '../../utils/selectUtils';
 import clsx from 'clsx';
@@ -85,10 +88,7 @@ const MovieListFilterPage = () => {
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
 
-  const votesAverageArr = fillArrayFromTo(0, 10).map((el) => ({
-    id: el,
-    name: el,
-  }));
+  const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
   const defaultValues = parseGetParamsStr(search);
   const defaultGenres = getDefaultValuesSelectField(
     defaultValues.with_genres,
@@ -101,6 +101,17 @@ const MovieListFilterPage = () => {
   const defaultVoteAverageLte = getDefaultValuesSelectField(
     defaultValues.vote_average?.lte,
     votesAverageArr
+  );
+  const releaseYearsArr = createValuesStructureNumbers(
+    sortArray(
+      fillArrayFromTo(1930, new Date().getFullYear()),
+      null,
+      TYPES_SORTING.DESC
+    )
+  );
+  const defaultReleaseYear = getDefaultValuesSelectField(
+    defaultValues.primary_release_year,
+    releaseYearsArr
   );
 
   return (
@@ -145,6 +156,7 @@ const MovieListFilterPage = () => {
                             gte: defaultVoteAverageGte,
                             lte: defaultVoteAverageLte,
                           },
+                          primary_release_year: defaultReleaseYear,
                           page: defaultValues.page,
                         }}
                         values={{
@@ -153,6 +165,9 @@ const MovieListFilterPage = () => {
                             gte: createValuesSelectField(votesAverageArr),
                             lte: createValuesSelectField(votesAverageArr),
                           },
+                          primary_release_year: createValuesSelectField(
+                            releaseYearsArr
+                          ),
                         }}
                         isLoading={isMoviesLoading}
                       />
