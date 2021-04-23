@@ -20,7 +20,8 @@ const PaginationCustom = ({
       const to = totalPages < pagesToShow ? totalPages : pagesToShow;
       setPagesNumbers(fillArrayFromTo(1, to));
     } else if (currentPage >= totalPages - averagePage + 1) {
-      const from = totalPages - pagesToShow + 1;
+      let from = totalPages - pagesToShow + 1;
+      from = from < 1 ? 1 : from;
       setPagesNumbers(fillArrayFromTo(from, totalPages));
     } else {
       const from =

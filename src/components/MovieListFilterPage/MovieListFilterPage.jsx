@@ -17,7 +17,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import {
   fillArrayFromTo,
   parseGetParamsStr,
+  sortArray,
   stringifyGetParamsObj,
+  TYPES_SORTING,
 } from '../../utils/utils';
 import FilterForm from '../FilterForm/FilterForm';
 import { loadDiscoverMovies } from '../../store/movieList/effects';
@@ -32,9 +34,11 @@ import { changePage, updateData } from '../../store/movieList/actions';
 import {
   createParamObj,
   createValuesSelectField,
+  createValuesStructureNumbers,
   getDefaultValuesSelectField,
 } from '../../utils/selectUtils';
 import clsx from 'clsx';
+import { ApiMovies } from '../../api/apiMovies';
 
 const MovieListFilterPage = () => {
   const { search, pathname } = useLocation();
@@ -85,22 +89,34 @@ const MovieListFilterPage = () => {
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
 
-  const votesAverageArr = fillArrayFromTo(0, 10).map((el) => ({
-    id: el,
-    name: el,
-  }));
+  const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
   const defaultValues = parseGetParamsStr(search);
   const defaultGenres = getDefaultValuesSelectField(
     defaultValues.with_genres,
     genres
   );
   const defaultVoteAverageGte = getDefaultValuesSelectField(
-    defaultValues['vote_average.gte'],
+    defaultValues.vote_average?.gte,
     votesAverageArr
   );
   const defaultVoteAverageLte = getDefaultValuesSelectField(
-    defaultValues['vote_average.lte'],
+    defaultValues.vote_average?.lte,
     votesAverageArr
+  );
+  const releaseYearsArr = createValuesStructureNumbers(
+    sortArray(
+      fillArrayFromTo(1930, new Date().getFullYear()),
+      null,
+      TYPES_SORTING.DESC
+    )
+  );
+  const defaultReleaseYear = getDefaultValuesSelectField(
+    defaultValues.primary_release_year,
+    releaseYearsArr
+  );
+  const defaultSorting = getDefaultValuesSelectField(
+    defaultValues.sort_by,
+    ApiMovies.SORTING_TYPES
   );
 
   return (
@@ -141,17 +157,25 @@ const MovieListFilterPage = () => {
                         onSubmit={onSubmit}
                         defaultValues={{
                           with_genres: defaultGenres,
-                          'vote_average-gte': defaultVoteAverageGte,
-                          'vote_average-lte': defaultVoteAverageLte,
+                          vote_average: {
+                            gte: defaultVoteAverageGte,
+                            lte: defaultVoteAverageLte,
+                          },
+                          primary_release_year: defaultReleaseYear,
+                          sort_by: defaultSorting,
                           page: defaultValues.page,
                         }}
                         values={{
                           with_genres: createValuesSelectField(genres),
-                          'vote_average-gte': createValuesSelectField(
-                            votesAverageArr
+                          vote_average: {
+                            gte: createValuesSelectField(votesAverageArr),
+                            lte: createValuesSelectField(votesAverageArr),
+                          },
+                          primary_release_year: createValuesSelectField(
+                            releaseYearsArr
                           ),
-                          'vote_average-lte': createValuesSelectField(
-                            votesAverageArr
+                          sort_by: createValuesSelectField(
+                            ApiMovies.SORTING_TYPES
                           ),
                         }}
                         isLoading={isMoviesLoading}
