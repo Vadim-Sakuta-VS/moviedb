@@ -6,7 +6,12 @@ import {
 
 const initialState: CompanyDetailsState = {
   isLoading: false,
-  company: {},
+  company: {
+    id: 0,
+    name: '',
+    origin_country: '',
+    logo_path: '',
+  },
 };
 
 function companyDetailsReducer(

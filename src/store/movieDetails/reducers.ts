@@ -6,7 +6,15 @@ import {
 
 const initialState: MovieDetailsState = {
   isLoading: false,
-  movie: {},
+  movie: {
+    id: 0,
+    poster_path: '',
+    title: '',
+    overview: '',
+    vote_average: 0,
+    vote_count: 0,
+    release_date: '',
+  },
 };
 
 function movieDetailsReducer(

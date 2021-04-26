@@ -13,7 +13,6 @@ import {
 import { Redirect, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import MovieReviews from '../MovieReviews/MovieReviews';
-import { IMovie } from '../../types/types';
 
 interface MovieDetailsParams {
   id: string;
@@ -21,7 +20,7 @@ interface MovieDetailsParams {
 
 const MovieDetails: FC = () => {
   const { id } = useParams<MovieDetailsParams>();
-  const movie = useSelector(selectMovieDetails) as IMovie;
+  const movie = useSelector(selectMovieDetails);
   const isLoading = useSelector(selectMovieDetailsLoading);
   const dispatch = useDispatch();
 

@@ -19,5 +19,5 @@ export type MovieDetailsAction = SetMovieDetailsAction | SetTypeLoadingAction;
 
 export interface MovieDetailsState {
   isLoading: boolean;
-  movie: IMovie | {};
+  movie: IMovie;
 }

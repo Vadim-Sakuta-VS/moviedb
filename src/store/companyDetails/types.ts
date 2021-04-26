@@ -21,5 +21,5 @@ export type CompanyDetailsAction =
 
 export interface CompanyDetailsState {
   isLoading: boolean;
-  company: ICompany | {};
+  company: ICompany;
 }
