@@ -21,7 +21,7 @@ import {
   stringifyGetParamsObj,
   TYPES_SORTING,
 } from '../../utils/utils';
-import FilterForm, { FilterFormValues } from '../FilterForm/FilterForm';
+import FilterForm from '../FilterForm/FilterForm';
 import { loadDiscoverMovies } from '../../store/movieList/effects';
 import {
   selectCurrentPage,
@@ -30,7 +30,7 @@ import {
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import MovieList from '../MovieList/MovieList';
-import { changePage, updateData } from '../../store/movieList/actions';
+import { changePage, updateData } from '../../store/movieList/actionCreators';
 import {
   createParamObj,
   createValuesSelectField,
@@ -40,6 +40,7 @@ import {
 } from '../../utils/selectUtils';
 import clsx from 'clsx';
 import { ApiMovies } from '../../api/apiMovies';
+import { ParsedQs } from 'qs';
 
 const MovieListFilterPage: FC = () => {
   const { search, pathname } = useLocation();
@@ -67,8 +68,8 @@ const MovieListFilterPage: FC = () => {
   useEffect(() => {
     const paramObj = parseGetParamsStr(search);
     if (!paramObj.page) {
-      paramObj.page = 1;
-      dispatch(updateData());
+      paramObj.page = '1';
+      dispatch(updateData({ isRequiredUpdate: true }));
     }
     dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramObj)));
   }, [search, dispatch]);
@@ -77,7 +78,7 @@ const MovieListFilterPage: FC = () => {
     const paramObj = createParamObj(data);
     const paramStr = stringifyGetParamsObj(paramObj);
     if (paramStr !== search) {
-      dispatch(updateData());
+      dispatch(updateData({ isRequiredUpdate: true }));
       paramObj.page = 1;
     }
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
@@ -85,7 +86,7 @@ const MovieListFilterPage: FC = () => {
 
   const onChangePage = (page: number) => {
     const paramObj = parseGetParamsStr(search);
-    paramObj.page = page;
+    paramObj.page = page.toString();
     dispatch(changePage(page));
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
@@ -93,15 +94,16 @@ const MovieListFilterPage: FC = () => {
   const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
   const defaultValues = parseGetParamsStr(search);
   const defaultGenres = getDefaultValuesSelectField(
-    defaultValues.with_genres,
+    defaultValues.with_genres as string,
     genres
   );
+  const vote_average = defaultValues.vote_average as ParsedQs;
   const defaultVoteAverageGte = getDefaultValuesSelectField(
-    defaultValues.vote_average?.gte,
+    vote_average?.gte as string,
     votesAverageArr
   );
   const defaultVoteAverageLte = getDefaultValuesSelectField(
-    defaultValues.vote_average?.lte,
+    vote_average?.lte as string,
     votesAverageArr
   );
   const releaseYearsArr = createValuesStructureNumbers(
@@ -112,11 +114,11 @@ const MovieListFilterPage: FC = () => {
     )
   );
   const defaultReleaseYear = getDefaultValuesSelectField(
-    defaultValues.primary_release_year,
+    defaultValues.primary_release_year as string,
     releaseYearsArr
   );
   const defaultSorting = getDefaultValuesSelectField(
-    defaultValues.sort_by,
+    defaultValues.sort_by as string,
     ApiMovies.SORTING_TYPES
   );
 
@@ -164,7 +166,7 @@ const MovieListFilterPage: FC = () => {
                           },
                           primary_release_year: defaultReleaseYear,
                           sort_by: defaultSorting,
-                          page: defaultValues.page,
+                          page: defaultValues.page as string,
                         }}
                         values={{
                           with_genres: createValuesSelectField(genres),
@@ -178,7 +180,7 @@ const MovieListFilterPage: FC = () => {
                           sort_by: createValuesSelectField(
                             ApiMovies.SORTING_TYPES
                           ),
-                          page: defaultValues.page,
+                          page: defaultValues.page as string,
                         }}
                         isLoading={isMoviesLoading}
                       />

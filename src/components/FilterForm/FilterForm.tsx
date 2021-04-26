@@ -8,7 +8,7 @@ import { ISelectOption, SelectOptionDif } from '../../types/types';
 import { SubmitHandler } from 'react-hook-form';
 import { ParamObjType } from '../../utils/selectUtils';
 
-export interface FilterFormValues {
+export interface FilterFormValues extends ParamObjType {
   with_genres: ISelectOption[];
   primary_release_year: SelectOptionDif;
   vote_average: {
@@ -20,9 +20,9 @@ export interface FilterFormValues {
 }
 
 interface FilterFormProps {
-  onSubmit: (data: ParamObjType) => void;
-  defaultValues: ParamObjType;
-  values: ParamObjType;
+  onSubmit: (data: FilterFormValues) => void;
+  defaultValues: FilterFormValues;
+  values: FilterFormValues;
   isLoading: boolean;
 }
 
@@ -32,7 +32,7 @@ const FilterForm: FC<FilterFormProps> = ({
   values,
   isLoading,
 }) => {
-  const { control, handleSubmit, reset } = useForm<ParamObjType>({
+  const { control, handleSubmit, reset } = useForm<FilterFormValues>({
     defaultValues,
   });
 
@@ -40,7 +40,7 @@ const FilterForm: FC<FilterFormProps> = ({
     reset(defaultValues);
   }, [defaultValues]);
 
-  const onSubmitHandler: SubmitHandler<ParamObjType> = (data) => {
+  const onSubmitHandler: SubmitHandler<FilterFormValues> = (data) => {
     onSubmit(data);
   };
 
@@ -53,7 +53,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='with_genres'
             label='Genres'
             isMulti={true}
-            options={values.with_genres}
+            options={values.with_genres as SelectOptionDif}
           />
         </Col>
         <Col className='col-12 col-sm-6'>
@@ -62,7 +62,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='primary_release_year'
             label='Release year'
             isMulti={false}
-            options={values.primary_release_year}
+            options={values.primary_release_year as SelectOptionDif}
           />
         </Col>
       </Row>
@@ -87,7 +87,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='sort_by'
             label='Sort by'
             isMulti={false}
-            options={values.sort_by}
+            options={values.sort_by as SelectOptionDif}
           />
         </Col>
       </Row>

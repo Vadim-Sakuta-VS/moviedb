@@ -5,8 +5,10 @@ import {
   IListResponse,
   ImgPathType,
   IMovie,
+  IReview,
+  ISelectValue,
+  KeyValueStringType,
   ParamGetObj,
-  URL_OBJ,
 } from '../types/types';
 
 interface IGenresResponse {
@@ -14,7 +16,7 @@ interface IGenresResponse {
 }
 
 export class ApiMovies {
-  static GET: URL_OBJ = {
+  static GET: KeyValueStringType = {
     NOW_PLAYING: `${SERVER}/movie/now_playing`,
     POPULAR: `${SERVER}/movie/popular`,
     TOP_RATED: `${SERVER}/movie/top_rated`,
@@ -22,7 +24,7 @@ export class ApiMovies {
     DISCOVER: `${SERVER}/discover/movie`,
   };
 
-  static SORTING_TYPES = [
+  static SORTING_TYPES: ISelectValue[] = [
     { id: 'popularity.asc', name: 'Popularity (Asc)' },
     { id: 'popularity.desc', name: 'Popularity (Desc)' },
     { id: 'release_date.asc', name: 'Release date (Asc)' },
@@ -67,7 +69,7 @@ export class ApiMovies {
     }
   }
 
-  static getImage(path: ImgPathType) {
+  static getImage(path: ImgPathType): string {
     return `${SERVER_IMAGE}${path}`;
   }
 
@@ -82,16 +84,20 @@ export class ApiMovies {
     }
   }
 
-  static async loadMovieReviews(id: number, paramsGETObj: ParamGetObj) {
+  static async loadMovieReviews(
+    id: number,
+    paramsGETObj: ParamGetObj
+  ): Promise<IListResponse<IReview>> {
     try {
       const paramsStr = stringifyGetParamsObj({
         ...requiredGetParams,
         ...paramsGETObj,
       });
       const res = await fetch(`${SERVER}/movie/${id}/reviews${paramsStr}`);
-      return res.json();
+      return await res.json();
     } catch (e) {
       console.log(e);
+      throw e;
     }
   }
 }

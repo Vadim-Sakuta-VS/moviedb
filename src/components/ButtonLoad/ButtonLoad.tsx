@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import { Button, Spinner } from 'react-bootstrap';
-// import PropTypes from 'prop-types'
 
-interface ButtonLoadProps {
+interface ButtonLoadProps extends React.HTMLAttributes<HTMLButtonElement> {
+  type?: string;
   isLoading: boolean;
   textValue: string;
   handleOnClick?: () => void;
-  [key: string]: any;
 }
 
 const ButtonLoad: FC<ButtonLoadProps> = ({
@@ -31,11 +30,5 @@ const ButtonLoad: FC<ButtonLoadProps> = ({
     </Button>
   );
 };
-
-// ButtonLoad.propTypes = {
-//   isLoading: PropTypes.bool.isRequired,
-//   textValue: PropTypes.string.isRequired,
-//   handleOnClick: PropTypes.func,
-// };
 
 export default ButtonLoad;

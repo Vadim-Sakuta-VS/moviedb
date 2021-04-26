@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
-import PropTypes from 'prop-types';
 import Control from '../ControlTextInput/ControlTextInput';
 
 interface SearchFormProps {
@@ -54,12 +53,5 @@ const SearchForm: FC<SearchFormProps> = ({
     </Form>
   );
 };
-
-// SearchForm.propTypes = {
-//   queryValue: PropTypes.string,
-//   onChange: PropTypes.func,
-//   onSubmit: PropTypes.func.isRequired,
-//   isLoading: PropTypes.bool.isRequired,
-// };
 
 export default SearchForm;

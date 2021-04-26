@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import ControlSelect from '../ControlSelect/ControlSelect';
-import PropTypes from 'prop-types';
 import { Control } from 'react-hook-form';
 import { BaseSelectProps } from '../../types/types';
 
@@ -58,25 +57,5 @@ const ControlFromTo: FC<ControlFromToProps> = ({
     </Row>
   );
 };
-
-// const propTypesSelect = PropTypes.shape({
-//   label: PropTypes.string,
-//   name: PropTypes.string.isRequired,
-//   options: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-//         .isRequired,
-//       label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-//         .isRequired,
-//     })
-//   ),
-// });
-//
-// ControlFromTo.propTypes = {
-//   control: PropTypes.object.isRequired,
-//   title: PropTypes.string.isRequired,
-//   fromSelectProps: propTypesSelect,
-//   toSelectProps: propTypesSelect,
-// };
 
 export default ControlFromTo;

@@ -9,7 +9,11 @@ import {
   selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
-import { changePage, updateData } from '../../store/movieList/actions';
+import {
+  changePage,
+  setMoviesType,
+  updateData,
+} from '../../store/movieList/actionCreators';
 import { loadMoviesByType } from '../../store/movieList/effects';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
 
@@ -27,7 +31,8 @@ const MovieListByTypePage: FC = () => {
   const typeTitle = getMovieTypeTitle(type);
 
   useEffect(() => {
-    dispatch(updateData());
+    dispatch(setMoviesType(type));
+    dispatch(updateData({ movieType: type }));
   }, [type, dispatch]);
 
   useEffect(() => {

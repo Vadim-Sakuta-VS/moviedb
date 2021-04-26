@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
-import PropTypes from 'prop-types';
 import { IMovie } from '../../types/types';
 
 interface MovieListProps {
@@ -36,24 +35,5 @@ const MovieList: FC<MovieListProps> = ({
     </Container>
   );
 };
-
-// MovieList.propTypes = {
-//   currentPage: PropTypes.number.isRequired,
-//   totalPages: PropTypes.number.isRequired,
-//   onChangePage: PropTypes.func.isRequired,
-//   movies: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       title: PropTypes.string,
-//       overview: PropTypes.string,
-//       vote_average: PropTypes.number,
-//       vote_count: PropTypes.number,
-//       release_date: PropTypes.string,
-//       poster_path: PropTypes.oneOfType([
-//         PropTypes.string.isRequired,
-//         PropTypes.oneOf([null]).isRequired,
-//       ]),
-//     })
-//   ),
-// };
 
 export default MovieList;

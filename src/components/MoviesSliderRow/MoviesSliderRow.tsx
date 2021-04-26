@@ -8,7 +8,6 @@ import 'swiper/components/pagination/pagination.scss';
 import 'swiper/components/scrollbar/scrollbar.scss';
 import './MoviesSliderRow.scss';
 import MovieSlide from './MovieSlide';
-import PropTypes from 'prop-types';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
 import { Link } from 'react-router-dom';
 import { IMovie } from '../../types/types';
@@ -76,21 +75,5 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
     </Row>
   );
 };
-
-// MoviesSliderRow.propTypes = {
-//   title: PropTypes.string.isRequired,
-//   movies: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       title: PropTypes.string.isRequired,
-//       poster_path: PropTypes.oneOfType([
-//         PropTypes.string.isRequired,
-//         PropTypes.oneOf([null]).isRequired,
-//       ]),
-//     })
-//   ),
-//   isLoading: PropTypes.bool.isRequired,
-//   typeMovies: PropTypes.string.isRequired,
-// };
 
 export default MoviesSliderRow;

@@ -2,7 +2,6 @@ import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Controller } from 'react-hook-form';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Control } from 'react-hook-form';
 import { BaseSelectProps } from '../../types/types';
@@ -39,28 +38,17 @@ const ControlSelect: FC<ControlSelectProps> = ({
           name={name}
           control={control}
           render={({ field }) => (
-            <Select {...field} isMulti={isMulti} options={options} {...props} />
+            <Select
+              {...field}
+              isMulti={isMulti}
+              options={options as readonly any[] | undefined}
+              {...props}
+            />
           )}
         />
       </Col>
     </Row>
   );
 };
-
-// ControlSelect.propTypes = {
-//   control: PropTypes.object.isRequired,
-//   name: PropTypes.string.isRequired,
-//   label: PropTypes.string,
-//   isMulti: PropTypes.bool.isRequired,
-//   asRow: PropTypes.bool,
-//   options: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-//         .isRequired,
-//       label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-//         .isRequired,
-//     })
-//   ),
-// };
 
 export default ControlSelect;

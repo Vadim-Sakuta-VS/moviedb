@@ -1,6 +1,7 @@
 import { HomeAction, HomeActions, HomeState } from './types';
+import { KeyValueStringType } from '../../types/types';
 
-export const MOVIE_TYPES = {
+export const MOVIE_TYPES: KeyValueStringType = {
   NOW_PLAYING: 'Now playing',
   POPULAR: 'Popular',
   TOP_RATED: 'Top rated',

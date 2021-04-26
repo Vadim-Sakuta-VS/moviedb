@@ -10,6 +10,7 @@ import {
 } from '../../store/companyDetails/selectors';
 import { Redirect, useParams } from 'react-router-dom';
 import { loadCompanyDetails } from '../../store/companyDetails/effects';
+import { ICompany } from '../../types/types';
 
 interface CompanyDetailsParams {
   id: string;
@@ -18,12 +19,12 @@ interface CompanyDetailsParams {
 const CompanyDetails: FC = () => {
   const { id } = useParams<CompanyDetailsParams>();
   const isLoading = useSelector(selectCompanyDetailsLoading);
-  const company = useSelector(selectCompanyDetails);
+  const company = useSelector(selectCompanyDetails) as ICompany;
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isNaN(+id) && +id > 0) {
-      dispatch(loadCompanyDetails(id));
+      dispatch(loadCompanyDetails(+id));
     }
   }, [id, dispatch]);
 

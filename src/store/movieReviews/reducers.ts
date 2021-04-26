@@ -1,13 +1,10 @@
 import {
-  CHANGE_PAGE,
-  HIDE_LOADING,
-  SET_MOVIE_ID,
-  SET_MOVIES_REVIEWS,
-  SET_TOTAL_PAGES,
-  SHOW_LOADING,
-} from './actions';
+  MovieReviewsAction,
+  MovieReviewsActions,
+  MovieReviewsState,
+} from './types';
 
-const initialState = {
+const initialState: MovieReviewsState = {
   movieId: null,
   data: [],
   currentPage: 1,
@@ -15,9 +12,12 @@ const initialState = {
   isLoading: false,
 };
 
-function movieReviewsReducer(state = initialState, action) {
+function movieReviewsReducer(
+  state = initialState,
+  action: MovieReviewsAction
+): MovieReviewsState {
   switch (action.type) {
-    case SET_MOVIE_ID:
+    case MovieReviewsActions.SET_MOVIE_ID:
       return {
         ...state,
         movieId: action.payload,
@@ -25,19 +25,17 @@ function movieReviewsReducer(state = initialState, action) {
         currentPage: 1,
         totalPages: null,
       };
-    case SHOW_LOADING:
-      return { ...state, isLoading: true };
-    case HIDE_LOADING:
-      return { ...state, isLoading: false };
-    case SET_MOVIES_REVIEWS:
+    case MovieReviewsActions.SET_TYPE_LOADING:
+      return { ...state, isLoading: action.payload };
+    case MovieReviewsActions.SET_MOVIES_REVIEWS:
       return {
         ...state,
         data: [...state.data, ...action.payload],
         isLoading: false,
       };
-    case CHANGE_PAGE:
+    case MovieReviewsActions.CHANGE_PAGE:
       return { ...state, currentPage: action.payload };
-    case SET_TOTAL_PAGES:
+    case MovieReviewsActions.SET_TOTAL_PAGES:
       return { ...state, totalPages: action.payload };
     default:
       return state;

@@ -3,10 +3,10 @@ import './MovieProductionCompany.scss';
 import { Col, Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import { ImgPathType } from '../../types/types';
 
 interface MovieProductionCompanyProps {
-  logoPath: string | null;
+  logoPath: ImgPathType;
   companyName: string;
   colClassAdditional: string;
 }
@@ -30,12 +30,3 @@ export const MovieProductionCompany: FC<MovieProductionCompanyProps> = ({
     </Col>
   );
 };
-//
-// MovieProductionCompany.propTypes = {
-//   logoPath: PropTypes.oneOfType([
-//     PropTypes.string.isRequired,
-//     PropTypes.oneOf([null]).isRequired,
-//   ]),
-//   companyName: PropTypes.string.isRequired,
-//   colClassAdditional: PropTypes.string,
-// };

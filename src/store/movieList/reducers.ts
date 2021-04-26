@@ -1,30 +1,33 @@
-import {
-  CHANGE_PAGE,
-  SET_MOVIES,
-  SET_MOVIES_TYPE_LOADING,
-  SET_TOTAL_PAGES,
-  UPDATE_DATA,
-} from './actions';
+import { MovieListAction, MovieListActions, MovieListState } from './types';
 
-const initialState = {
+const initialState: MovieListState = {
   data: [],
   currentPage: 1,
   totalPages: 0,
   isLoading: false,
+  movieType: '',
 };
 
-function movieListReducer(state = initialState, action) {
+function movieListReducer(
+  state = initialState,
+  action: MovieListAction
+): MovieListState {
   switch (action.type) {
-    case CHANGE_PAGE:
+    case MovieListActions.CHANGE_PAGE:
       return { ...state, currentPage: action.payload };
-    case SET_TOTAL_PAGES:
+    case MovieListActions.SET_TOTAL_PAGES:
       return { ...state, totalPages: action.payload };
-    case SET_MOVIES_TYPE_LOADING:
+    case MovieListActions.SET_MOVIES_TYPE_LOADING:
       return { ...state, isLoading: action.payload };
-    case SET_MOVIES:
+    case MovieListActions.SET_MOVIES:
       return { ...state, data: action.payload };
-    case UPDATE_DATA:
-      return initialState;
+    case MovieListActions.SET_MOVIES_TYPE:
+      return { ...state, movieType: action.payload };
+    case MovieListActions.UPDATE_DATA:
+      return action.payload.movieType === state.movieType &&
+        !action.payload.isRequiredUpdate
+        ? state
+        : initialState;
     default:
       return state;
   }

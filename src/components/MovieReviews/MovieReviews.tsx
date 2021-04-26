@@ -1,7 +1,6 @@
 import React, { useEffect, FC } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import MovieReview from '../MovieReview/MovieReview';
-import PropTypes from 'prop-types';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,7 +9,10 @@ import {
   selectMovieReviewsLoading,
   selectMovieReviewsTotalPages,
 } from '../../store/movieReviews/selectors';
-import { changePage, setMovieId } from '../../store/movieReviews/actions';
+import {
+  changePage,
+  setMovieId,
+} from '../../store/movieReviews/actionCreators';
 import { loadMovieReviews } from '../../store/movieReviews/effects';
 
 interface MovieReviewsProps {
@@ -39,10 +41,11 @@ const MovieReviews: FC<MovieReviewsProps> = ({ id }) => {
   const movieReviewsElements = movieReviews.map((r) => (
     <MovieReview
       key={r.id}
+      id={r.id}
       author_details={r.author_details}
       content={r.content}
-      createdAt={r.created_at}
-      updatedAt={r.updated_at}
+      created_at={r.created_at}
+      updated_at={r.updated_at}
       maxContentSymbolsToShow={900}
     />
   ));
@@ -78,10 +81,6 @@ const MovieReviews: FC<MovieReviewsProps> = ({ id }) => {
       ) : null}
     </Row>
   );
-};
-
-MovieReviews.propTypes = {
-  id: PropTypes.number.isRequired,
 };
 
 export default MovieReviews;

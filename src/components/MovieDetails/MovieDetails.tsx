@@ -13,6 +13,7 @@ import {
 import { Redirect, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import MovieReviews from '../MovieReviews/MovieReviews';
+import { IMovie } from '../../types/types';
 
 interface MovieDetailsParams {
   id: string;
@@ -20,13 +21,13 @@ interface MovieDetailsParams {
 
 const MovieDetails: FC = () => {
   const { id } = useParams<MovieDetailsParams>();
-  const movie = useSelector(selectMovieDetails);
+  const movie = useSelector(selectMovieDetails) as IMovie;
   const isLoading = useSelector(selectMovieDetailsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isNaN(+id) && +id > 0) {
-      dispatch(loadMovieDetails(id));
+      dispatch(loadMovieDetails(+id));
     }
   }, [id, dispatch]);
 
@@ -75,7 +76,8 @@ const MovieDetails: FC = () => {
             <MovieDetailsRow title='Budget' value={budget} />
             <MovieDetailsRow title='Genres' value={genres} />
             <MovieDetailsRow title='Production countries'>
-              {productionCountriesElements.length ? (
+              {productionCountriesElements &&
+              productionCountriesElements.length ? (
                 <ul className='m-0 p-0' style={{ listStyle: 'none' }}>
                   {productionCountriesElements}
                 </ul>
@@ -123,7 +125,8 @@ const MovieDetails: FC = () => {
         <Col>
           <Container className='pl-5 pr-5'>
             <Row className='justify-content-center production-companies'>
-              {productionCompaniesElements.length ? (
+              {productionCompaniesElements &&
+              productionCompaniesElements.length ? (
                 productionCompaniesElements
               ) : (
                 <span className='text-center font-weight-bold text-secondary'>

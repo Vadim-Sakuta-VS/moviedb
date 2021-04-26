@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import './MovieSlide.scss';
 import { Image } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { ApiMovies } from '../../api/apiMovies';
+import { ImgPathType } from '../../types/types';
 
 interface MovieSlideProps {
   title: string;
-  posterPath: string | null;
+  posterPath: ImgPathType;
 }
 
 const MovieSlide: FC<MovieSlideProps> = ({ title, posterPath }) => {
@@ -21,13 +21,5 @@ const MovieSlide: FC<MovieSlideProps> = ({ title, posterPath }) => {
     </div>
   );
 };
-
-// MovieSlide.propTypes = {
-//   title: PropTypes.string.isRequired,
-//   posterPath: PropTypes.oneOfType([
-//     PropTypes.string.isRequired,
-//     PropTypes.oneOf([null]).isRequired,
-//   ]),
-// };
 
 export default MovieSlide;

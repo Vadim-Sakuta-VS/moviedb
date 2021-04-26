@@ -50,7 +50,13 @@ export interface IAuthorReview {
   rating: number | null;
 }
 
-export interface IReview {}
+export interface IReview {
+  id: string;
+  author_details: IAuthorReview;
+  created_at: string;
+  updated_at: string;
+  content: string;
+}
 
 export interface ISelectOption {
   value: string | number;
@@ -79,6 +85,6 @@ export interface IListResponse<T> {
   total_pages: number;
 }
 
-export type URL_OBJ = {
+export type KeyValueStringType = {
   [key: string]: string;
 };

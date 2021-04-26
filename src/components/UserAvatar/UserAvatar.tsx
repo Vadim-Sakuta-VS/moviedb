@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import './UserAvatar.scss';
 import { Col, Image } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { ApiMovies } from '../../api/apiMovies';
+import { ImgPathType } from '../../types/types';
 
 interface UserAvatarProps {
   username: string;
-  avatarPath: string | null;
+  avatarPath: ImgPathType;
 }
 
 const UserAvatar: FC<UserAvatarProps> = ({ username, avatarPath }) => {
@@ -28,13 +28,5 @@ const UserAvatar: FC<UserAvatarProps> = ({ username, avatarPath }) => {
     </Col>
   );
 };
-
-// UserAvatar.propTypes = {
-//   username: PropTypes.string.isRequired,
-//   avatarPath: PropTypes.oneOfType([
-//     PropTypes.string.isRequired,
-//     PropTypes.oneOf([null]).isRequired,
-//   ]),
-// };
 
 export default UserAvatar;

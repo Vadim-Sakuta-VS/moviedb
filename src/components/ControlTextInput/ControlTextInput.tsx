@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Form, Row } from 'react-bootstrap';
 import { useController, RegisterOptions, Control } from 'react-hook-form';
-import PropTypes from 'prop-types';
 
 interface ControlProps {
   name: string;
@@ -62,12 +61,5 @@ const ControlTextInput: FC<ControlProps> = ({
     </Row>
   );
 };
-
-// ControlTextInput.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   defaultValue: PropTypes.string,
-//   rules: PropTypes.object,
-//   control: PropTypes.object.isRequired,
-// };
 
 export default ControlTextInput;

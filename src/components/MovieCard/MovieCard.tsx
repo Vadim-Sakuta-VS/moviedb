@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import './MovieCard.scss';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { IMovie } from '../../types/types';
 
@@ -65,19 +64,5 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
     </Col>
   );
 };
-
-// MovieCard.propTypes = {
-//   movie: PropTypes.shape({
-//     title: PropTypes.string,
-//     overview: PropTypes.string,
-//     vote_average: PropTypes.number,
-//     vote_count: PropTypes.number,
-//     release_date: PropTypes.string,
-//     poster_path: PropTypes.oneOfType([
-//       PropTypes.string.isRequired,
-//       PropTypes.oneOf([null]).isRequired,
-//     ]),
-//   }),
-// };
 
 export default MovieCard;

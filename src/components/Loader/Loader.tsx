@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import './Loader.scss';
 import { Spinner } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 
 interface LoaderProps {
   isLoading: boolean;
@@ -14,9 +13,5 @@ const Loader: FC<LoaderProps> = ({ isLoading }) => {
     </div>
   ) : null;
 };
-
-// Loader.propTypes = {
-//   isLoading: PropTypes.bool.isRequired,
-// };
 
 export default Loader;

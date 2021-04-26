@@ -3,29 +3,24 @@ import './MovieReview.scss';
 import { Alert, Button, Col, Modal, Row } from 'react-bootstrap';
 import { MovieDetailsRow } from '../MovieDetails/MovieDetailsRow';
 import UserAvatar from '../UserAvatar/UserAvatar';
-import PropTypes from 'prop-types';
-import { IAuthorReview } from '../../types/types';
+import { IReview } from '../../types/types';
 
-interface MovieReviewProps {
-  author_details: IAuthorReview;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+interface MovieReviewProps extends IReview {
   maxContentSymbolsToShow: number;
 }
 
 const MovieReview: FC<MovieReviewProps> = ({
   author_details,
   content,
-  createdAt,
-  updatedAt,
+  created_at,
+  updated_at,
   maxContentSymbolsToShow,
 }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
 
   const isLongContent = content.length > maxContentSymbolsToShow;
-  const dateCreated = new Date(createdAt);
-  const dateUpdated = new Date(updatedAt);
+  const dateCreated = new Date(created_at);
+  const dateUpdated = new Date(updated_at);
   const localeDateCreated = dateCreated.toLocaleDateString();
   const localeDateUpdated = dateUpdated.toLocaleDateString();
   const localeTimeCreated = dateCreated.toLocaleTimeString().slice(0, 5);
@@ -73,7 +68,7 @@ const MovieReview: FC<MovieReviewProps> = ({
               <p className='m-0'>
                 Created: {localeDateCreated} ({localeTimeCreated})
               </p>
-              {createdAt !== updatedAt && (
+              {created_at !== updated_at && (
                 <p className='m-0'>
                   Updated: {localeDateUpdated} ({localeTimeUpdated})
                 </p>
@@ -98,20 +93,5 @@ const MovieReview: FC<MovieReviewProps> = ({
     </Alert>
   );
 };
-
-// MovieReview.propTypes = {
-//   author_details: PropTypes.shape({
-//     username: PropTypes.string.isRequired,
-//     avatar_path: PropTypes.oneOfType([
-//       PropTypes.string.isRequired,
-//       PropTypes.oneOf([null]).isRequired,
-//     ]),
-//     rating: PropTypes.number,
-//   }),
-//   content: PropTypes.string.isRequired,
-//   createdAt: PropTypes.string.isRequired,
-//   updatedAt: PropTypes.string.isRequired,
-//   maxContentSymbolsToShow: PropTypes.number.isRequired,
-// };
 
 export default MovieReview;

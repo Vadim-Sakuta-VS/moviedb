@@ -62,7 +62,7 @@ export function createValuesSelectField(
  * @param values should have such structure as [{id:, name:}...]
  */
 export function getDefaultValuesSelectField(
-  defaultStr = '',
+  defaultStr: string | undefined = '',
   values: ISelectValue[] | string
 ): ISelectOption[] {
   if (typeof defaultStr !== 'string') {
@@ -70,17 +70,17 @@ export function getDefaultValuesSelectField(
   }
 
   const ids = defaultStr.split(',');
-  return ids.reduce((acc, id) => {
+  return ids.reduce((acc: ISelectOption[], id) => {
     if (id) {
-      const defaultValueIndex = values.findIndex(
+      const defaultValueIndex = (values as ISelectValue[]).findIndex(
         (v) => v.id === +id || v.id === id
       );
       if (defaultValueIndex !== -1) {
         return [
           ...acc,
           {
-            value: values[defaultValueIndex].id,
-            label: values[defaultValueIndex].name,
+            value: (values as ISelectValue[])[defaultValueIndex].id,
+            label: (values as ISelectValue[])[defaultValueIndex].name,
           },
         ];
       }

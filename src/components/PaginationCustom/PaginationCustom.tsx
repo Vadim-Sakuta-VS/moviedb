@@ -2,7 +2,6 @@ import React, { useEffect, useState, FC } from 'react';
 import './PaginationCustom.scss';
 import { Pagination } from 'react-bootstrap';
 import { fillArrayFromTo } from '../../utils/utils';
-import PropTypes from 'prop-types';
 
 interface PaginationCustomProps {
   currentPage: number;
@@ -17,7 +16,7 @@ const PaginationCustom: FC<PaginationCustomProps> = ({
   pagesToShow,
   onChangePage,
 }) => {
-  const [pagesNumbers, setPagesNumbers] = useState([]);
+  const [pagesNumbers, setPagesNumbers] = useState<number[]>([]);
   const isShowArrows = totalPages > 1;
 
   useEffect(() => {
@@ -87,12 +86,5 @@ const PaginationCustom: FC<PaginationCustomProps> = ({
     </Pagination>
   );
 };
-
-// PaginationCustom.propTypes = {
-//   currentPage: PropTypes.number.isRequired,
-//   totalPages: PropTypes.number.isRequired,
-//   pagesToShow: PropTypes.number.isRequired,
-//   onChangePage: PropTypes.func.isRequired,
-// };
 
 export default PaginationCustom;

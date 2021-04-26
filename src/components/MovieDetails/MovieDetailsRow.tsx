@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 
 interface MovieDetailsRowProps {
   title?: string;
   value?: string | number;
-  children?: React.ReactNode;
   rowClassAdditional?: string;
 }
 
@@ -26,10 +24,3 @@ export const MovieDetailsRow: FC<MovieDetailsRowProps> = ({
     </Row>
   );
 };
-
-// MovieDetailsRow.propTypes = {
-//   title: PropTypes.string,
-//   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-//   children: PropTypes.any,
-//   rowClassAdditional: PropTypes.string,
-// };
