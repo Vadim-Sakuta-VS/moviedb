@@ -11,10 +11,10 @@ export function fillArrayFromTo(from: number, to: number) {
   return arr;
 }
 
-export const TYPES_SORTING = {
-  ASC: 'ASC',
-  DESC: 'DESC',
-};
+export enum TYPES_SORTING {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
 /**
  * @param arr array of objects, if field = undefined, expected array of numbers
  * @param field sort by name field
@@ -69,6 +69,9 @@ export function stringifyGetParamsObj(obj: ParamGetObj) {
   });
 }
 
-export function parseGetParamsStr(str: string) {
-  return qs.parse(str, { ignoreQueryPrefix: true, allowDots: true });
+export function parseGetParamsStr(str: string): ParamGetObj {
+  return qs.parse(str, {
+    ignoreQueryPrefix: true,
+    allowDots: true,
+  }) as ParamGetObj;
 }

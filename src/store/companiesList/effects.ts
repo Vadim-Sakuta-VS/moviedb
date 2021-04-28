@@ -22,7 +22,7 @@ export const searchCompaniesByQuery = () => {
       const query = selectQuery(getState());
       const data = await ApiCompanies.loadCompaniesByQuery({
         query,
-        page: 1,
+        page: '1',
       });
 
       const result = data.results.length ? data.results : 'Nothing found';
@@ -49,7 +49,7 @@ export const loadMoreCompaniesByQuery = () => {
       const currentPage = selectCompaniesCurrentPage(getState());
       const data = await ApiCompanies.loadCompaniesByQuery({
         query,
-        page: currentPage + 1,
+        page: String(currentPage + 1),
       });
 
       dispatch(updateCompanies(data.results));

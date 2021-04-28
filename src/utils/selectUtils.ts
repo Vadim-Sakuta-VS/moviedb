@@ -1,23 +1,9 @@
-import { ISelectOption, ISelectValue, SelectOptionDif } from '../types/types';
-
-export type ParamObjType = {
-  [key: string]:
-    | SelectOptionDif
-    | string
-    | number
-    | {
-        [key: string]: SelectOptionDif | string | number;
-      };
-};
-
-type ParamObjReturnType = {
-  [key: string]:
-    | string
-    | number
-    | {
-        [key: string]: string | number;
-      };
-};
+import {
+  ISelectOption,
+  ISelectValue,
+  ParamObjReturnType,
+  ParamObjType,
+} from '../types/types';
 
 export const createParamObj = (data: ParamObjType): ParamObjReturnType => {
   return Object.entries(data).reduce((acc, [key, value]) => {
@@ -52,7 +38,7 @@ export function createValuesSelectField(
   initialValues: ISelectValue[]
 ): ISelectOption[] {
   return initialValues.map((v) => ({
-    value: v.id,
+    value: v.id.toString(),
     label: v.name,
   }));
 }
@@ -62,25 +48,25 @@ export function createValuesSelectField(
  * @param values should have such structure as [{id:, name:}...]
  */
 export function getDefaultValuesSelectField(
-  defaultStr: string | undefined = '',
-  values: ISelectValue[] | string
+  defaultStr: any,
+  values: ISelectValue[]
 ): ISelectOption[] {
   if (typeof defaultStr !== 'string') {
     defaultStr = '';
   }
 
-  const ids = defaultStr.split(',');
+  const ids = (defaultStr as string).split(',');
   return ids.reduce((acc: ISelectOption[], id) => {
     if (id) {
-      const defaultValueIndex = (values as ISelectValue[]).findIndex(
+      const defaultValueIndex = values.findIndex(
         (v) => v.id === +id || v.id === id
       );
       if (defaultValueIndex !== -1) {
         return [
           ...acc,
           {
-            value: (values as ISelectValue[])[defaultValueIndex].id,
-            label: (values as ISelectValue[])[defaultValueIndex].name,
+            value: values[defaultValueIndex].id.toString(),
+            label: values[defaultValueIndex].name,
           },
         ];
       }

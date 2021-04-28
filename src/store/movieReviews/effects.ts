@@ -20,7 +20,7 @@ export const loadMovieReviews = () => {
       const movieId = selectMovieId(getState());
       const currentPage = selectMovieReviewsCurrentPage(getState());
       const data = await ApiMovies.loadMovieReviews(movieId as number, {
-        page: currentPage,
+        page: currentPage.toString(),
       });
 
       dispatch(setMovieReviews(data.results));

@@ -36,11 +36,11 @@ import {
   createValuesSelectField,
   createValuesStructureNumbers,
   getDefaultValuesSelectField,
-  ParamObjType,
 } from '../../utils/selectUtils';
 import clsx from 'clsx';
 import { ApiMovies } from '../../api/apiMovies';
 import { ParsedQs } from 'qs';
+import { ParamObjType } from '../../types/types';
 
 const MovieListFilterPage: FC = () => {
   const { search, pathname } = useLocation();
@@ -79,7 +79,7 @@ const MovieListFilterPage: FC = () => {
     const paramStr = stringifyGetParamsObj(paramObj);
     if (paramStr !== search) {
       dispatch(updateData({ isRequiredUpdate: true }));
-      paramObj.page = 1;
+      paramObj.page = '1';
     }
     history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
   };
@@ -94,16 +94,16 @@ const MovieListFilterPage: FC = () => {
   const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
   const defaultValues = parseGetParamsStr(search);
   const defaultGenres = getDefaultValuesSelectField(
-    defaultValues.with_genres as string,
+    defaultValues.with_genres,
     genres
   );
   const vote_average = defaultValues.vote_average as ParsedQs;
   const defaultVoteAverageGte = getDefaultValuesSelectField(
-    vote_average?.gte as string,
+    vote_average?.gte,
     votesAverageArr
   );
   const defaultVoteAverageLte = getDefaultValuesSelectField(
-    vote_average?.lte as string,
+    vote_average?.lte,
     votesAverageArr
   );
   const releaseYearsArr = createValuesStructureNumbers(
@@ -114,11 +114,11 @@ const MovieListFilterPage: FC = () => {
     )
   );
   const defaultReleaseYear = getDefaultValuesSelectField(
-    defaultValues.primary_release_year as string,
+    defaultValues.primary_release_year,
     releaseYearsArr
   );
   const defaultSorting = getDefaultValuesSelectField(
-    defaultValues.sort_by as string,
+    defaultValues.sort_by,
     ApiMovies.SORTING_TYPES
   );
 

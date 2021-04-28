@@ -15,7 +15,7 @@ export const loadMoviesData = (movieType: string) => {
         const data = await ApiMovies.loadMovieList(
           ApiMovies.GET[movieType.toUpperCase()],
           {
-            page: 1,
+            page: '1',
           }
         );
 

@@ -35,8 +35,8 @@ const HomePage: FC = () => {
         to={{
           pathname: '/movies',
           search: stringifyGetParamsObj({
-            with_genres: g.id,
-            page: 1,
+            with_genres: g.id.toString(),
+            page: '1',
           }),
         }}
         className='d-flex justify-content-center align-items-center btn btn-light w-100 h-100 pt-4 pb-4'

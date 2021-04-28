@@ -4,9 +4,12 @@ import { useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import ControlSelect from '../ControlSelect/ControlSelect';
 import ControlFromTo from '../ControlFromTo/ControlFromTo';
-import { ISelectOption, SelectOptionDif } from '../../types/types';
+import {
+  ISelectOption,
+  ParamObjType,
+  SelectOptionDif,
+} from '../../types/types';
 import { SubmitHandler } from 'react-hook-form';
-import { ParamObjType } from '../../utils/selectUtils';
 
 export interface FilterFormValues extends ParamObjType {
   with_genres: ISelectOption[];
@@ -16,7 +19,7 @@ export interface FilterFormValues extends ParamObjType {
     lte: SelectOptionDif;
   };
   sort_by: SelectOptionDif;
-  page: string | number;
+  page: string;
 }
 
 interface FilterFormProps {
@@ -53,7 +56,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='with_genres'
             label='Genres'
             isMulti={true}
-            options={values.with_genres as SelectOptionDif}
+            options={values.with_genres}
           />
         </Col>
         <Col className='col-12 col-sm-6'>
@@ -62,7 +65,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='primary_release_year'
             label='Release year'
             isMulti={false}
-            options={values.primary_release_year as SelectOptionDif}
+            options={values.primary_release_year}
           />
         </Col>
       </Row>
@@ -87,7 +90,7 @@ const FilterForm: FC<FilterFormProps> = ({
             name='sort_by'
             label='Sort by'
             isMulti={false}
-            options={values.sort_by as SelectOptionDif}
+            options={values.sort_by}
           />
         </Col>
       </Row>

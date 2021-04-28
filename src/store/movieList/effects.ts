@@ -32,7 +32,7 @@ export const loadMovies = (URL: string, paramsObj = {}) => {
       const currentPage = selectCurrentPage(getState());
 
       const data = await ApiMovies.loadMovieList(URL, {
-        page: currentPage,
+        page: currentPage.toString(),
         ...paramsObj,
       });
 

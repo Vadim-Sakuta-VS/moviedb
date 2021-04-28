@@ -1,6 +1,7 @@
 import { ValueType } from 'react-select';
 
 export type ImgPathType = string | null;
+export type StringOrNumberType = string | number;
 
 export interface ICompany {
   id: number;
@@ -59,8 +60,8 @@ export interface IReview {
 }
 
 export interface ISelectOption {
-  value: string | number;
-  label: string | number;
+  value: string;
+  label: StringOrNumberType;
 }
 
 export type SelectOptionDif = ISelectOption[] | ISelectOption;
@@ -72,12 +73,12 @@ export interface BaseSelectProps {
 }
 
 export interface ISelectValue {
-  id: number | string;
-  name: number | string;
+  id: StringOrNumberType;
+  name: StringOrNumberType;
 }
 
 export type ParamGetObj = {
-  [key: string]: any;
+  [key: string]: string | ParamGetObj;
 };
 
 export interface IListResponse<T> {
@@ -87,4 +88,12 @@ export interface IListResponse<T> {
 
 export type KeyValueStringType = {
   [key: string]: string;
+};
+
+export type ParamObjType = {
+  [key: string]: SelectOptionDif | string | ParamObjType;
+};
+
+export type ParamObjReturnType = {
+  [key: string]: string | ParamObjReturnType;
 };
