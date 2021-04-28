@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { IGenre } from '../../types/types';
+import { IGenre } from '../../types/entities';
 
 export const selectGenresLoading = (state: RootState): boolean =>
   state.genres.isLoading;

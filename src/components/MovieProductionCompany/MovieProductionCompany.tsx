@@ -3,7 +3,7 @@ import './MovieProductionCompany.scss';
 import { Col, Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
 import clsx from 'clsx';
-import { ImgPathType } from '../../types/types';
+import { ImgPathType } from '../../types/common';
 
 interface MovieProductionCompanyProps {
   logoPath: ImgPathType;

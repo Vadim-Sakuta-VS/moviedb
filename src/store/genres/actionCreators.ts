@@ -1,5 +1,5 @@
 import { GenresActions, SetGenresAction, SetTypeLoadingAction } from './types';
-import { IGenre } from '../../types/types';
+import { IGenre } from '../../types/entities';
 
 export const setTypeLoading = (isLoading: boolean): SetTypeLoadingAction => ({
   type: GenresActions.SET_TYPE_LOADING,

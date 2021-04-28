@@ -7,7 +7,7 @@ import {
   SetTotalPagesAction,
   UpdateDataAction,
 } from './types';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export const setMoviesTypeLoading = (
   isLoading: boolean

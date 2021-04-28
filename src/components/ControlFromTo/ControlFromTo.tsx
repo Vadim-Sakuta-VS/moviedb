@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import ControlSelect from '../ControlSelect/ControlSelect';
 import { Control } from 'react-hook-form';
-import { BaseSelectProps } from '../../types/types';
+import { BaseSelectProps } from '../../types/uiTypes';
 
 interface ControlFromToProps {
   control: Control<any>;

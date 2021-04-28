@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form';
 import Select from 'react-select';
 import clsx from 'clsx';
 import { Control } from 'react-hook-form';
-import { BaseSelectProps } from '../../types/types';
+import { BaseSelectProps } from '../../types/uiTypes';
 import { FC } from 'react';
 
 interface ControlSelectProps extends BaseSelectProps {

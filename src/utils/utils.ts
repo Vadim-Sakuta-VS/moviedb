@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { ParamGetObj } from '../types/types';
+import { ParamGetObj } from '../types/params';
 
 export function fillArrayFromTo(from: number, to: number) {
   const arr = [];

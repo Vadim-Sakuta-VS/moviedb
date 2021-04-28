@@ -1,4 +1,4 @@
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 export enum CompanyDetailsActions {
   SET_TYPE_LOADING = 'COMPANY_DETAILS/SET_TYPE_LOADING',

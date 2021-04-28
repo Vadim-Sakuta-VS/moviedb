@@ -1,4 +1,4 @@
-import { IReview } from '../../types/types';
+import { IReview } from '../../types/entities';
 
 export enum MovieReviewsActions {
   SET_MOVIE_ID = 'MOVIES_REVIEWS/SET_MOVIE_ID',

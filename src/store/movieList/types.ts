@@ -1,4 +1,4 @@
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export enum MovieListActions {
   CHANGE_PAGE = 'MOVIE_LIST/CHANGE_PAGE',

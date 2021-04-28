@@ -40,7 +40,7 @@ import {
 import clsx from 'clsx';
 import { ApiMovies } from '../../api/apiMovies';
 import { ParsedQs } from 'qs';
-import { ParamObjType } from '../../types/types';
+import { ParamObjType } from '../../types/params';
 
 const MovieListFilterPage: FC = () => {
   const { search, pathname } = useLocation();

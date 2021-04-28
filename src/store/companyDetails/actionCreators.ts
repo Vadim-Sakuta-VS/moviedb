@@ -1,4 +1,4 @@
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 import {
   CompanyDetailsActions,
   SetCompanyDetailsAction,

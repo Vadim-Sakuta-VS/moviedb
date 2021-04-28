@@ -3,7 +3,7 @@ import {
   CompaniesListActions,
   CompaniesListState,
 } from './types';
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 const initialState: CompaniesListState = {
   query: '',

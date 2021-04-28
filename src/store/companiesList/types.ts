@@ -1,4 +1,4 @@
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 export enum CompaniesListActions {
   SET_QUERY = 'SET_QUERY',

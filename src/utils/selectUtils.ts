@@ -1,9 +1,5 @@
-import {
-  ISelectOption,
-  ISelectValue,
-  ParamObjReturnType,
-  ParamObjType,
-} from '../types/types';
+import { ISelectOption, ISelectValue } from '../types/uiTypes';
+import { ParamObjReturnType, ParamObjType } from '../types/params';
 
 export const createParamObj = (data: ParamObjType): ParamObjReturnType => {
   return Object.entries(data).reduce((acc, [key, value]) => {

@@ -3,7 +3,7 @@ import './MovieCard.scss';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
 import { Link } from 'react-router-dom';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 interface MovieCardProps {
   movie: IMovie;

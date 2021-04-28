@@ -3,7 +3,7 @@ import {
   SetMoviesDataAction,
   SetMoviesTypeLoadingAction,
 } from './types';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export const setMovieTypeLoading = (
   type: string,

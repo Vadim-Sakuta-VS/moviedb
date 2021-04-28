@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 export const selectCompanyDetails = (state: RootState): ICompany =>
   state.companyDetails.company;

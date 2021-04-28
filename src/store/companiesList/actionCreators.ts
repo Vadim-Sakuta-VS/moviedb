@@ -7,7 +7,7 @@ import {
   SetTypeLoadingMoreAction,
   UpdateCompaniesAction,
 } from './types';
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 export const setQuery = (query: string): SetQueryAction => ({
   type: CompaniesListActions.SET_QUERY,

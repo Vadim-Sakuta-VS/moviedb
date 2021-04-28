@@ -3,7 +3,7 @@ import './CompanyLinkItem.scss';
 import { Alert, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ApiMovies } from '../../api/apiMovies';
-import { ImgPathType } from '../../types/types';
+import { ImgPathType } from '../../types/common';
 
 interface CompanyLinkItemProps {
   title: string;

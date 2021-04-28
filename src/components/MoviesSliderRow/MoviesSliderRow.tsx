@@ -10,7 +10,7 @@ import './MoviesSliderRow.scss';
 import MovieSlide from './MovieSlide';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
 import { Link } from 'react-router-dom';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 SwiperCore.use([Pagination]);
 

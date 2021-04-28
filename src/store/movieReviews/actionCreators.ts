@@ -6,7 +6,7 @@ import {
   SetTotalPagesAction,
   SetTypeLoadingAction,
 } from './types';
-import { IReview } from '../../types/types';
+import { IReview } from '../../types/entities';
 
 export const setMovieId = (id: number): SetMovieIdAction => ({
   type: MovieReviewsActions.SET_MOVIE_ID,

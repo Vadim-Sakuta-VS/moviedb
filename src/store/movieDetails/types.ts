@@ -1,4 +1,4 @@
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export enum MovieDetailsActions {
   SET_MOVIE_DETAILS = 'MOVIE_DETAILS/SET_MOVIE_DETAILS',

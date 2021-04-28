@@ -1,9 +1,9 @@
-import { IMovie } from '../../types/types';
 import {
   MovieDetailsAction,
   MovieDetailsActions,
   SetTypeLoadingAction,
 } from './types';
+import { IMovie } from '../../types/entities';
 
 export const setMovieDetails = (movie: IMovie): MovieDetailsAction => ({
   type: MovieDetailsActions.SET_MOVIE_DETAILS,

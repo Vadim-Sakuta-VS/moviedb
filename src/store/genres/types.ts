@@ -1,4 +1,4 @@
-import { IGenre } from '../../types/types';
+import { IGenre } from '../../types/entities';
 
 export enum GenresActions {
   SET_TYPE_LOADING = 'GENRES/SET_TYPE_LOADING',

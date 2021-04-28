@@ -1,4 +1,4 @@
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export enum HomeActions {
   SET_MOVIES_TYPE_LOADING = 'HOME/SET_MOVIES_TYPE_LOADING',

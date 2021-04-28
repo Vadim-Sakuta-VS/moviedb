@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export const selectCurrentPage = (state: RootState): number =>
   state.movieList.currentPage;

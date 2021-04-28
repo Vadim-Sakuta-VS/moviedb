@@ -1,5 +1,5 @@
 import { HomeAction, HomeActions, HomeState } from './types';
-import { KeyValueStringType } from '../../types/types';
+import { KeyValueStringType } from '../../types/params';
 
 export const MOVIE_TYPES: KeyValueStringType = {
   NOW_PLAYING: 'Now playing',

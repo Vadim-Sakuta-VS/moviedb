@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 export const selectMovieDetails = (state: RootState): IMovie =>
   state.movieDetails.movie;

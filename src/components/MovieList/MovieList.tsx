@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
-import { IMovie } from '../../types/types';
+import { IMovie } from '../../types/entities';
 
 interface MovieListProps {
   currentPage: number;

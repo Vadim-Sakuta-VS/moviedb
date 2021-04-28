@@ -1,15 +1,13 @@
 import { requiredGetParams, SERVER, SERVER_IMAGE } from './constants';
 import { stringifyGetParamsObj } from '../utils/utils';
+import { IGenre, IMovie, IReview } from '../types/entities';
+import { ISelectValue } from '../types/uiTypes';
 import {
-  IGenre,
   IListResponse,
-  ImgPathType,
-  IMovie,
-  IReview,
-  ISelectValue,
   KeyValueStringType,
   ParamGetObj,
-} from '../types/types';
+} from '../types/params';
+import { ImgPathType } from '../types/common';
 
 interface IGenresResponse {
   genres: IGenre[];

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import './UserAvatar.scss';
 import { Col, Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
-import { ImgPathType } from '../../types/types';
+import { ImgPathType } from '../../types/common';
 
 interface UserAvatarProps {
   username: string;

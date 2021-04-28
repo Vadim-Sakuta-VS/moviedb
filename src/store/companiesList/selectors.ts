@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { ICompany } from '../../types/types';
+import { ICompany } from '../../types/entities';
 
 export const selectQuery = (state: RootState): string =>
   state.companiesList.query;

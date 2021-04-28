@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import './MovieSlide.scss';
 import { Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
-import { ImgPathType } from '../../types/types';
+import { ImgPathType } from '../../types/common';
 
 interface MovieSlideProps {
   title: string;

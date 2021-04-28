@@ -1,6 +1,7 @@
 import { requiredGetParams, SERVER } from './constants';
 import { stringifyGetParamsObj } from '../utils/utils';
-import { ICompany, IListResponse, ParamGetObj } from '../types/types';
+import { IListResponse, ParamGetObj } from '../types/params';
+import { ICompany } from '../types/entities';
 
 export class ApiCompanies {
   static async loadCompaniesByQuery(

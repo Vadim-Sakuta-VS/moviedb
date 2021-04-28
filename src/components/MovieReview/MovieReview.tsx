@@ -3,7 +3,7 @@ import './MovieReview.scss';
 import { Alert, Button, Col, Modal, Row } from 'react-bootstrap';
 import { MovieDetailsRow } from '../MovieDetails/MovieDetailsRow';
 import UserAvatar from '../UserAvatar/UserAvatar';
-import { IReview } from '../../types/types';
+import { IReview } from '../../types/entities';
 
 interface MovieReviewProps extends IReview {
   maxContentSymbolsToShow: number;

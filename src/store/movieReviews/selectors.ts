@@ -1,5 +1,5 @@
 import { RootState } from '../rootStore';
-import { IReview } from '../../types/types';
+import { IReview } from '../../types/entities';
 
 export const selectMovieId = (state: RootState): number | null =>
   state.movieReviews.movieId;

@@ -4,12 +4,9 @@ import { useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import ControlSelect from '../ControlSelect/ControlSelect';
 import ControlFromTo from '../ControlFromTo/ControlFromTo';
-import {
-  ISelectOption,
-  ParamObjType,
-  SelectOptionDif,
-} from '../../types/types';
+import { ISelectOption, SelectOptionDif } from '../../types/uiTypes';
 import { SubmitHandler } from 'react-hook-form';
+import { ParamObjType } from '../../types/params';
 
 export interface FilterFormValues extends ParamObjType {
   with_genres: ISelectOption[];
