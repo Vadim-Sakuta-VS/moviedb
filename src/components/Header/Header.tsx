@@ -3,6 +3,7 @@ import './Header.scss';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import UserAuth from '../UserAuth/UserAuth';
 
 const Header: FC = () => {
   const [isFixedVisible, setIsFixedVisible] = useState<boolean>(false);
@@ -61,6 +62,9 @@ const Header: FC = () => {
                 Companies
               </Link>
             </Col>
+            <Col className='col-auto'>
+              <UserAuth />
+            </Col>
           </Row>
         </Container>
       </header>
@@ -79,6 +83,9 @@ const Header: FC = () => {
               <Link to='/companies' className='header__link'>
                 Companies
               </Link>
+            </Col>
+            <Col className='col-auto'>
+              <UserAuth />
             </Col>
           </Row>
         </Container>

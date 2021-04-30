@@ -55,3 +55,15 @@ export interface IReview {
   updated_at: string;
   content: string;
 }
+
+export interface IUser {
+  id: number;
+  avatar: {
+    tmdb: ImgPathType;
+  };
+  include_adult: boolean;
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  username: string;
+}

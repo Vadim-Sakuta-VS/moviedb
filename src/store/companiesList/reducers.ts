@@ -33,7 +33,7 @@ function companiesListReducer(
         isLoading: false,
       };
     case CompaniesListActions.SET_TYPE_LOADING_MORE:
-      return { ...state, isLoading: action.payload };
+      return { ...state, isLoadingMore: action.payload };
     case CompaniesListActions.UPDATE_COMPANIES:
       return {
         ...state,

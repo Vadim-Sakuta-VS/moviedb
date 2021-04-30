@@ -8,6 +8,8 @@ import { companiesListReducer } from './companiesList/reducers';
 import { companyDetailsReducer } from './companyDetails/reducers';
 import { homeReducer } from './home/reducers';
 import { genresReducer } from './genres/reducers';
+import { userAuthReducer } from './userAuth/reducers';
+import { appReducer } from './app/reducers';
 
 const rootReducer = combineReducers({
   movieList: movieListReducer,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
   companyDetails: companyDetailsReducer,
   home: homeReducer,
   genres: genresReducer,
+  userAuth: userAuthReducer,
+  app: appReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
