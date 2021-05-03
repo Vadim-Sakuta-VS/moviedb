@@ -70,7 +70,9 @@ export interface IReview {
 export interface IUser {
   id: number;
   avatar: {
-    tmdb: ImgPathType;
+    tmdb: {
+      avatar_path: ImgPathType;
+    };
   };
   include_adult: boolean;
   iso_639_1: string;

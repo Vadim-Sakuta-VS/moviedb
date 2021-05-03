@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadUserDataDetails } from './store/userAuth/effects';
 import { selectAppLoading } from './store/app/selectors';
 import Loader from './components/Loader/Loader';
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 function App() {
   const isAppLoading = useSelector(selectAppLoading);
@@ -59,6 +61,9 @@ function App() {
                 render={() => withHeaderLayout(CompanyDetails)}
               />
               <Route exact path='/login' component={LoginPage} />
+              <PrivateRoute exact path='/profile/:id'>
+                {withHeaderLayout(ProfilePage)}
+              </PrivateRoute>
               <Route path='*' component={Page404} />
             </Switch>
           </main>
