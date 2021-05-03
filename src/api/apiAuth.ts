@@ -149,7 +149,7 @@ export class ApiAuth {
     localStorage.setItem('session_id', id);
   }
 
-  private static getSessionId() {
+  static getSessionId() {
     return localStorage.getItem('session_id');
   }
 

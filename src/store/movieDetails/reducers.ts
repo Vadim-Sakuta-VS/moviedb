@@ -3,6 +3,14 @@ import {
   MovieDetailsActions,
   MovieDetailsState,
 } from './types';
+import { IMovieAccountState } from '../../types/entities';
+
+export const initialMovieAccountState: IMovieAccountState = {
+  id: 0,
+  favorite: false,
+  rated: false,
+  watchlist: false,
+};
 
 const initialState: MovieDetailsState = {
   isLoading: false,
@@ -15,6 +23,7 @@ const initialState: MovieDetailsState = {
     vote_count: 0,
     release_date: '',
   },
+  movieAccountState: initialMovieAccountState,
 };
 
 function movieDetailsReducer(
@@ -26,10 +35,21 @@ function movieDetailsReducer(
       return {
         ...state,
         movie: action.payload,
-        isLoading: false,
       };
     case MovieDetailsActions.SET_TYPE_LOADING:
       return { ...state, isLoading: action.payload };
+    case MovieDetailsActions.SET_MOVIE_RATING:
+      return {
+        ...state,
+        movieAccountState: {
+          ...state.movieAccountState,
+          rated: {
+            value: action.payload,
+          },
+        },
+      };
+    case MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE:
+      return { ...state, movieAccountState: action.payload };
     default:
       return state;
   }

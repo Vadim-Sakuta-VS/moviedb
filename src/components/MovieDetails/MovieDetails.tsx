@@ -4,15 +4,23 @@ import { Container, Row, Col, Image } from 'react-bootstrap';
 import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductionCompany';
 import { MovieDetailsRow } from './MovieDetailsRow';
 import { ApiMovies } from '../../api/apiMovies';
-import { loadMovieDetails } from '../../store/movieDetails/effects';
+import {
+  deleteRatingMovie,
+  loadMovieAccountState,
+  loadMovieDetails,
+  rateMovie,
+} from '../../store/movieDetails/effects';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectMovieAccountState,
   selectMovieDetails,
   selectMovieDetailsLoading,
 } from '../../store/movieDetails/selectors';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import MovieReviews from '../MovieReviews/MovieReviews';
+import MovieRating from '../MovieRating/MovieRating';
+import { selectUserAuthStatus } from '../../store/userAuth/selectors';
 
 interface MovieDetailsParams {
   id: string;
@@ -20,19 +28,48 @@ interface MovieDetailsParams {
 
 const MovieDetails: FC = () => {
   const { id } = useParams<MovieDetailsParams>();
+  const history = useHistory();
+  const location = useLocation();
   const movie = useSelector(selectMovieDetails);
+  const movieAccountState = useSelector(selectMovieAccountState);
   const isLoading = useSelector(selectMovieDetailsLoading);
+  const isAuth = useSelector(selectUserAuthStatus);
   const dispatch = useDispatch();
 
+  const isCorrectId = () => !isNaN(+id) && +id > 0;
+
   useEffect(() => {
-    if (!isNaN(+id) && +id > 0) {
+    if (isCorrectId()) {
       dispatch(loadMovieDetails(+id));
     }
   }, [id, dispatch]);
 
+  useEffect(() => {
+    if (isCorrectId()) {
+      dispatch(loadMovieAccountState(+id));
+    }
+  }, [isAuth]);
+
   if (isNaN(+id) || (!isNaN(+id) && +id < 1)) {
     return <Redirect to='/page404' />;
   }
+
+  const onClickRating = (value: number) => {
+    if (!isAuth) {
+      history.push('/login', { from: location });
+      return;
+    }
+
+    if (
+      (typeof movieAccountState.rated === 'object' &&
+        movieAccountState.rated.value !== value) ||
+      !movieAccountState.rated
+    ) {
+      dispatch(rateMovie(+id, value));
+      return;
+    }
+    dispatch(deleteRatingMovie(+id));
+  };
 
   const budget = `${movie.budget}$`;
   const genres = movie.genres && movie.genres.map((g) => g.name).join(', ');
@@ -68,10 +105,26 @@ const MovieDetails: FC = () => {
           />
         </Col>
         <Col>
-          <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
-            {movie.title}
-          </Col>
           <Container>
+            <Row className='justify-content-end'>
+              <Col className='col-auto p-0'>
+                <MovieRating
+                  stop={10}
+                  fractions={2}
+                  initialRating={
+                    typeof movieAccountState.rated === 'object'
+                      ? movieAccountState.rated.value
+                      : undefined
+                  }
+                  onClick={onClickRating}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
+                {movie.title}
+              </Col>
+            </Row>
             <MovieDetailsRow title='Budget' value={budget} />
             <MovieDetailsRow title='Genres' value={genres} />
             <MovieDetailsRow title='Production countries'>

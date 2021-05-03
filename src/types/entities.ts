@@ -42,6 +42,17 @@ export interface IMovie {
   homepage?: string;
 }
 
+export interface IMovieAccountState {
+  id: number;
+  favorite: boolean;
+  rated:
+    | {
+        value: number;
+      }
+    | boolean;
+  watchlist: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;

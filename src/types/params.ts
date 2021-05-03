@@ -35,6 +35,7 @@ export type SessionId = string;
 export interface UserAuthResponse {
   success: boolean;
   status_message: string;
+  status_code?: number;
 }
 
 export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
