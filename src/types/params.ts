@@ -20,3 +20,23 @@ export type ParamObjType = {
 export type ParamObjReturnType = {
   [key: string]: string | ParamObjReturnType;
 };
+
+export interface IUserParam {
+  username: string;
+  password: string;
+}
+
+export type TokenParam = {
+  request_token: string;
+};
+
+export type SessionId = string;
+
+export interface UserAuthResponse {
+  success: boolean;
+  status_message: string;
+}
+
+export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
+
+export type UserAuthParam = TokenParam & IUserParam;

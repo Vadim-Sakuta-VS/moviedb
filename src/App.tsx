@@ -9,42 +9,60 @@ import CompanyDetails from './components/CompanyDetails/CompanyDetails';
 import HomePage from './components/HomePage/HomePage';
 import MovieListByTypePage from './components/MovieListByTypePage/MovieListByTypePage';
 import MovieListFilterPage from './components/MovieListFilterPage/MovieListFilterPage';
+import LoginPage from './components/LoginPage/LoginPage';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUserDataDetails } from './store/userAuth/effects';
+import { selectAppLoading } from './store/app/selectors';
+import Loader from './components/Loader/Loader';
 
 function App() {
+  const isAppLoading = useSelector(selectAppLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUserDataDetails());
+  }, []);
+
   return (
     <Router>
       <div className='App'>
-        <main className='page'>
-          <Switch>
-            <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
-            <Route
-              exact
-              path='/movies/:type'
-              render={() => withHeaderLayout(MovieListByTypePage)}
-            />
-            <Route
-              exact
-              path='/movies'
-              render={() => withHeaderLayout(MovieListFilterPage)}
-            />
-            <Route
-              exact
-              path='/movie/:id'
-              render={() => withHeaderLayout(MovieDetails)}
-            />
-            <Route
-              exact
-              path='/companies'
-              render={() => withHeaderLayout(CompaniesList)}
-            />
-            <Route
-              exact
-              path='/company/:id'
-              render={() => withHeaderLayout(CompanyDetails)}
-            />
-            <Route path='*' component={Page404} />
-          </Switch>
-        </main>
+        {isAppLoading ? (
+          <Loader isLoading={isAppLoading} />
+        ) : (
+          <main className='page'>
+            <Switch>
+              <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
+              <Route
+                exact
+                path='/movies/:type'
+                render={() => withHeaderLayout(MovieListByTypePage)}
+              />
+              <Route
+                exact
+                path='/movies'
+                render={() => withHeaderLayout(MovieListFilterPage)}
+              />
+              <Route
+                exact
+                path='/movie/:id'
+                render={() => withHeaderLayout(MovieDetails)}
+              />
+              <Route
+                exact
+                path='/companies'
+                render={() => withHeaderLayout(CompaniesList)}
+              />
+              <Route
+                exact
+                path='/company/:id'
+                render={() => withHeaderLayout(CompanyDetails)}
+              />
+              <Route exact path='/login' component={LoginPage} />
+              <Route path='*' component={Page404} />
+            </Switch>
+          </main>
+        )}
       </div>
     </Router>
   );
