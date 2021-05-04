@@ -11,7 +11,9 @@ export const selectMovieDetailsLoading = (state: RootState): boolean =>
   state.movieDetails.isLoading;
 export const selectMovieAccountState = (state: RootState): IMovieAccountState =>
   state.movieDetails.movieListsAccountState.data;
+export const selectMovieAccountStateLoading = (state: RootState): boolean =>
+  state.movieDetails.movieListsAccountState.isLoading;
 export const selectMovieBasicListLoading = (
   state: RootState
 ): IMovieBasicListLoading =>
-  state.movieDetails.movieListsAccountState.stateLoading;
+  state.movieDetails.movieListsAccountState.stateListsLoading;

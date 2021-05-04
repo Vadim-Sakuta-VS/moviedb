@@ -1,6 +1,7 @@
 import { ApiMovies } from '../../api/apiMovies';
 import {
   setMovieAccountState,
+  setMovieAccountStateLoading,
   setMovieDetails,
   setMovieRating,
   setMovieToBasicList,
@@ -14,7 +15,10 @@ import {
   initialMovieAccountState,
   MovieTypesOnlyBooleanState,
 } from './reducers';
-import { selectUserDataDetails } from '../userAuth/selectors';
+import {
+  selectUserAuthStatus,
+  selectUserDataDetails,
+} from '../userAuth/selectors';
 import { GetRootState } from '../rootStore';
 import { selectMovieAccountState } from './selectors';
 
@@ -65,16 +69,27 @@ export const deleteRatingMovie = (movieId: number) => {
 };
 
 export const loadMovieAccountState = (movieId: number) => {
-  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction>,
+    getState: GetRootState
+  ) => {
     try {
-      const accountState = await ApiAccount.loadMovieAccountState(movieId);
-      dispatch(
-        setMovieAccountState(
-          accountState.id ? accountState : initialMovieAccountState
-        )
-      );
+      const isAuth = selectUserAuthStatus(getState());
+      if (isAuth) {
+        dispatch(setMovieAccountStateLoading(true));
+        const accountState = await ApiAccount.loadMovieAccountState(movieId);
+        dispatch(
+          setMovieAccountState(
+            accountState.id ? accountState : initialMovieAccountState
+          )
+        );
+        return;
+      }
+      dispatch(setMovieAccountState(initialMovieAccountState));
     } catch (e) {
       console.log(e);
+    } finally {
+      dispatch(setMovieAccountStateLoading(false));
     }
   };
 };

@@ -2,6 +2,7 @@ import {
   MovieDetailsAction,
   MovieDetailsActions,
   setMovieAccountStateAction,
+  setMovieAccountStateLoadingAction,
   setMovieRatingAction,
   setMovieToBasicListAction,
   setMovieToBasicListLoadingAction,
@@ -29,6 +30,13 @@ export const setMovieAccountState = (
 ): setMovieAccountStateAction => ({
   type: MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE,
   payload: movieAccountState,
+});
+
+export const setMovieAccountStateLoading = (
+  isLoading: boolean
+): setMovieAccountStateLoadingAction => ({
+  type: MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE_LOADING,
+  payload: isLoading,
 });
 
 export const setMovieToBasicList = (

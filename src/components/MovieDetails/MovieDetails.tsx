@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectMovieAccountState,
+  selectMovieAccountStateLoading,
   selectMovieBasicListLoading,
   selectMovieDetails,
   selectMovieDetailsLoading,
@@ -36,6 +37,9 @@ const MovieDetails: FC = () => {
   const location = useLocation();
   const movie = useSelector(selectMovieDetails);
   const movieAccountState = useSelector(selectMovieAccountState);
+  const isMovieAccountStateLoading = useSelector(
+    selectMovieAccountStateLoading
+  );
   const {
     favorite: isFavoriteLoading,
     watchlist: isWatchListLoading,
@@ -62,9 +66,16 @@ const MovieDetails: FC = () => {
     return <Redirect to='/page404' />;
   }
 
-  const onClickRating = (value: number) => {
+  const isRedirectToLogin = () => {
     if (!isAuth) {
       history.push('/login', { from: location });
+      return true;
+    }
+    return false;
+  };
+
+  const onClickRating = (value: number) => {
+    if (isRedirectToLogin()) {
       return;
     }
 
@@ -80,6 +91,10 @@ const MovieDetails: FC = () => {
   };
 
   const onClickFavoriteButtonHandler = () => {
+    if (isRedirectToLogin()) {
+      return;
+    }
+
     dispatch(
       addMediaToBasicList(
         MovieTypesOnlyBooleanState.favorite,
@@ -90,6 +105,10 @@ const MovieDetails: FC = () => {
   };
 
   const onClickWatchlistButtonHandler = () => {
+    if (isRedirectToLogin()) {
+      return;
+    }
+
     dispatch(
       addMediaToBasicList(
         MovieTypesOnlyBooleanState.watchlist,
@@ -119,7 +138,7 @@ const MovieDetails: FC = () => {
       />
     ));
 
-  return isLoading || movie.id !== +id ? (
+  return isLoading || isMovieAccountStateLoading || movie.id !== +id ? (
     <Loader isLoading={isLoading} />
   ) : (
     <Container className='pt-2 pb-2 movie-details'>

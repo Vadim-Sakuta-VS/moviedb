@@ -30,7 +30,8 @@ const initialState: MovieDetailsState = {
   },
   movieListsAccountState: {
     data: initialMovieAccountState,
-    stateLoading: { favorite: false, watchlist: false },
+    isLoading: false,
+    stateListsLoading: { favorite: false, watchlist: false },
   },
 };
 
@@ -67,13 +68,21 @@ function movieDetailsReducer(
           data: action.payload,
         },
       };
+    case MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE_LOADING:
+      return {
+        ...state,
+        movieListsAccountState: {
+          ...state.movieListsAccountState,
+          isLoading: action.payload,
+        },
+      };
     case MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST_LOADING:
       return {
         ...state,
         movieListsAccountState: {
           ...state.movieListsAccountState,
-          stateLoading: {
-            ...state.movieListsAccountState.stateLoading,
+          stateListsLoading: {
+            ...state.movieListsAccountState.stateListsLoading,
             [action.payload.type]: action.payload.isLoading,
           },
         },

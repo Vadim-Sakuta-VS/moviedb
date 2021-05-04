@@ -31,7 +31,6 @@ function movieReviewsReducer(
       return {
         ...state,
         data: [...state.data, ...action.payload],
-        isLoading: false,
       };
     case MovieReviewsActions.CHANGE_PAGE:
       return { ...state, currentPage: action.payload };

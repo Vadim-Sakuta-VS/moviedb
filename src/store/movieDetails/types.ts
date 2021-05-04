@@ -11,6 +11,7 @@ export enum MovieDetailsActions {
   SET_MOVIE_TO_BASIC_LIST = 'MOVIE_DETAILS/SET_MOVIE_TO_BASIC_LIST',
   SET_MOVIE_TO_BASIC_LIST_LOADING = 'MOVIE_DETAILS/SET_MOVIE_TO_BASIC_LIST_LOADING',
   SET_MOVIE_ACCOUNT_STATE = 'MOVIE_DETAILS/SET_MOVIE_ACCOUNT_STATE',
+  SET_MOVIE_ACCOUNT_STATE_LOADING = 'MOVIE_DETAILS/SET_MOVIE_ACCOUNT_STATE_LOADING',
 }
 
 export interface SetMovieDetailsAction {
@@ -33,6 +34,11 @@ export interface setMovieAccountStateAction {
   payload: IMovieAccountState;
 }
 
+export interface setMovieAccountStateLoadingAction {
+  type: MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE_LOADING;
+  payload: boolean;
+}
+
 export interface setMovieToBasicListAction {
   type: MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST;
   payload: { type: string; value: boolean };
@@ -48,6 +54,7 @@ export type MovieDetailsAction =
   | SetTypeLoadingAction
   | setMovieRatingAction
   | setMovieAccountStateAction
+  | setMovieAccountStateLoadingAction
   | setMovieToBasicListAction
   | setMovieToBasicListLoadingAction;
 
@@ -56,6 +63,7 @@ export interface MovieDetailsState {
   movie: IMovie;
   movieListsAccountState: {
     data: IMovieAccountState;
-    stateLoading: IMovieBasicListLoading;
+    isLoading: boolean;
+    stateListsLoading: IMovieBasicListLoading;
   };
 }
