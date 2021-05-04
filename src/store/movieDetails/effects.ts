@@ -3,12 +3,20 @@ import {
   setMovieAccountState,
   setMovieDetails,
   setMovieRating,
+  setMovieToBasicList,
+  setMovieToBasicListLoading,
   setTypeLoading,
 } from './actionCreators';
 import { MovieDetailsAction } from './types';
 import { Dispatch } from 'redux';
 import { ApiAccount } from '../../api/apiAccount';
-import { initialMovieAccountState } from './reducers';
+import {
+  initialMovieAccountState,
+  MovieTypesOnlyBooleanState,
+} from './reducers';
+import { selectUserDataDetails } from '../userAuth/selectors';
+import { GetRootState } from '../rootStore';
+import { selectMovieAccountState } from './selectors';
 
 export const loadMovieDetails = (id: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction>) => {
@@ -67,6 +75,37 @@ export const loadMovieAccountState = (movieId: number) => {
       );
     } catch (e) {
       console.log(e);
+    }
+  };
+};
+
+export const addMediaToBasicList = (
+  typeList: keyof typeof MovieTypesOnlyBooleanState,
+  media_type: keyof typeof ApiMovies.media_types,
+  media_id: number
+) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction>,
+    getState: GetRootState
+  ) => {
+    try {
+      dispatch(setMovieToBasicListLoading(typeList, true));
+      const account_id = selectUserDataDetails(getState()).id;
+      const newValueList = !selectMovieAccountState(getState())[typeList];
+      const res = await ApiAccount.addMediaToBasicList(
+        ApiAccount.POST[typeList](account_id),
+        media_type,
+        media_id,
+        typeList,
+        newValueList
+      );
+      if (res.status_code === 1 || res.status_code === 13) {
+        dispatch(setMovieToBasicList(typeList, newValueList));
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(setMovieToBasicListLoading(typeList, false));
     }
   };
 };

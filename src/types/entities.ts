@@ -53,6 +53,11 @@ export interface IMovieAccountState {
   watchlist: boolean;
 }
 
+export interface IMovieBasicListLoading {
+  favorite: boolean;
+  watchlist: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;

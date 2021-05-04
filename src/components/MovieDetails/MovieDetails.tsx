@@ -5,6 +5,7 @@ import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductio
 import { MovieDetailsRow } from './MovieDetailsRow';
 import { ApiMovies } from '../../api/apiMovies';
 import {
+  addMediaToBasicList,
   deleteRatingMovie,
   loadMovieAccountState,
   loadMovieDetails,
@@ -13,6 +14,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectMovieAccountState,
+  selectMovieBasicListLoading,
   selectMovieDetails,
   selectMovieDetailsLoading,
 } from '../../store/movieDetails/selectors';
@@ -21,6 +23,8 @@ import Loader from '../Loader/Loader';
 import MovieReviews from '../MovieReviews/MovieReviews';
 import MovieRating from '../MovieRating/MovieRating';
 import { selectUserAuthStatus } from '../../store/userAuth/selectors';
+import ButtonLoad from '../ButtonLoad/ButtonLoad';
+import { MovieTypesOnlyBooleanState } from '../../store/movieDetails/reducers';
 
 interface MovieDetailsParams {
   id: string;
@@ -32,6 +36,10 @@ const MovieDetails: FC = () => {
   const location = useLocation();
   const movie = useSelector(selectMovieDetails);
   const movieAccountState = useSelector(selectMovieAccountState);
+  const {
+    favorite: isFavoriteLoading,
+    watchlist: isWatchListLoading,
+  } = useSelector(selectMovieBasicListLoading);
   const isLoading = useSelector(selectMovieDetailsLoading);
   const isAuth = useSelector(selectUserAuthStatus);
   const dispatch = useDispatch();
@@ -69,6 +77,26 @@ const MovieDetails: FC = () => {
       return;
     }
     dispatch(deleteRatingMovie(+id));
+  };
+
+  const onClickFavoriteButtonHandler = () => {
+    dispatch(
+      addMediaToBasicList(
+        MovieTypesOnlyBooleanState.favorite,
+        ApiMovies.media_types.movie,
+        +id
+      )
+    );
+  };
+
+  const onClickWatchlistButtonHandler = () => {
+    dispatch(
+      addMediaToBasicList(
+        MovieTypesOnlyBooleanState.watchlist,
+        ApiMovies.media_types.movie,
+        +id
+      )
+    );
   };
 
   const budget = `${movie.budget}$`;
@@ -166,6 +194,34 @@ const MovieDetails: FC = () => {
                 Home page
               </a>
             </MovieDetailsRow>
+            <Row className='mt-4'>
+              <Col className='col-auto mb-2'>
+                <ButtonLoad
+                  isLoading={isFavoriteLoading}
+                  textValue={
+                    movieAccountState.favorite
+                      ? 'Delete from Favorite'
+                      : 'Mark as Favorite'
+                  }
+                  isOutlineVariant={!movieAccountState.favorite}
+                  onClick={onClickFavoriteButtonHandler}
+                  style={{ minWidth: '11rem', minHeight: '38px' }}
+                />
+              </Col>
+              <Col className='col-auto'>
+                <ButtonLoad
+                  isLoading={isWatchListLoading}
+                  textValue={
+                    movieAccountState.watchlist
+                      ? 'Delete from Watchlist'
+                      : 'Add to Watchlist'
+                  }
+                  isOutlineVariant={!movieAccountState.watchlist}
+                  onClick={onClickWatchlistButtonHandler}
+                  style={{ minWidth: '11rem', minHeight: '38px' }}
+                />
+              </Col>
+            </Row>
           </Container>
         </Col>
       </Row>

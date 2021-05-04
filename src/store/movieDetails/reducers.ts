@@ -5,6 +5,11 @@ import {
 } from './types';
 import { IMovieAccountState } from '../../types/entities';
 
+export enum MovieTypesOnlyBooleanState {
+  favorite = 'favorite',
+  watchlist = 'watchlist',
+}
+
 export const initialMovieAccountState: IMovieAccountState = {
   id: 0,
   favorite: false,
@@ -23,7 +28,10 @@ const initialState: MovieDetailsState = {
     vote_count: 0,
     release_date: '',
   },
-  movieAccountState: initialMovieAccountState,
+  movieListsAccountState: {
+    data: initialMovieAccountState,
+    stateLoading: { favorite: false, watchlist: false },
+  },
 };
 
 function movieDetailsReducer(
@@ -41,15 +49,46 @@ function movieDetailsReducer(
     case MovieDetailsActions.SET_MOVIE_RATING:
       return {
         ...state,
-        movieAccountState: {
-          ...state.movieAccountState,
-          rated: {
-            value: action.payload,
+        movieListsAccountState: {
+          ...state.movieListsAccountState,
+          data: {
+            ...state.movieListsAccountState.data,
+            rated: {
+              value: action.payload,
+            },
           },
         },
       };
     case MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE:
-      return { ...state, movieAccountState: action.payload };
+      return {
+        ...state,
+        movieListsAccountState: {
+          ...state.movieListsAccountState,
+          data: action.payload,
+        },
+      };
+    case MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST_LOADING:
+      return {
+        ...state,
+        movieListsAccountState: {
+          ...state.movieListsAccountState,
+          stateLoading: {
+            ...state.movieListsAccountState.stateLoading,
+            [action.payload.type]: action.payload.isLoading,
+          },
+        },
+      };
+    case MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST:
+      return {
+        ...state,
+        movieListsAccountState: {
+          ...state.movieListsAccountState,
+          data: {
+            ...state.movieListsAccountState.data,
+            [action.payload.type]: action.payload.value,
+          },
+        },
+      };
     default:
       return state;
   }

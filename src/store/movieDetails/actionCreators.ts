@@ -3,6 +3,8 @@ import {
   MovieDetailsActions,
   setMovieAccountStateAction,
   setMovieRatingAction,
+  setMovieToBasicListAction,
+  setMovieToBasicListLoadingAction,
   SetTypeLoadingAction,
 } from './types';
 import { IMovie, IMovieAccountState } from '../../types/entities';
@@ -27,4 +29,20 @@ export const setMovieAccountState = (
 ): setMovieAccountStateAction => ({
   type: MovieDetailsActions.SET_MOVIE_ACCOUNT_STATE,
   payload: movieAccountState,
+});
+
+export const setMovieToBasicList = (
+  type: string,
+  value: boolean
+): setMovieToBasicListAction => ({
+  type: MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST,
+  payload: { type, value },
+});
+
+export const setMovieToBasicListLoading = (
+  type: string,
+  isLoading: boolean
+): setMovieToBasicListLoadingAction => ({
+  type: MovieDetailsActions.SET_MOVIE_TO_BASIC_LIST_LOADING,
+  payload: { type, isLoading },
 });
