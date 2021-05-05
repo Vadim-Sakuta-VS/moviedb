@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import './UserListsPage.scss';
-import { Col, Container, Nav, Row, Spinner, Tab } from 'react-bootstrap';
+import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
 import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
 import { KeyValueStringType } from '../../types/params';
 import MovieList from '../MovieList/MovieList';
@@ -16,6 +16,7 @@ import {
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import { changePage } from '../../store/movieList/actionCreators';
+import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
 
 export const BASIC_LISTS_TYPES: KeyValueStringType = {
   RATED: 'Rated',
@@ -106,10 +107,8 @@ const UserListsPage: FC = () => {
 
   const tabPaneElements = listsKeys.map((key) => (
     <Tab.Pane key={key} eventKey={key}>
-      <div className='d-flex justify-content-center'>
-        {isLoading ? (
-          <Spinner animation='border' variant='success' />
-        ) : movies.length ? (
+      <SpinnerWrapper isLoading={isLoading}>
+        {movies.length ? (
           <MovieList
             currentPage={currentPage}
             totalPages={totalPages}
@@ -121,7 +120,7 @@ const UserListsPage: FC = () => {
             No movies
           </span>
         )}
-      </div>
+      </SpinnerWrapper>
     </Tab.Pane>
   ));
 

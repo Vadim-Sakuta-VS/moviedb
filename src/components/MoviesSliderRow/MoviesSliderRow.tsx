@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Col, Row, Spinner } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination } from 'swiper';
 import 'swiper/swiper.scss';
@@ -11,6 +11,7 @@ import MovieSlide from './MovieSlide';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
 import { Link } from 'react-router-dom';
 import { IMovie } from '../../types/entities';
+import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
 
 SwiperCore.use([Pagination]);
 
@@ -59,10 +60,8 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
           Все
         </Link>
       </Col>
-      <Col className='d-flex justify-content-center'>
-        {isLoading ? (
-          <Spinner animation='border' variant='success' />
-        ) : (
+      <Col>
+        <SpinnerWrapper isLoading={isLoading}>
           <Swiper
             spaceBetween={10}
             pagination={{ clickable: true }}
@@ -70,7 +69,7 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
           >
             {slidersElements}
           </Swiper>
-        )}
+        </SpinnerWrapper>
       </Col>
     </Row>
   );
