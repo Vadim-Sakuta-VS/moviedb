@@ -13,6 +13,17 @@ export class ApiAccount {
       return `${SERVER}/account/${account_id}/watchlist`;
     },
   };
+  static GET = {
+    rated(account_id: number) {
+      return `${SERVER}/account/${account_id}/rated/movies`;
+    },
+    favorite(account_id: number) {
+      return `${SERVER}/account/${account_id}/favorite/movies`;
+    },
+    watchlist(account_id: number) {
+      return `${SERVER}/account/${account_id}/watchlist/movies`;
+    },
+  };
 
   static async loadMovieAccountState(
     movieId: number

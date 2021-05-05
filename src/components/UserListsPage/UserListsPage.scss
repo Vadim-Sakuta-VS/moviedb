@@ -1,0 +1,14 @@
+.tabs {
+  .nav-link {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  &__link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

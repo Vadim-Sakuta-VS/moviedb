@@ -10,6 +10,11 @@ import {
 import { logoutUser } from '../../store/userAuth/effects';
 import DropdownToggle from './DropdownToggle';
 import DropdownItem from 'react-bootstrap/DropdownItem';
+import {
+  BASIC_LISTS_TYPES,
+  SortingDateTypes,
+} from '../UserListsPage/UserListsPage';
+import { stringifyGetParamsObj } from '../../utils/utils';
 
 const UserAuth: FC = () => {
   const location = useLocation();
@@ -49,6 +54,22 @@ const UserAuth: FC = () => {
                   className='pl-1 pr-1 menu-dropdown__link'
                 >
                   Profile
+                </Link>
+              </DropdownItem>
+              <DropdownItem eventKey='1' className='p-0'>
+                <Link
+                  to={{
+                    pathname: `/lists/${Object.keys(
+                      BASIC_LISTS_TYPES
+                    )[0].toLowerCase()}`,
+                    search: stringifyGetParamsObj({
+                      sort_by: SortingDateTypes.desc,
+                      page: '1',
+                    }),
+                  }}
+                  className='pl-1 pr-1 menu-dropdown__link'
+                >
+                  Lists
                 </Link>
               </DropdownItem>
               <Dropdown.Item
