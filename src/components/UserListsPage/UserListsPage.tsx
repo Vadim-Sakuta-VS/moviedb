@@ -49,6 +49,9 @@ const UserListsPage: FC = () => {
     if (isPathnameContainsListType()) {
       const paramsObj = parseGetParamsStr(location.search);
       dispatch(changePage(+paramsObj.page || 1));
+      if (!paramsObj.sort_by) {
+        paramsObj.sort_by = SortingDateTypes.desc;
+      }
       dispatch(
         loadUserBasicMovieList(
           getListType() as keyof typeof ApiAccount.GET,

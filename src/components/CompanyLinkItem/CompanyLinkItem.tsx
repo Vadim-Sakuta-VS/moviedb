@@ -17,7 +17,10 @@ const CompanyLinkItem: FC<CompanyLinkItemProps> = ({
   pathLink,
 }) => {
   return (
-    <Col className='col-3 mb-4'>
+    <Col
+      className='col-12 col-sm-6 col-md-4 col-lg-3 mb-4'
+      style={{ maxWidth: 320 }}
+    >
       <Alert variant='secondary' className='company-link-item h-100 m-0 p-0'>
         <Link
           to={pathLink}
