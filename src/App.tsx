@@ -30,9 +30,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
-        {isAppLoading ? (
-          <Loader isLoading={isAppLoading} />
-        ) : (
+        <Loader isLoading={isAppLoading}>
           <main className='page'>
             <Switch>
               <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
@@ -71,7 +69,7 @@ function App() {
               <Route path='*' component={Page404} />
             </Switch>
           </main>
-        )}
+        </Loader>
       </div>
     </Router>
   );
