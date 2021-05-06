@@ -7,7 +7,9 @@ const initialState: UserAuthState = {
   user: {
     id: 0,
     avatar: {
-      tmdb: null,
+      tmdb: {
+        avatar_path: null,
+      },
     },
     include_adult: false,
     iso_639_1: '',

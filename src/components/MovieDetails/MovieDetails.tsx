@@ -4,15 +4,28 @@ import { Container, Row, Col, Image } from 'react-bootstrap';
 import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductionCompany';
 import { MovieDetailsRow } from './MovieDetailsRow';
 import { ApiMovies } from '../../api/apiMovies';
-import { loadMovieDetails } from '../../store/movieDetails/effects';
+import {
+  addMediaToBasicList,
+  deleteRatingMovie,
+  loadMovieAccountState,
+  loadMovieDetails,
+  rateMovie,
+} from '../../store/movieDetails/effects';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectMovieAccountState,
+  selectMovieAccountStateLoading,
+  selectMovieBasicListLoading,
   selectMovieDetails,
   selectMovieDetailsLoading,
 } from '../../store/movieDetails/selectors';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
 import MovieReviews from '../MovieReviews/MovieReviews';
+import MovieRating from '../MovieRating/MovieRating';
+import { selectUserAuthStatus } from '../../store/userAuth/selectors';
+import ButtonLoad from '../ButtonLoad/ButtonLoad';
+import { MovieTypesOnlyBooleanState } from '../../store/movieDetails/reducers';
 
 interface MovieDetailsParams {
   id: string;
@@ -20,19 +33,90 @@ interface MovieDetailsParams {
 
 const MovieDetails: FC = () => {
   const { id } = useParams<MovieDetailsParams>();
+  const history = useHistory();
+  const location = useLocation();
   const movie = useSelector(selectMovieDetails);
+  const movieAccountState = useSelector(selectMovieAccountState);
+  const isMovieAccountStateLoading = useSelector(
+    selectMovieAccountStateLoading
+  );
+  const {
+    favorite: isFavoriteLoading,
+    watchlist: isWatchListLoading,
+  } = useSelector(selectMovieBasicListLoading);
   const isLoading = useSelector(selectMovieDetailsLoading);
+  const isAuth = useSelector(selectUserAuthStatus);
   const dispatch = useDispatch();
 
+  const isCorrectId = () => !isNaN(+id) && +id > 0;
+
   useEffect(() => {
-    if (!isNaN(+id) && +id > 0) {
+    if (isCorrectId()) {
       dispatch(loadMovieDetails(+id));
     }
   }, [id, dispatch]);
 
+  useEffect(() => {
+    if (isCorrectId()) {
+      dispatch(loadMovieAccountState(+id));
+    }
+  }, [isAuth]);
+
   if (isNaN(+id) || (!isNaN(+id) && +id < 1)) {
     return <Redirect to='/page404' />;
   }
+
+  const isRedirectToLogin = () => {
+    if (!isAuth) {
+      history.push('/login', { from: location });
+      return true;
+    }
+    return false;
+  };
+
+  const onClickRating = (value: number) => {
+    if (isRedirectToLogin()) {
+      return;
+    }
+
+    if (
+      (typeof movieAccountState.rated === 'object' &&
+        movieAccountState.rated.value !== value) ||
+      !movieAccountState.rated
+    ) {
+      dispatch(rateMovie(+id, value));
+      return;
+    }
+    dispatch(deleteRatingMovie(+id));
+  };
+
+  const onClickFavoriteButtonHandler = () => {
+    if (isRedirectToLogin()) {
+      return;
+    }
+
+    dispatch(
+      addMediaToBasicList(
+        MovieTypesOnlyBooleanState.favorite,
+        ApiMovies.media_types.movie,
+        +id
+      )
+    );
+  };
+
+  const onClickWatchlistButtonHandler = () => {
+    if (isRedirectToLogin()) {
+      return;
+    }
+
+    dispatch(
+      addMediaToBasicList(
+        MovieTypesOnlyBooleanState.watchlist,
+        ApiMovies.media_types.movie,
+        +id
+      )
+    );
+  };
 
   const budget = `${movie.budget}$`;
   const genres = movie.genres && movie.genres.map((g) => g.name).join(', ');
@@ -54,7 +138,7 @@ const MovieDetails: FC = () => {
       />
     ));
 
-  return isLoading || movie.id !== +id ? (
+  return isLoading || isMovieAccountStateLoading || movie.id !== +id ? (
     <Loader isLoading={isLoading} />
   ) : (
     <Container className='pt-2 pb-2 movie-details'>
@@ -68,10 +152,26 @@ const MovieDetails: FC = () => {
           />
         </Col>
         <Col>
-          <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
-            {movie.title}
-          </Col>
           <Container>
+            <Row className='justify-content-end'>
+              <Col className='col-auto p-0'>
+                <MovieRating
+                  stop={10}
+                  fractions={2}
+                  initialRating={
+                    typeof movieAccountState.rated === 'object'
+                      ? movieAccountState.rated.value
+                      : undefined
+                  }
+                  onClick={onClickRating}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
+                {movie.title}
+              </Col>
+            </Row>
             <MovieDetailsRow title='Budget' value={budget} />
             <MovieDetailsRow title='Genres' value={genres} />
             <MovieDetailsRow title='Production countries'>
@@ -113,6 +213,34 @@ const MovieDetails: FC = () => {
                 Home page
               </a>
             </MovieDetailsRow>
+            <Row className='mt-4'>
+              <Col className='col-auto mb-2'>
+                <ButtonLoad
+                  isLoading={isFavoriteLoading}
+                  textValue={
+                    movieAccountState.favorite
+                      ? 'Delete from Favorite'
+                      : 'Mark as Favorite'
+                  }
+                  isOutlineVariant={!movieAccountState.favorite}
+                  onClick={onClickFavoriteButtonHandler}
+                  style={{ minWidth: '11rem', minHeight: '38px' }}
+                />
+              </Col>
+              <Col className='col-auto'>
+                <ButtonLoad
+                  isLoading={isWatchListLoading}
+                  textValue={
+                    movieAccountState.watchlist
+                      ? 'Delete from Watchlist'
+                      : 'Add to Watchlist'
+                  }
+                  isOutlineVariant={!movieAccountState.watchlist}
+                  onClick={onClickWatchlistButtonHandler}
+                  style={{ minWidth: '11rem', minHeight: '38px' }}
+                />
+              </Col>
+            </Row>
           </Container>
         </Col>
       </Row>

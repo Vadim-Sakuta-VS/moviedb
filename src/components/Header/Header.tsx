@@ -58,12 +58,16 @@ const Header: FC = () => {
               </Link>
             </Col>
             <Col className='col-auto'>
-              <Link to='/companies' className='header__link'>
-                Companies
-              </Link>
-            </Col>
-            <Col className='col-auto'>
-              <UserAuth />
+              <Row className='flex-column flex-sm-row align-items-sm-center'>
+                <Col>
+                  <Link to='/companies' className='header__link'>
+                    Companies
+                  </Link>
+                </Col>
+                <Col>
+                  <UserAuth />
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Container>
@@ -80,12 +84,16 @@ const Header: FC = () => {
               </Link>
             </Col>
             <Col className='col-auto'>
-              <Link to='/companies' className='header__link'>
-                Companies
-              </Link>
-            </Col>
-            <Col className='col-auto'>
-              <UserAuth />
+              <Row className='flex-column flex-sm-row'>
+                <Col>
+                  <Link to='/companies' className='header__link'>
+                    Companies
+                  </Link>
+                </Col>
+                <Col>
+                  <UserAuth />
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Container>

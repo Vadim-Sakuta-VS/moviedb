@@ -13,6 +13,11 @@ interface IGenresResponse {
   genres: IGenre[];
 }
 
+enum MEDIA_TYPES {
+  movie = 'movie',
+  tv = 'tv',
+}
+
 export class ApiMovies {
   static GET: KeyValueStringType = {
     NOW_PLAYING: `${SERVER}/movie/now_playing`,
@@ -38,6 +43,8 @@ export class ApiMovies {
     { id: 'vote_count.asc', name: 'Vote count (Asc)' },
     { id: 'vote_count.desc', name: 'Vote count (Desc)' },
   ];
+
+  static media_types = MEDIA_TYPES;
 
   static async loadGenres(): Promise<IGenresResponse> {
     try {

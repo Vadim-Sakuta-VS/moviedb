@@ -6,12 +6,16 @@ interface LoaderProps {
   isLoading: boolean;
 }
 
-const Loader: FC<LoaderProps> = ({ isLoading }) => {
-  return isLoading ? (
-    <div className='loader d-flex justify-content-center align-items-center'>
-      <Spinner animation='border' variant='success' />
-    </div>
-  ) : null;
+const Loader: FC<LoaderProps> = ({ isLoading, children }) => {
+  if (isLoading) {
+    return (
+      <div className='loader d-flex justify-content-center align-items-center'>
+        <Spinner animation='border' variant='success' />
+      </div>
+    );
+  }
+
+  return <>{children}</>;
 };
 
 export default Loader;

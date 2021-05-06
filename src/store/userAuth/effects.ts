@@ -10,6 +10,9 @@ import { setTypeLoading as setTypeAppLoading } from '../app/actionCreators';
 import { ApiAuth } from '../../api/apiAuth';
 import { IUserParam } from '../../types/params';
 import { AppAction } from '../app/types';
+import { MovieDetailsAction } from '../movieDetails/types';
+import { setMovieAccountState } from '../movieDetails/actionCreators';
+import { initialMovieAccountState } from '../movieDetails/reducers';
 
 export const loginUser = (user: IUserParam) => {
   return async (dispatch: Dispatch<UserAuthAction>) => {
@@ -30,10 +33,11 @@ export const loginUser = (user: IUserParam) => {
 };
 
 export const logoutUser = () => {
-  return async (dispatch: Dispatch<UserAuthAction>) => {
+  return async (dispatch: Dispatch<UserAuthAction | MovieDetailsAction>) => {
     try {
       await ApiAuth.logoutUser();
       dispatch(logoutUserCreator());
+      dispatch(setMovieAccountState(initialMovieAccountState));
     } catch (e) {
       console.log(e);
     }

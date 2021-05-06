@@ -24,7 +24,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ username, avatarPath }) => {
         roundedCircle
         className='mb-1'
       />
-      <p className='m-0 text-center'>{username}</p>
+      <p className='m-0 text-center user-avatar__name'>{username}</p>
     </Col>
   );
 };

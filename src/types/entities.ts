@@ -42,6 +42,22 @@ export interface IMovie {
   homepage?: string;
 }
 
+export interface IMovieAccountState {
+  id: number;
+  favorite: boolean;
+  rated:
+    | {
+        value: number;
+      }
+    | boolean;
+  watchlist: boolean;
+}
+
+export interface IMovieBasicListLoading {
+  favorite: boolean;
+  watchlist: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;
@@ -59,7 +75,9 @@ export interface IReview {
 export interface IUser {
   id: number;
   avatar: {
-    tmdb: ImgPathType;
+    tmdb: {
+      avatar_path: ImgPathType;
+    };
   };
   include_adult: boolean;
   iso_639_1: string;
