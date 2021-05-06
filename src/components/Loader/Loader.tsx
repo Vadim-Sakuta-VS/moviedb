@@ -7,13 +7,15 @@ interface LoaderProps {
 }
 
 const Loader: FC<LoaderProps> = ({ isLoading, children }) => {
-  return (
-    (isLoading && (
+  if (isLoading) {
+    return (
       <div className='loader d-flex justify-content-center align-items-center'>
         <Spinner animation='border' variant='success' />
       </div>
-    )) || <>{children}</>
-  );
+    );
+  }
+
+  return <>{children}</>;
 };
 
 export default Loader;
