@@ -16,7 +16,7 @@ import {
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import { changePage } from '../../store/movieList/actionCreators';
-import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
+import Loader from '../Loader/Loader';
 
 export const BASIC_LISTS_TYPES: KeyValueStringType = {
   RATED: 'Rated',
@@ -110,7 +110,7 @@ const UserListsPage: FC = () => {
 
   const tabPaneElements = listsKeys.map((key) => (
     <Tab.Pane key={key} eventKey={key}>
-      <SpinnerWrapper isLoading={isLoading}>
+      <Loader isLoading={isLoading}>
         {movies.length ? (
           <MovieList
             currentPage={currentPage}
@@ -123,7 +123,7 @@ const UserListsPage: FC = () => {
             No movies
           </span>
         )}
-      </SpinnerWrapper>
+      </Loader>
     </Tab.Pane>
   ));
 

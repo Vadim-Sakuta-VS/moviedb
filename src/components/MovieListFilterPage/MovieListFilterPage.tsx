@@ -33,7 +33,7 @@ import {
 import { ApiMovies } from '../../api/apiMovies';
 import { ParsedQs } from 'qs';
 import { ParamObjType } from '../../types/params';
-import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
+import Loader from '../Loader/Loader';
 
 const MovieListFilterPage: FC = () => {
   const { search, pathname } = useLocation();
@@ -113,7 +113,7 @@ const MovieListFilterPage: FC = () => {
 
   return (
     <Container className='pt-2 pb-2'>
-      <SpinnerWrapper isLoading={isGenresLoading}>
+      <Loader isLoading={isGenresLoading}>
         <Row>
           <Col>
             <Accordion>
@@ -178,7 +178,7 @@ const MovieListFilterPage: FC = () => {
         </Row>
         <Row>
           <Col className='p-0 pt-1'>
-            <SpinnerWrapper isLoading={isMoviesLoading}>
+            <Loader isLoading={isMoviesLoading}>
               {movies.length ? (
                 <MovieList
                   currentPage={currentPage}
@@ -191,10 +191,10 @@ const MovieListFilterPage: FC = () => {
                   Nothing found
                 </span>
               )}
-            </SpinnerWrapper>
+            </Loader>
           </Col>
         </Row>
-      </SpinnerWrapper>
+      </Loader>
     </Container>
   );
 };

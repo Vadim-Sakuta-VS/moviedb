@@ -16,7 +16,7 @@ import {
   selectGenresLoading,
 } from '../../store/genres/selectors';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
-import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
+import Loader from '../Loader/Loader';
 
 const HomePage: FC = () => {
   const isLoadingGenres = useSelector(selectGenresLoading);
@@ -68,9 +68,9 @@ const HomePage: FC = () => {
           <h2 className='font-weight-bold'>Search movies by genres</h2>
         </Col>
         <Col>
-          <SpinnerWrapper isLoading={isLoadingGenres}>
+          <Loader isLoading={isLoadingGenres}>
             <Row>{genresLinks}</Row>
-          </SpinnerWrapper>
+          </Loader>
         </Col>
       </Row>
       {movieRows}

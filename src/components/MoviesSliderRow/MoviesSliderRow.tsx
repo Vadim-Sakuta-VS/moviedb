@@ -11,7 +11,7 @@ import MovieSlide from './MovieSlide';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
 import { Link } from 'react-router-dom';
 import { IMovie } from '../../types/entities';
-import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
+import Loader from '../Loader/Loader';
 
 SwiperCore.use([Pagination]);
 
@@ -61,7 +61,7 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
         </Link>
       </Col>
       <Col>
-        <SpinnerWrapper isLoading={isLoading}>
+        <Loader isLoading={isLoading}>
           <Swiper
             spaceBetween={10}
             pagination={{ clickable: true }}
@@ -69,7 +69,7 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
           >
             {slidersElements}
           </Swiper>
-        </SpinnerWrapper>
+        </Loader>
       </Col>
     </Row>
   );

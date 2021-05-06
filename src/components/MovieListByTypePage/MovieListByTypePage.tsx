@@ -16,7 +16,7 @@ import {
 } from '../../store/movieList/actionCreators';
 import { loadMoviesByType } from '../../store/movieList/effects';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
-import SpinnerWrapper from '../SpinnerWrapper/SpinnerWrapper';
+import Loader from '../Loader/Loader';
 
 interface MovieListByTypePageParams {
   type: string;
@@ -51,14 +51,14 @@ const MovieListByTypePage: FC = () => {
           <h1 className='font-weight-bold'>{typeTitle}</h1>
         </Col>
         <Col className='p-0'>
-          <SpinnerWrapper isLoading={isMoviesLoading}>
+          <Loader isLoading={isMoviesLoading}>
             <MovieList
               currentPage={currentPage}
               totalPages={totalPages}
               movies={movies}
               onChangePage={onChangePage}
             />
-          </SpinnerWrapper>
+          </Loader>
         </Col>
       </Row>
     </Container>

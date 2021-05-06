@@ -37,39 +37,39 @@ const CompanyDetails: FC = () => {
   const parentCompany =
     (company.parent_company && company.parent_company.name) || '---';
 
-  return isLoading || company.id !== +id ? (
-    <Loader isLoading={isLoading} />
-  ) : (
-    <Container className='pt-2 pb-2 movie-details'>
-      <Row className='movie-details__main-row'>
-        <Col>
-          <Image
-            src={`${ApiMovies.getImage(company.logo_path)}`}
-            alt='Poster image'
-            rounded
-            className='w-100'
-          />
-        </Col>
-        <Col>
-          <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
-            {company.name}
+  return (
+    <Loader isLoading={isLoading || company.id !== +id}>
+      <Container className='pt-2 pb-2 movie-details'>
+        <Row className='movie-details__main-row'>
+          <Col>
+            <Image
+              src={`${ApiMovies.getImage(company.logo_path)}`}
+              alt='Poster image'
+              rounded
+              className='w-100'
+            />
           </Col>
-          <Container>
-            <MovieDetailsRow title='Headquarters' value={headquarters} />
-            <MovieDetailsRow title='Origin Country' value={originCountry} />
-            <MovieDetailsRow title='Description' value={description} />
-            <MovieDetailsRow title='Parent Company' value={parentCompany} />
-            {company.homepage && (
-              <MovieDetailsRow>
-                <a href={company.homepage} target='_blank' rel='noreferrer'>
-                  Home page
-                </a>
-              </MovieDetailsRow>
-            )}
-          </Container>
-        </Col>
-      </Row>
-    </Container>
+          <Col>
+            <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
+              {company.name}
+            </Col>
+            <Container>
+              <MovieDetailsRow title='Headquarters' value={headquarters} />
+              <MovieDetailsRow title='Origin Country' value={originCountry} />
+              <MovieDetailsRow title='Description' value={description} />
+              <MovieDetailsRow title='Parent Company' value={parentCompany} />
+              {company.homepage && (
+                <MovieDetailsRow>
+                  <a href={company.homepage} target='_blank' rel='noreferrer'>
+                    Home page
+                  </a>
+                </MovieDetailsRow>
+              )}
+            </Container>
+          </Col>
+        </Row>
+      </Container>
+    </Loader>
   );
 };
 
