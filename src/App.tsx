@@ -18,6 +18,7 @@ import Loader from './components/Loader/Loader';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import UserListsPage from './components/UserListsPage/UserListsPage';
+import UserListsCustomPage from './components/UserListsCustomPage/UserListsCustomPage';
 
 function App() {
   const isAppLoading = useSelector(selectAppLoading);
@@ -62,6 +63,9 @@ function App() {
               <Route exact path='/login' component={LoginPage} />
               <PrivateRoute exact path='/profile/:id'>
                 {withHeaderLayout(ProfilePage)}
+              </PrivateRoute>
+              <PrivateRoute path='/lists/custom'>
+                {withHeaderLayout(UserListsCustomPage)}
               </PrivateRoute>
               <PrivateRoute path='/lists'>
                 {withHeaderLayout(UserListsPage)}

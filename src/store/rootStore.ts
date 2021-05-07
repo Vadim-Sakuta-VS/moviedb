@@ -10,6 +10,7 @@ import { homeReducer } from './home/reducers';
 import { genresReducer } from './genres/reducers';
 import { userAuthReducer } from './userAuth/reducers';
 import { appReducer } from './app/reducers';
+import { customListsReducer } from './customLists/reducers';
 
 const rootReducer = combineReducers({
   movieList: movieListReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   genres: genresReducer,
   userAuth: userAuthReducer,
   app: appReducer,
+  customLists: customListsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

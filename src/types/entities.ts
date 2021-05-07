@@ -85,3 +85,11 @@ export interface IUser {
   name: string;
   username: string;
 }
+
+export type ICustomList = {
+  id: number;
+  name: string;
+  description: string;
+  item_count: number;
+  favorite_count: number;
+};

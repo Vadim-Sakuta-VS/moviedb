@@ -1,4 +1,5 @@
 import { SelectOptionDif } from './uiTypes';
+import { ICustomList } from './entities';
 
 export type ParamGetObj = {
   [key: string]: string | ParamGetObj;
@@ -36,8 +37,11 @@ export interface UserAuthResponse {
   success: boolean;
   status_message: string;
   status_code?: number;
+  errors?: string[];
 }
 
 export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
 
 export type UserAuthParam = TokenParam & IUserParam;
+
+export type CustomListParam = Pick<ICustomList, 'name' | 'description'>;

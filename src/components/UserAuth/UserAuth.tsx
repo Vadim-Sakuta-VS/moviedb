@@ -48,7 +48,7 @@ const UserAuth: FC = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu style={{ minWidth: '100%' }}>
-              <DropdownItem eventKey='1' className='p-0'>
+              <DropdownItem eventKey='1' className='p-0' as='button'>
                 <Link
                   to={`/profile/${user.id}`}
                   className='pl-1 pr-1 menu-dropdown__link'
@@ -56,7 +56,7 @@ const UserAuth: FC = () => {
                   Profile
                 </Link>
               </DropdownItem>
-              <DropdownItem eventKey='1' className='p-0'>
+              <DropdownItem eventKey='1' className='p-0' as='button'>
                 <Link
                   to={{
                     pathname: `/lists/${Object.keys(
@@ -72,6 +72,14 @@ const UserAuth: FC = () => {
                   Lists
                 </Link>
               </DropdownItem>
+              <Dropdown.Item eventKey='1' className='p-0' as='button'>
+                <Link
+                  to='/lists/custom'
+                  className='pl-1 pr-1 menu-dropdown__link'
+                >
+                  Custom lists
+                </Link>
+              </Dropdown.Item>
               <Dropdown.Item
                 eventKey='1'
                 className='pl-1 pr-1'
