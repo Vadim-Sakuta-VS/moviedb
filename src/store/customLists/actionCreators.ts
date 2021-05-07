@@ -23,7 +23,7 @@ export const setTotalPages = (totalPages: number): SetTotalPagesAction => ({
 
 export const setFetchState = (
   type: CustomListsActionValuesType,
-  fetchState: FetchState
+  fetchState: FetchState & { list_id?: number }
 ): SetFetchStateAction => ({
   type: CustomListsActions.SET_FETCH_STATE,
   payload: { type, fetchState },

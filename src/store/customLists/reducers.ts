@@ -15,7 +15,7 @@ const initialState: CustomListsStateType = {
   currentPage: 1,
   totalPages: 0,
   adding: { ...initialFetchState },
-  deleting: { ...initialFetchState },
+  deleting: { ...initialFetchState, list_id: 0 },
 };
 
 export const CUSTOM_LISTS_ACTIONS_TYPES = {
@@ -43,8 +43,13 @@ function customListsReducer(
     case CustomListsActions.ADD_LIST:
       return {
         ...state,
-        lists: [...state.lists, action.payload],
+        lists: [action.payload, ...state.lists],
         adding: { ...initialFetchState },
+      };
+    case CustomListsActions.DELETE_LIST:
+      return {
+        ...state,
+        lists: state.lists.filter((l) => l.id !== action.payload),
       };
     default:
       return state;

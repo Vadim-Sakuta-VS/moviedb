@@ -61,5 +61,5 @@ export type CustomListsStateType = {
   currentPage: number;
   totalPages: number;
   adding: FetchState;
-  deleting: FetchState;
+  deleting: FetchState & { list_id: number };
 };

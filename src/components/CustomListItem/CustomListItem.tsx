@@ -3,12 +3,25 @@ import { Alert, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { ICustomList } from '../../types/entities';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCustomListsFetchStateByType } from '../../store/customLists/selectors';
+import { CUSTOM_LISTS_ACTIONS_TYPES } from '../../store/customLists/reducers';
+import { deleteCustomList } from '../../store/customLists/effects';
 
 type CustomListItemProps = {
   list: ICustomList;
 };
 
 const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
+  const { isLoading, list_id } = useSelector(
+    selectCustomListsFetchStateByType(CUSTOM_LISTS_ACTIONS_TYPES.deleting)
+  );
+  const dispatch = useDispatch();
+
+  const onDelete = () => {
+    dispatch(deleteCustomList(list.id));
+  };
+
   return (
     <Col className='col-12 mb-2'>
       <Alert variant='secondary'>
@@ -20,9 +33,11 @@ const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
           </Col>
           <Col className='col-auto'>
             <ButtonLoad
-              isLoading={false}
+              isLoading={!!isLoading && list_id === list.id}
               classStyle='danger'
               isOutlineVariant={true}
+              handleOnClick={onDelete}
+              style={{ minWidth: '3.1rem', minHeight: 38 }}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'

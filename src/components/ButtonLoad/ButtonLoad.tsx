@@ -35,7 +35,7 @@ const ButtonLoad: FC<ButtonLoadProps> = ({
         <Spinner
           size='sm'
           animation='border'
-          variant={isOutlineVariant ? 'success' : 'light'}
+          variant={isOutlineVariant ? classStyle || 'success' : 'light'}
         />
       ) : (
         children || `${textValue}`

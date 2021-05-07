@@ -8,7 +8,10 @@ import { addList, setFetchState } from '../../store/customLists/actionCreators';
 import { CUSTOM_LISTS_ACTIONS_TYPES } from '../../store/customLists/reducers';
 import { ApiAccount } from '../../api/apiAccount';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCustomListsFetchStateByType } from '../../store/customLists/selectors';
+import {
+  selectCustomLists,
+  selectCustomListsFetchStateByType,
+} from '../../store/customLists/selectors';
 
 type CustomListFormProps = {
   defaultValues?: CustomListParam;
@@ -26,10 +29,21 @@ const CustomListForm: FC<CustomListFormProps> = ({ defaultValues }) => {
   const { isLoading, error_message } = useSelector(
     selectCustomListsFetchStateByType(CUSTOM_LISTS_ACTIONS_TYPES.adding)
   );
+  const listsCount = useSelector(selectCustomLists).length;
   const dispatch = useDispatch();
 
   const onSubmitHandler: SubmitHandler<CustomListParam> = async (data) => {
     try {
+      if (listsCount >= 20) {
+        dispatch(
+          setFetchState(CUSTOM_LISTS_ACTIONS_TYPES.adding, {
+            isLoading: true,
+            error_message: 'Max count of lists - 20.',
+          })
+        );
+        return;
+      }
+
       dispatch(
         setFetchState(CUSTOM_LISTS_ACTIONS_TYPES.adding, {
           isLoading: true,

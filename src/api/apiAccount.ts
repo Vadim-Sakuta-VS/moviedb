@@ -32,6 +32,10 @@ export class ApiAccount {
       return `${SERVER}/account/${account_id}/watchlist/movies`;
     },
   };
+  static ManipulationCustomListTypes = {
+    GET_DETAILS: 'GET',
+    DELETE_LIST: 'DELETE',
+  } as const;
 
   static async loadMovieAccountState(
     movieId: number
@@ -158,6 +162,28 @@ export class ApiAccount {
       const res = await fetch(
         `${SERVER}/account/${account_id}/lists${paramStr}`
       );
+      return await res.json();
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  static async manipulateCustomList(
+    method: typeof ApiAccount.ManipulationCustomListTypes[keyof typeof ApiAccount.ManipulationCustomListTypes],
+    list_id: number
+  ): Promise<AuthCommonResponse> {
+    try {
+      const paramStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        session_id: String(ApiAuth.getSessionId()),
+      });
+      const res = await fetch(`${SERVER}/list/${list_id}${paramStr}`, {
+        method,
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
       return await res.json();
     } catch (e) {
       console.log(e);
