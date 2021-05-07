@@ -13,9 +13,10 @@ import { AppAction } from '../app/types';
 import { MovieDetailsAction } from '../movieDetails/types';
 import { setMovieAccountState } from '../movieDetails/actionCreators';
 import { initialMovieAccountState } from '../movieDetails/reducers';
+import { loadCustomLists } from '../customLists/effects';
 
 export const loginUser = (user: IUserParam) => {
-  return async (dispatch: Dispatch<UserAuthAction>) => {
+  return async (dispatch: Dispatch<UserAuthAction | any>) => {
     try {
       dispatch(setTypeLoading(true));
       const userAuthData = await ApiAuth.loginUser(user);
@@ -23,6 +24,9 @@ export const loginUser = (user: IUserParam) => {
         const userDetails = await ApiAuth.getAccountDetails();
         userDetails && dispatch(setUserData(userDetails));
       }
+
+      await dispatch(loadCustomLists());
+
       dispatch(loginUserCreator(userAuthData));
     } catch (e) {
       console.log(e);
@@ -45,13 +49,16 @@ export const logoutUser = () => {
 };
 
 export const loadUserDataDetails = () => {
-  return async (dispatch: Dispatch<UserAuthAction | AppAction>) => {
+  return async (dispatch: Dispatch<UserAuthAction | AppAction | any>) => {
     try {
       dispatch(setTypeLoading(true));
       const userDetails = await ApiAuth.getAccountDetails();
       if (userDetails) {
         dispatch(setUserData(userDetails));
       }
+
+      await dispatch(loadCustomLists());
+
       dispatch(setTypeAppLoading(false));
     } catch (e) {
       console.log(e);

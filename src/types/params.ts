@@ -6,6 +6,7 @@ export type ParamGetObj = {
 };
 
 export interface IListResponse<T> {
+  page: number;
   results: T[];
   total_pages: number;
 }

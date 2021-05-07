@@ -12,7 +12,7 @@ const initialFetchState: FetchState = {
 
 const initialState: CustomListsStateType = {
   lists: [],
-  currentPage: 0,
+  currentPage: 1,
   totalPages: 0,
   adding: { ...initialFetchState },
   deleting: { ...initialFetchState },
@@ -38,6 +38,8 @@ function customListsReducer(
           ...action.payload.fetchState,
         },
       };
+    case CustomListsActions.SET_LISTS_DATA:
+      return { ...state, lists: action.payload };
     case CustomListsActions.ADD_LIST:
       return {
         ...state,

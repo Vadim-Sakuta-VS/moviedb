@@ -4,9 +4,10 @@ import { Button, Spinner } from 'react-bootstrap';
 interface ButtonLoadProps extends React.HTMLAttributes<HTMLButtonElement> {
   type?: string;
   isLoading: boolean;
-  textValue: string;
+  textValue?: string;
   isOutlineVariant?: boolean;
   handleOnClick?: () => void;
+  classStyle?: 'success' | 'primary' | 'danger';
 }
 
 const ButtonLoad: FC<ButtonLoadProps> = ({
@@ -14,12 +15,18 @@ const ButtonLoad: FC<ButtonLoadProps> = ({
   textValue,
   isOutlineVariant,
   handleOnClick,
+  classStyle,
+  children,
   ...props
 }) => {
   return (
     <Button
       disabled={isLoading}
-      variant={isOutlineVariant ? 'outline-success' : 'success'}
+      variant={
+        isOutlineVariant
+          ? `outline-${classStyle || 'success'}`
+          : classStyle || 'success'
+      }
       className='d-inline-flex justify-content-center align-items-center'
       onClick={handleOnClick}
       {...props}
@@ -31,7 +38,7 @@ const ButtonLoad: FC<ButtonLoadProps> = ({
           variant={isOutlineVariant ? 'success' : 'light'}
         />
       ) : (
-        `${textValue}`
+        children || `${textValue}`
       )}
     </Button>
   );

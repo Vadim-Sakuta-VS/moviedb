@@ -1,8 +1,12 @@
 import { requiredGetParams, SERVER } from './constants';
 import { stringifyGetParamsObj } from '../utils/utils';
 import { ApiAuth } from './apiAuth';
-import { AuthCommonResponse, CustomListParam } from '../types/params';
-import { IMovieAccountState } from '../types/entities';
+import {
+  AuthCommonResponse,
+  CustomListParam,
+  IListResponse,
+} from '../types/params';
+import { ICustomList, IMovieAccountState } from '../types/entities';
 
 interface AddCustomListResponse extends AuthCommonResponse {
   list_id?: number;
@@ -135,6 +139,26 @@ export class ApiAccount {
         },
       });
       return res.json();
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  static async loadCustomLists(
+    account_id: number,
+    page: number
+  ): Promise<IListResponse<ICustomList>> {
+    try {
+      const paramStr = stringifyGetParamsObj({
+        ...requiredGetParams,
+        session_id: String(ApiAuth.getSessionId()),
+        page: String(page),
+      });
+      const res = await fetch(
+        `${SERVER}/account/${account_id}/lists${paramStr}`
+      );
+      return await res.json();
     } catch (e) {
       console.log(e);
       throw e;

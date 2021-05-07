@@ -2,8 +2,17 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import AccordionCustom from '../AccordionCustom/AccordionCustom';
 import CustomListForm from '../CustomListForm/CustomListForm';
+import { useSelector } from 'react-redux';
+import { selectCustomLists } from '../../store/customLists/selectors';
+import CustomListItem from '../CustomListItem/CustomListItem';
 
 const UserListsCustomPage = () => {
+  const lists = useSelector(selectCustomLists);
+
+  const listsElements = lists.map((l) => (
+    <CustomListItem key={l.id} list={l} />
+  ));
+
   return (
     <Container className='pt-2 pb-2'>
       <Row>
@@ -11,7 +20,7 @@ const UserListsCustomPage = () => {
           <h1 className='font-weight-bold'>Custom lists</h1>
         </Col>
       </Row>
-      <Row>
+      <Row className='mb-2'>
         <Col>
           <AccordionCustom
             buttonText='Add'
@@ -31,6 +40,15 @@ const UserListsCustomPage = () => {
             <CustomListForm />
           </AccordionCustom>
         </Col>
+      </Row>
+      <Row className='justify-content-center'>
+        {listsElements.length ? (
+          listsElements
+        ) : (
+          <span className='text-center font-weight-bold text-secondary'>
+            No lists
+          </span>
+        )}{' '}
       </Row>
     </Container>
   );

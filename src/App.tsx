@@ -64,7 +64,7 @@ function App() {
               <PrivateRoute exact path='/profile/:id'>
                 {withHeaderLayout(ProfilePage)}
               </PrivateRoute>
-              <PrivateRoute path='/lists/custom'>
+              <PrivateRoute exact path='/lists/custom'>
                 {withHeaderLayout(UserListsCustomPage)}
               </PrivateRoute>
               <PrivateRoute path='/lists'>
