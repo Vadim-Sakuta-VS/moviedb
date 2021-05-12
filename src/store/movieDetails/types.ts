@@ -17,6 +17,7 @@ export enum MovieDetailsActions {
   SET_MOVIE_ACCOUNT_STATE_LOADING = 'MOVIE_DETAILS/SET_MOVIE_ACCOUNT_STATE_LOADING',
   SET_MOVIE_CUSTOM_LISTS_DATA = 'MOVIE_DETAILS/SET_MOVIE_CUSTOM_LISTS_DATA',
   SET_MOVIE_CUSTOM_LISTS_LOADING = 'MOVIE_DETAILS/SET_MOVIE_CUSTOM_LISTS_LOADING',
+  ADD_MOVIE_CUSTOM_LISTS = 'MOVIE_DETAILS/ADD_MOVIE_CUSTOM_LISTS',
 }
 
 export interface SetMovieDetailsAction {
@@ -67,6 +68,11 @@ export type SetMovieCustomListsLoadingAction = {
   };
 };
 
+export type AddMovieCustomListsAction = {
+  type: MovieDetailsActions.ADD_MOVIE_CUSTOM_LISTS;
+  payload: number[];
+};
+
 export type MovieDetailsAction =
   | SetMovieDetailsAction
   | SetTypeLoadingAction
@@ -76,7 +82,8 @@ export type MovieDetailsAction =
   | SetMovieToBasicListAction
   | SetMovieToBasicListLoadingAction
   | SetMovieCustomListsDataAction
-  | SetMovieCustomListsLoadingAction;
+  | SetMovieCustomListsLoadingAction
+  | AddMovieCustomListsAction;
 
 export interface MovieDetailsState {
   isLoading: boolean;

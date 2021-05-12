@@ -1,4 +1,5 @@
 import {
+  AddMovieCustomListsAction,
   MovieDetailsAction,
   MovieDetailsActions,
   SetMovieAccountStateAction,
@@ -71,4 +72,11 @@ export const setMovieCustomListsLoading = (
 ): SetMovieCustomListsLoadingAction => ({
   type: MovieDetailsActions.SET_MOVIE_CUSTOM_LISTS_LOADING,
   payload: { type, isLoading },
+});
+
+export const addMovieCustomLists = (
+  customListsIds: number[]
+): AddMovieCustomListsAction => ({
+  type: MovieDetailsActions.ADD_MOVIE_CUSTOM_LISTS,
+  payload: customListsIds,
 });

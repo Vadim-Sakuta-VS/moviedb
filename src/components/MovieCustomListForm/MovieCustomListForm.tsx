@@ -1,35 +1,50 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Col, Form, Row } from 'react-bootstrap';
 import ControlSelect from '../ControlSelect/ControlSelect';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { ISelectOption } from '../../types/uiTypes';
-import { useSelector } from 'react-redux';
-import { selectMovieCustomLists } from '../../store/movieDetails/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectMovieCustomLists,
+  selectMovieCustomListsLoading,
+} from '../../store/movieDetails/selectors';
 import { createValuesSelectField } from '../../utils/selectUtils';
+import { addMovieToCustomListsEffect } from '../../store/movieDetails/effects';
 
 type MovieCustomListFormValues = {
   custom_lists: ISelectOption[];
 };
 
-const MovieCustomListForm: FC = () => {
+type MovieCustomListFormProps = {
+  movieId: number;
+};
+
+const MovieCustomListForm: FC<MovieCustomListFormProps> = ({ movieId }) => {
   const filteredCustomLists = useSelector(selectMovieCustomLists);
+  const { isSubmitLoading } = useSelector(selectMovieCustomListsLoading);
   const filteredCustomListsOptions = createValuesSelectField(
     filteredCustomLists
   );
+  const dispatch = useDispatch();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<MovieCustomListFormValues>({
     defaultValues: {
       custom_lists: [filteredCustomListsOptions[0]],
     },
   });
 
+  useEffect(() => {
+    reset({ custom_lists: [filteredCustomListsOptions[0]] });
+  }, [filteredCustomLists]);
+
   const onSubmitHandler: SubmitHandler<MovieCustomListFormValues> = (data) => {
-    console.log(data);
+    dispatch(addMovieToCustomListsEffect(data.custom_lists, movieId));
   };
 
   return (
@@ -47,7 +62,7 @@ const MovieCustomListForm: FC = () => {
         <Col className='col-auto'>
           <ButtonLoad
             type='submit'
-            isLoading={false}
+            isLoading={isSubmitLoading}
             textValue='Add'
             style={{
               minWidth: '4rem',

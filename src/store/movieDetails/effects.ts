@@ -1,5 +1,6 @@
 import { ApiMovies } from '../../api/apiMovies';
 import {
+  addMovieCustomLists,
   setMovieAccountState,
   setMovieAccountStateLoading,
   setMovieCustomListsData,
@@ -26,6 +27,7 @@ import { GetRootState } from '../rootStore';
 import { selectMovieAccountState } from './selectors';
 import { selectCustomLists } from '../customLists/selectors';
 import { ICustomList } from '../../types/entities';
+import { ISelectOption } from '../../types/uiTypes';
 
 export const loadMovieDetails = (id: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction>) => {
@@ -165,6 +167,45 @@ export const checkMovieStatusCustomLists = (id: number) => {
       dispatch(
         setMovieCustomListsLoading(
           MovieTypesCustomListsLoadingState.isLoadingStatus,
+          false
+        )
+      );
+    }
+  };
+};
+
+export const addMovieToCustomListsEffect = (
+  customListsData: ISelectOption[],
+  movieId: number
+) => {
+  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+    try {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isSubmitLoading,
+          true
+        )
+      );
+
+      const customListsIds: number[] = [];
+      for (const customListOption of customListsData) {
+        const res = await ApiAccount.manipulateCustomList(
+          ApiAccount.POST.addMovieCustomList(+customListOption.value),
+          ApiAccount.ManipulationCustomListTypes.POST,
+          { media_id: movieId }
+        );
+        if (res.success) {
+          customListsIds.push(+customListOption.value);
+        }
+      }
+
+      dispatch(addMovieCustomLists(customListsIds));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isSubmitLoading,
           false
         )
       );

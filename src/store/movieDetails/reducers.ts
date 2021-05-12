@@ -129,6 +129,16 @@ function movieDetailsReducer(
           },
         },
       };
+    case MovieDetailsActions.ADD_MOVIE_CUSTOM_LISTS:
+      return {
+        ...state,
+        custom_lists: {
+          ...state.custom_lists,
+          data: state.custom_lists.data.filter(
+            (list) => !action.payload.includes(list.id)
+          ),
+        },
+      };
     default:
       return state;
   }

@@ -260,7 +260,7 @@ const MovieDetails: FC = () => {
           <Col className='col-12 col-md-8 col-lg-6 m-auto'>
             <Loader isLoading={isLoadingStatus}>
               {filteredCustomLists.length ? (
-                <MovieCustomListForm />
+                <MovieCustomListForm movieId={+id} />
               ) : (
                 <p className='m-0 text-center font-weight-bold text-secondary'>
                   This movie exist at all your custom lists or you dont made any
