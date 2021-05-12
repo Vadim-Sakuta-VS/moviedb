@@ -58,6 +58,11 @@ export interface IMovieBasicListLoading {
   watchlist: boolean;
 }
 
+export interface IMovieCustomListsLoading {
+  isLoadingStatus: boolean;
+  isSubmitLoading: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;

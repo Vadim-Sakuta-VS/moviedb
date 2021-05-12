@@ -30,16 +30,9 @@ export const deleteCustomList = (list_id: number) => {
           list_id,
         })
       );
-      // const res = await ApiAccount.manipulateCustomList(
-      //   ApiAccount.ManipulationCustomListTypes.DELETE_LIST,
-      //   list_id
-      // );
-      // if (res.success) {
-      //   dispatch(deleteList(list_id));
-      // }
       await ApiAccount.manipulateCustomList(
-        ApiAccount.ManipulationCustomListTypes.DELETE_LIST,
-        list_id
+        ApiAccount.DELETE.deleteCustomList(list_id),
+        ApiAccount.ManipulationCustomListTypes.DELETE
       );
       dispatch(deleteList(list_id));
     } catch (e) {

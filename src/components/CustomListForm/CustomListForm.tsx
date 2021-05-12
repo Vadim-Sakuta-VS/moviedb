@@ -51,7 +51,11 @@ const CustomListForm: FC<CustomListFormProps> = ({ defaultValues }) => {
         })
       );
 
-      const res = await ApiAccount.addCustomList(data);
+      const res = await ApiAccount.manipulateCustomList(
+        ApiAccount.POST.createCustomList(),
+        ApiAccount.ManipulationCustomListTypes.POST,
+        data
+      );
       if (res.list_id) {
         dispatch(
           addList({

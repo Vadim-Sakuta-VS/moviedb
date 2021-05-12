@@ -3,14 +3,10 @@ import { stringifyGetParamsObj } from '../utils/utils';
 import { ApiAuth } from './apiAuth';
 import {
   AuthCommonResponse,
-  CustomListParam,
   IListResponse,
+  ParamGetObj,
 } from '../types/params';
 import { ICustomList, IMovieAccountState } from '../types/entities';
-
-interface AddCustomListResponse extends AuthCommonResponse {
-  list_id?: number;
-}
 
 export class ApiAccount {
   static POST = {
@@ -19,6 +15,18 @@ export class ApiAccount {
     },
     watchlist(account_id: number) {
       return `${SERVER}/account/${account_id}/watchlist`;
+    },
+    createCustomList() {
+      return `${SERVER}/list`;
+    },
+    addMovieCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}/add_item`;
+    },
+    removeMovieCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}/remove_item`;
+    },
+    clearCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}/clear`;
     },
   };
   static GET = {
@@ -31,10 +39,22 @@ export class ApiAccount {
     watchlist(account_id: number) {
       return `${SERVER}/account/${account_id}/watchlist/movies`;
     },
+    getDetailsCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}`;
+    },
+    movieStatusCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}/item_status`;
+    },
+  };
+  static DELETE = {
+    deleteCustomList(list_id: number) {
+      return `${SERVER}/list/${list_id}`;
+    },
   };
   static ManipulationCustomListTypes = {
-    GET_DETAILS: 'GET',
-    DELETE_LIST: 'DELETE',
+    GET: 'GET',
+    POST: 'POST',
+    DELETE: 'DELETE',
   } as const;
 
   static async loadMovieAccountState(
@@ -127,28 +147,6 @@ export class ApiAccount {
     }
   }
 
-  static async addCustomList(
-    list: CustomListParam
-  ): Promise<AddCustomListResponse> {
-    try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
-      });
-      const res = await fetch(`${SERVER}/list${paramStr}`, {
-        method: 'POST',
-        body: JSON.stringify(list),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      });
-      return res.json();
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  }
-
   static async loadCustomLists(
     account_id: number,
     page: number
@@ -170,20 +168,29 @@ export class ApiAccount {
   }
 
   static async manipulateCustomList(
+    URL: string,
     method: typeof ApiAccount.ManipulationCustomListTypes[keyof typeof ApiAccount.ManipulationCustomListTypes],
-    list_id: number
+    body?: object | null,
+    paramGetObj?: ParamGetObj
   ): Promise<AuthCommonResponse> {
     try {
       const paramStr = stringifyGetParamsObj({
         ...requiredGetParams,
+        ...paramGetObj,
         session_id: String(ApiAuth.getSessionId()),
       });
-      const res = await fetch(`${SERVER}/list/${list_id}${paramStr}`, {
+
+      let fetchOptions: RequestInit = {
         method,
         headers: {
           'Content-type': 'application/json',
         },
-      });
+      };
+      if (body) {
+        fetchOptions.body = JSON.stringify(body);
+      }
+
+      const res = await fetch(`${URL}${paramStr}`, fetchOptions);
       return await res.json();
     } catch (e) {
       console.log(e);

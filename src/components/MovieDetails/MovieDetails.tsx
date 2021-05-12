@@ -6,6 +6,7 @@ import { MovieDetailsRow } from './MovieDetailsRow';
 import { ApiMovies } from '../../api/apiMovies';
 import {
   addMediaToBasicList,
+  checkMovieStatusCustomLists,
   deleteRatingMovie,
   loadMovieAccountState,
   loadMovieDetails,
@@ -16,6 +17,8 @@ import {
   selectMovieAccountState,
   selectMovieAccountStateLoading,
   selectMovieBasicListLoading,
+  selectMovieCustomLists,
+  selectMovieCustomListsLoading,
   selectMovieDetails,
   selectMovieDetailsLoading,
 } from '../../store/movieDetails/selectors';
@@ -26,6 +29,7 @@ import MovieRating from '../MovieRating/MovieRating';
 import { selectUserAuthStatus } from '../../store/userAuth/selectors';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { MovieTypesOnlyBooleanState } from '../../store/movieDetails/reducers';
+import MovieCustomListForm from '../MovieCustomListForm/MovieCustomListForm';
 
 interface MovieDetailsParams {
   id: string;
@@ -46,6 +50,8 @@ const MovieDetails: FC = () => {
   } = useSelector(selectMovieBasicListLoading);
   const isLoading = useSelector(selectMovieDetailsLoading);
   const isAuth = useSelector(selectUserAuthStatus);
+  const { isLoadingStatus } = useSelector(selectMovieCustomListsLoading);
+  const filteredCustomLists = useSelector(selectMovieCustomLists);
   const dispatch = useDispatch();
 
   const isCorrectId = () => !isNaN(+id) && +id > 0;
@@ -53,6 +59,7 @@ const MovieDetails: FC = () => {
   useEffect(() => {
     if (isCorrectId()) {
       dispatch(loadMovieDetails(+id));
+      dispatch(checkMovieStatusCustomLists(+id));
     }
   }, [id, dispatch]);
 
@@ -243,6 +250,24 @@ const MovieDetails: FC = () => {
                 </Col>
               </Row>
             </Container>
+          </Col>
+        </Row>
+        <hr className='divider' />
+        <Row className='flex-column'>
+          <Col className='h4 mb-4 text-center font-weight-bold'>
+            Add Movie to your custom lists
+          </Col>
+          <Col className='col-12 col-md-8 col-lg-6 m-auto'>
+            <Loader isLoading={isLoadingStatus}>
+              {filteredCustomLists.length ? (
+                <MovieCustomListForm />
+              ) : (
+                <p className='m-0 text-center font-weight-bold text-secondary'>
+                  This movie exist at all your custom lists or you dont made any
+                  custom list
+                </p>
+              )}
+            </Loader>
           </Col>
         </Row>
         <hr className='divider' />

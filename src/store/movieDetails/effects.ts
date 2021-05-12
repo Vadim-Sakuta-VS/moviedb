@@ -2,6 +2,8 @@ import { ApiMovies } from '../../api/apiMovies';
 import {
   setMovieAccountState,
   setMovieAccountStateLoading,
+  setMovieCustomListsData,
+  setMovieCustomListsLoading,
   setMovieDetails,
   setMovieRating,
   setMovieToBasicList,
@@ -13,6 +15,7 @@ import { Dispatch } from 'redux';
 import { ApiAccount } from '../../api/apiAccount';
 import {
   initialMovieAccountState,
+  MovieTypesCustomListsLoadingState,
   MovieTypesOnlyBooleanState,
 } from './reducers';
 import {
@@ -21,6 +24,8 @@ import {
 } from '../userAuth/selectors';
 import { GetRootState } from '../rootStore';
 import { selectMovieAccountState } from './selectors';
+import { selectCustomLists } from '../customLists/selectors';
+import { ICustomList } from '../../types/entities';
 
 export const loadMovieDetails = (id: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction>) => {
@@ -121,6 +126,48 @@ export const addMediaToBasicList = (
       console.log(e);
     } finally {
       dispatch(setMovieToBasicListLoading(typeList, false));
+    }
+  };
+};
+
+export const checkMovieStatusCustomLists = (id: number) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction>,
+    getState: GetRootState
+  ) => {
+    try {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isLoadingStatus,
+          true
+        )
+      );
+
+      const customLists = selectCustomLists(getState());
+      let filteredCustomLists: ICustomList[] = [];
+
+      for (const customList of customLists) {
+        const res = await ApiAccount.manipulateCustomList(
+          ApiAccount.GET.movieStatusCustomList(customList.id),
+          ApiAccount.ManipulationCustomListTypes.GET,
+          null,
+          { movie_id: String(id) }
+        );
+        if (!res.item_present) {
+          filteredCustomLists.push(customList);
+        }
+      }
+
+      dispatch(setMovieCustomListsData(filteredCustomLists));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isLoadingStatus,
+          false
+        )
+      );
     }
   };
 };

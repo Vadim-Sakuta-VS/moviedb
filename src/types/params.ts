@@ -39,6 +39,7 @@ export interface UserAuthResponse {
   status_message: string;
   status_code?: number;
   errors?: string[];
+  item_present?: boolean;
 }
 
 export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
