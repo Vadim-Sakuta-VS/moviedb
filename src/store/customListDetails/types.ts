@@ -8,6 +8,7 @@ export enum CustomListDetailsActions {
   SET_CUSTOM_LIST_DETAILS_LOADING = 'CUSTOM_LIST_DETAILS/SET_CUSTOM_LIST_DETAILS_LOADING',
   SET_MANIPULATION_MOVIE_ID = 'CUSTOM_LIST_DETAILS/SET_MANIPULATION_MOVIE_ID',
   DELETE_MOVIE_CUSTOM_LIST = 'CUSTOM_LIST_DETAILS/DELETE_MOVIE_CUSTOM_LIST',
+  CLEAR_CUSTOM_LIST_DETAILS = 'CUSTOM_LIST_DETAILS/CLEAR_CUSTOM_LIST',
 }
 
 export enum CustomListDetailsTypesLoading {
@@ -39,11 +40,16 @@ export type DeleteMovieCustomListAction = {
   payload: number;
 };
 
+export type ClearCustomListDetailsAction = {
+  type: CustomListDetailsActions.CLEAR_CUSTOM_LIST_DETAILS;
+};
+
 export type CustomListDetailsAction =
   | SetCustomListDetailsDataAction
   | SetCustomListDetailsLoadingAction
   | SetManipulationMovieIdAction
-  | DeleteMovieCustomListAction;
+  | DeleteMovieCustomListAction
+  | ClearCustomListDetailsAction;
 
 export type CustomListDetailsState = {
   data: ICustomListDetails;

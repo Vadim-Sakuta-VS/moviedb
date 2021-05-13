@@ -51,6 +51,14 @@ function customListDetailsReducer(
           ),
         },
       };
+    case CustomListDetailsActions.CLEAR_CUSTOM_LIST_DETAILS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          items: [],
+        },
+      };
     default:
       return state;
   }

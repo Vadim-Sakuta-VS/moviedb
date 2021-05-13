@@ -98,7 +98,7 @@ export interface IUser {
 }
 
 export type ICustomList = {
-  id: number;
+  id: number | string;
   name: string;
   description: string;
   item_count: number;

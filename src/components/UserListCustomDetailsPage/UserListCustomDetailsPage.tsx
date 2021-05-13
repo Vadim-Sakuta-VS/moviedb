@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  clearCustomListDetailsEffect,
   deleteMovieCustomListEffect,
   loadCustomListDetailsData,
 } from '../../store/customListDetails/effects';
@@ -15,16 +16,21 @@ import {
   selectManipulationMovieId,
 } from '../../store/customListDetails/selectors';
 import MovieList from '../MovieList/MovieList';
+import ButtonLoad from '../ButtonLoad/ButtonLoad';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
 type UserListCustomDetailsPageParams = {
   id: string;
 };
 
 const UserListCustomDetailsPage = () => {
+  const [localLoading, setLocalLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
   const { id: list_id } = useParams<UserListCustomDetailsPageParams>();
   const {
     isDetailsLoading,
     isRemoveMovieLoading: isDeletingLoading,
+    isClearListLoading,
   } = useSelector(selectCustomListDetailsLoading);
   const { items: customListMovies } = useSelector(selectCustomListDetailsData);
   const nameList = useSelector(selectCustomLists).find(
@@ -39,21 +45,48 @@ const UserListCustomDetailsPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    isDetailsLoading && setLocalLoading(false);
+  }, [isDetailsLoading]);
+
   const onDeleteMovie = (movie_id: number) => {
     dispatch(deleteMovieCustomListEffect(+list_id, movie_id));
+  };
+
+  const onShowConfirmModal = () => {
+    setModalShow(true);
+  };
+
+  const onHideConfirmModal = () => {
+    setModalShow(false);
+  };
+
+  const onConfirmClearCustomList = () => {
+    onHideConfirmModal();
+    dispatch(clearCustomListDetailsEffect(+list_id));
   };
 
   return (
     <RedirectByNumberId id={list_id}>
       <Container className='pt-2 pb-2'>
         {nameList && (
-          <Row>
+          <Row className='align-items-center'>
             <Col>
               <h1 className='font-weight-bold'>{nameList}</h1>
             </Col>
+            {!!customListMovies.length && !isDetailsLoading && !localLoading && (
+              <Col className='col-auto'>
+                <ButtonLoad
+                  isLoading={isClearListLoading}
+                  textValue='Clear list'
+                  handleOnClick={onShowConfirmModal}
+                  style={{ minWidth: '6rem', minHeight: 38 }}
+                />
+              </Col>
+            )}
           </Row>
         )}
-        <Loader isLoading={isDetailsLoading}>
+        <Loader isLoading={isDetailsLoading || localLoading}>
           <Row>
             <Col className='p-0'>
               {customListMovies.length ? (
@@ -77,6 +110,11 @@ const UserListCustomDetailsPage = () => {
           </Row>
         </Loader>
       </Container>
+      <ConfirmModal
+        show={modalShow}
+        onConfirm={onConfirmClearCustomList}
+        onHide={onHideConfirmModal}
+      />
     </RedirectByNumberId>
   );
 };

@@ -4,6 +4,7 @@ import {
   CustomListDetailsTypesLoading,
 } from './types';
 import {
+  clearCustomListDetails,
   deleteMovieCustomList,
   setCustomListDetailsData,
   setCustomListDetailsLoading,
@@ -81,6 +82,44 @@ export const deleteMovieCustomListEffect = (
       dispatch(
         setCustomListDetailsLoading(
           CustomListDetailsTypesLoading.isRemoveMovieLoading,
+          false
+        )
+      );
+    }
+  };
+};
+
+export const clearCustomListDetailsEffect = (list_id: number) => {
+  return async (
+    dispatch: Dispatch<CustomListDetailsAction | UpdateListItemCountAction>
+  ) => {
+    try {
+      dispatch(
+        setCustomListDetailsLoading(
+          CustomListDetailsTypesLoading.isClearListLoading,
+          true
+        )
+      );
+
+      const res = await ApiAccount.manipulateCustomList(
+        ApiAccount.POST.clearCustomList(list_id),
+        ApiAccount.ManipulationCustomListTypes.POST,
+        null,
+        {
+          confirm: 'true',
+        }
+      );
+
+      if (res.success) {
+        dispatch(updateListItemCount(list_id, 0));
+        dispatch(clearCustomListDetails());
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(
+        setCustomListDetailsLoading(
+          CustomListDetailsTypesLoading.isClearListLoading,
           false
         )
       );

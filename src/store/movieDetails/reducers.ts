@@ -135,7 +135,7 @@ function movieDetailsReducer(
         custom_lists: {
           ...state.custom_lists,
           data: state.custom_lists.data.filter(
-            (list) => !action.payload.includes(list.id)
+            (list) => !action.payload.includes(+list.id)
           ),
         },
       };

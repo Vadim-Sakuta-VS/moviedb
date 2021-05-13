@@ -155,7 +155,7 @@ export const checkMovieStatusCustomLists = (id: number) => {
 
       for (const customList of customLists) {
         const res = await ApiAccount.manipulateCustomList(
-          ApiAccount.GET.movieStatusCustomList(customList.id),
+          ApiAccount.GET.movieStatusCustomList(+customList.id),
           ApiAccount.ManipulationCustomListTypes.GET,
           null,
           { movie_id: String(id) }
@@ -213,7 +213,7 @@ export const addMovieToCustomListsEffect = (
         const item_count = selectCustomListsItemCount(customListsId)(
           getState()
         );
-        item_count &&
+        item_count != undefined &&
           dispatch(updateListItemCount(customListsId, item_count + 1));
       }
     } catch (e) {

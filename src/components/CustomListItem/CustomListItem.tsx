@@ -19,7 +19,7 @@ const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
   const dispatch = useDispatch();
 
   const onDelete = () => {
-    dispatch(deleteCustomList(list.id));
+    dispatch(deleteCustomList(+list.id));
   };
 
   return (

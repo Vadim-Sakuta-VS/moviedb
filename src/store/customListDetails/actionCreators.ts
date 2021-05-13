@@ -1,5 +1,6 @@
 import { ICustomListDetails } from '../../types/entities';
 import {
+  ClearCustomListDetailsAction,
   CustomListDetailsActions,
   CustomListDetailsTypesLoading,
   DeleteMovieCustomListAction,
@@ -35,4 +36,8 @@ export const deleteMovieCustomList = (
 ): DeleteMovieCustomListAction => ({
   type: CustomListDetailsActions.DELETE_MOVIE_CUSTOM_LIST,
   payload: movie_id,
+});
+
+export const clearCustomListDetails = (): ClearCustomListDetailsAction => ({
+  type: CustomListDetailsActions.CLEAR_CUSTOM_LIST_DETAILS,
 });
