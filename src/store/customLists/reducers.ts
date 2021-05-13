@@ -12,8 +12,6 @@ const initialFetchState: FetchState = {
 
 const initialState: CustomListsStateType = {
   lists: [],
-  currentPage: 1,
-  totalPages: 0,
   adding: { ...initialFetchState },
   deleting: { ...initialFetchState, list_id: 0 },
 };
@@ -50,6 +48,16 @@ function customListsReducer(
       return {
         ...state,
         lists: state.lists.filter((l) => l.id !== action.payload),
+      };
+    case CustomListsActions.UPDATE_LIST_ITEM_COUNT:
+      return {
+        ...state,
+        lists: state.lists.map((list) => {
+          if (list.id === action.payload.list_id) {
+            return { ...list, item_count: action.payload.item_count };
+          }
+          return list;
+        }),
       };
     default:
       return state;

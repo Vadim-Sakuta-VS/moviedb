@@ -25,9 +25,14 @@ import {
 } from '../userAuth/selectors';
 import { GetRootState } from '../rootStore';
 import { selectMovieAccountState } from './selectors';
-import { selectCustomLists } from '../customLists/selectors';
+import {
+  selectCustomLists,
+  selectCustomListsItemCount,
+} from '../customLists/selectors';
 import { ICustomList } from '../../types/entities';
 import { ISelectOption } from '../../types/uiTypes';
+import { updateListItemCount } from '../customLists/actionCreators';
+import { UpdateListItemCountAction } from '../customLists/types';
 
 export const loadMovieDetails = (id: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction>) => {
@@ -178,7 +183,10 @@ export const addMovieToCustomListsEffect = (
   customListsData: ISelectOption[],
   movieId: number
 ) => {
-  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction | UpdateListItemCountAction>,
+    getState: GetRootState
+  ) => {
     try {
       dispatch(
         setMovieCustomListsLoading(
@@ -200,6 +208,14 @@ export const addMovieToCustomListsEffect = (
       }
 
       dispatch(addMovieCustomLists(customListsIds));
+
+      for (const customListsId of customListsIds) {
+        const item_count = selectCustomListsItemCount(customListsId)(
+          getState()
+        );
+        item_count &&
+          dispatch(updateListItemCount(customListsId, item_count + 1));
+      }
     } catch (e) {
       console.log(e);
     } finally {

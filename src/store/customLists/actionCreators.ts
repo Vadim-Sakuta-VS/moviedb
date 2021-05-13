@@ -7,6 +7,7 @@ import {
   SetFetchStateAction,
   SetListsDataAction,
   SetTotalPagesAction,
+  UpdateListItemCountAction,
 } from './types';
 import { ICustomList } from '../../types/entities';
 import { CustomListsActionValuesType } from './reducers';
@@ -42,4 +43,12 @@ export const addList = (list: ICustomList): AddListAction => ({
 export const deleteList = (id: number): DeleteListAction => ({
   type: CustomListsActions.DELETE_LIST,
   payload: id,
+});
+
+export const updateListItemCount = (
+  list_id: number,
+  item_count: number
+): UpdateListItemCountAction => ({
+  type: CustomListsActions.UPDATE_LIST_ITEM_COUNT,
+  payload: { list_id, item_count },
 });

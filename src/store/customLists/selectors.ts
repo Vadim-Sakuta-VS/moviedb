@@ -6,8 +6,7 @@ export const selectCustomListsFetchStateByType = (
   type: CustomListsActionValuesType
 ) => (state: RootState): FetchState & { list_id?: number } =>
   state.customLists[type];
-export const selectCurrentPage = (state: RootState) =>
-  state.customLists.currentPage;
-export const selectTotalPages = (state: RootState) =>
-  state.customLists.totalPages;
 export const selectCustomLists = (state: RootState) => state.customLists.lists;
+export const selectCustomListsItemCount = (list_id: number) => (
+  state: RootState
+) => state.customLists.lists.find((list) => list.id === list_id)?.item_count;

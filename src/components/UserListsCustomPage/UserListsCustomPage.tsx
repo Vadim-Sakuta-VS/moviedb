@@ -17,7 +17,7 @@ const UserListsCustomPage = () => {
     <Container className='pt-2 pb-2'>
       <Row>
         <Col>
-          <h1 className='font-weight-bold'>Custom lists</h1>
+          <h1 className='font-weight-bold'>Custom lists ({lists.length})</h1>
         </Col>
       </Row>
       <Row className='mb-2'>

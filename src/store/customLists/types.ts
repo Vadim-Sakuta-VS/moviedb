@@ -8,6 +8,7 @@ export enum CustomListsActions {
   CHANGE_PAGE = 'CUSTOM_LISTS/CHANGE_PAGE',
   ADD_LIST = 'CUSTOM_LISTS/ADD_LIST',
   DELETE_LIST = 'CUSTOM_LISTS/DELETE_LIST',
+  UPDATE_LIST_ITEM_COUNT = 'CUSTOM_LISTS/UPDATE_LIST_ITEM_COUNT',
 }
 
 export type SetListsDataAction = {
@@ -43,13 +44,19 @@ export type DeleteListAction = {
   payload: number;
 };
 
+export type UpdateListItemCountAction = {
+  type: CustomListsActions.UPDATE_LIST_ITEM_COUNT;
+  payload: { list_id: number; item_count: number };
+};
+
 export type CustomListsAction =
   | SetListsDataAction
   | SetTotalPagesAction
   | SetFetchStateAction
   | ChangePageAction
   | AddListAction
-  | DeleteListAction;
+  | DeleteListAction
+  | UpdateListItemCountAction;
 
 export type FetchState = {
   isLoading?: boolean;
@@ -58,8 +65,6 @@ export type FetchState = {
 
 export type CustomListsStateType = {
   lists: ICustomList[];
-  currentPage: number;
-  totalPages: number;
   adding: FetchState;
   deleting: FetchState & { list_id: number };
 };

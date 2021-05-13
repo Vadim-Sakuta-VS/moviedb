@@ -63,6 +63,12 @@ export interface IMovieCustomListsLoading {
   isSubmitLoading: boolean;
 }
 
+export interface ICustomListDetailsLoading {
+  isDetailsLoading: boolean;
+  isClearListLoading: boolean;
+  isRemoveMovieLoading: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;
@@ -98,3 +104,7 @@ export type ICustomList = {
   item_count: number;
   favorite_count: number;
 };
+
+export interface ICustomListDetails extends ICustomList {
+  items: IMovie[];
+}

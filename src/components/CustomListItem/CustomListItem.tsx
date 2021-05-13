@@ -57,9 +57,8 @@ const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
             <p>{list.description}</p>
           </Col>
         </Row>
-        <Row style={{ fontSize: 23 }}>
-          <Col className='col-12 col-sm-6'>Item count: {list.item_count}</Col>
-          <Col>Favorite count: {list.favorite_count}</Col>
+        <Row style={{ fontSize: 23 }} className='justify-content-center'>
+          <Col className='col-auto'>Item count: {list.item_count}</Col>
         </Row>
       </Alert>
     </Col>

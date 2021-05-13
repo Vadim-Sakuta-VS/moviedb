@@ -47,3 +47,9 @@ export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
 export type UserAuthParam = TokenParam & IUserParam;
 
 export type CustomListParam = Pick<ICustomList, 'name' | 'description'>;
+
+export type MovieCustomListDeleteOptionsType = {
+  isDeletingLoading: boolean;
+  manipulationMovieId: number;
+  onDeleteMovie: (movie_id: number) => void;
+};

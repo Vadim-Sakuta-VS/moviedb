@@ -1,14 +1,17 @@
 import React, { FC } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import MovieCard from '../MovieCard/MovieCard';
 import PaginationCustom from '../PaginationCustom/PaginationCustom';
 import { IMovie } from '../../types/entities';
+import MovieCardWithDeleteControl from '../MovieCardWithDeleteControl/MovieCardWithDeleteControl';
+import { MovieCustomListDeleteOptionsType } from '../../types/params';
 
 interface MovieListProps {
   currentPage: number;
   totalPages: number;
   movies: IMovie[];
   onChangePage: (page: number) => void;
+  movieDeleteOptions?: MovieCustomListDeleteOptionsType;
 }
 
 const MovieList: FC<MovieListProps> = ({
@@ -16,9 +19,19 @@ const MovieList: FC<MovieListProps> = ({
   totalPages,
   movies,
   onChangePage,
+  movieDeleteOptions,
 }) => {
   const movieCardsElements = movies.map((m) => (
-    <MovieCard key={m.id} movie={m} />
+    <Col
+      key={m.id}
+      className='col-12 col-md-6 col-lg-4 col-xl-3 mb-4 d-flex justify-content-center'
+    >
+      {movieDeleteOptions !== undefined ? (
+        <MovieCardWithDeleteControl movie={m} {...movieDeleteOptions} />
+      ) : (
+        <MovieCard movie={m} />
+      )}
+    </Col>
   ));
 
   return (
