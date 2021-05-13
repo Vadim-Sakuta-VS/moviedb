@@ -13,13 +13,26 @@ import {
 import { ApiAccount } from '../../api/apiAccount';
 import { ICustomListDetails } from '../../types/entities';
 import { UpdateListItemCountAction } from '../customLists/types';
-import { selectCustomListsItemCount } from '../customLists/selectors';
+import {
+  selectCustomLists,
+  selectCustomListsItemCount,
+} from '../customLists/selectors';
 import { GetRootState } from '../rootStore';
 import { updateListItemCount } from '../customLists/actionCreators';
 
 export const loadCustomListDetailsData = (list_id: number) => {
-  return async (dispatch: Dispatch<CustomListDetailsAction>) => {
+  return async (
+    dispatch: Dispatch<CustomListDetailsAction>,
+    getState: GetRootState
+  ) => {
     try {
+      const customLists = selectCustomLists(getState());
+      const isExistList = customLists.some((list) => +list.id === list_id);
+      if (!isExistList) {
+        window.location.replace('/page404');
+        return;
+      }
+
       dispatch(
         setCustomListDetailsLoading(
           CustomListDetailsTypesLoading.isDetailsLoading,
@@ -75,7 +88,9 @@ export const deleteMovieCustomListEffect = (
         const itemCount = selectCustomListsItemCount(list_id)(getState());
         itemCount && dispatch(updateListItemCount(list_id, itemCount - 1));
         dispatch(deleteMovieCustomList(movie_id));
+        return true;
       }
+      return false;
     } catch (e) {
       console.log(e);
     } finally {

@@ -119,9 +119,9 @@ const UserListsPage: FC = () => {
             movies={movies}
           />
         ) : (
-          <span className='text-center font-weight-bold text-secondary'>
+          <p className='text-center font-weight-bold text-secondary'>
             No movies
-          </span>
+          </p>
         )}
       </Loader>
     </Tab.Pane>

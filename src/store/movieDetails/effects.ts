@@ -213,7 +213,7 @@ export const addMovieToCustomListsEffect = (
         const item_count = selectCustomListsItemCount(customListsId)(
           getState()
         );
-        item_count != undefined &&
+        item_count !== undefined &&
           dispatch(updateListItemCount(customListsId, item_count + 1));
       }
     } catch (e) {
