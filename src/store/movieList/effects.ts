@@ -51,7 +51,7 @@ export const loadMovies = (URL: string, paramsObj = {}) => {
         ...paramsObj,
       });
 
-      dispatch(setMovies(data.results));
+      dispatch(setMovies(data.results || []));
       dispatch(setTotalPages(data.total_pages));
     } catch (e) {
       console.log(e);

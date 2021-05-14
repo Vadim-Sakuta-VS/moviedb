@@ -172,9 +172,9 @@ const MovieListFilterPage: FC = () => {
                   onChangePage={onChangePage}
                 />
               ) : (
-                <span className='text-center font-weight-bold text-secondary'>
+                <p className='text-center font-weight-bold text-secondary'>
                   Nothing found
-                </span>
+                </p>
               )}
             </Loader>
           </Col>
