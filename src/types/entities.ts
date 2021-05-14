@@ -58,6 +58,17 @@ export interface IMovieBasicListLoading {
   watchlist: boolean;
 }
 
+export interface IMovieCustomListsLoading {
+  isLoadingStatus: boolean;
+  isSubmitLoading: boolean;
+}
+
+export interface ICustomListDetailsLoading {
+  isDetailsLoading: boolean;
+  isClearListLoading: boolean;
+  isRemoveMovieLoading: boolean;
+}
+
 export interface IAuthorReview {
   username: string;
   avatar_path: ImgPathType;
@@ -84,4 +95,16 @@ export interface IUser {
   iso_3166_1: string;
   name: string;
   username: string;
+}
+
+export type ICustomList = {
+  id: number | string;
+  name: string;
+  description: string;
+  item_count: number;
+  favorite_count: number;
+};
+
+export interface ICustomListDetails extends ICustomList {
+  items: IMovie[];
 }

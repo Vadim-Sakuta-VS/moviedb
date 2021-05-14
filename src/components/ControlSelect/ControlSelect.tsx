@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { Controller } from 'react-hook-form';
+import { Controller, RegisterOptions } from 'react-hook-form';
 import Select from 'react-select';
 import clsx from 'clsx';
 import { Control } from 'react-hook-form';
@@ -11,6 +11,7 @@ interface ControlSelectProps extends BaseSelectProps {
   control: Control<any>;
   isMulti: boolean;
   asRow?: boolean;
+  rules?: RegisterOptions;
 }
 
 const ControlSelect: FC<ControlSelectProps> = ({
@@ -20,6 +21,7 @@ const ControlSelect: FC<ControlSelectProps> = ({
   isMulti,
   options,
   asRow,
+  rules,
   ...props
 }) => {
   const classes = clsx(
@@ -30,13 +32,16 @@ const ControlSelect: FC<ControlSelectProps> = ({
 
   return (
     <Row className={classes}>
-      <Col className='col-auto pr-0'>
-        <h6 className='mb-1'>{label}</h6>
-      </Col>
+      {label && (
+        <Col className='col-auto pr-0'>
+          <h6 className='mb-1'>{label}</h6>
+        </Col>
+      )}
       <Col>
         <Controller
           name={name}
           control={control}
+          rules={rules}
           render={({ field }) => (
             <Select
               {...field}

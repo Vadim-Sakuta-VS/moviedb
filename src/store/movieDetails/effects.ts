@@ -1,7 +1,10 @@
 import { ApiMovies } from '../../api/apiMovies';
 import {
+  addMovieCustomLists,
   setMovieAccountState,
   setMovieAccountStateLoading,
+  setMovieCustomListsData,
+  setMovieCustomListsLoading,
   setMovieDetails,
   setMovieRating,
   setMovieToBasicList,
@@ -13,6 +16,7 @@ import { Dispatch } from 'redux';
 import { ApiAccount } from '../../api/apiAccount';
 import {
   initialMovieAccountState,
+  MovieTypesCustomListsLoadingState,
   MovieTypesOnlyBooleanState,
 } from './reducers';
 import {
@@ -21,6 +25,14 @@ import {
 } from '../userAuth/selectors';
 import { GetRootState } from '../rootStore';
 import { selectMovieAccountState } from './selectors';
+import {
+  selectCustomLists,
+  selectCustomListsItemCount,
+} from '../customLists/selectors';
+import { ICustomList } from '../../types/entities';
+import { ISelectOption } from '../../types/uiTypes';
+import { updateListItemCount } from '../customLists/actionCreators';
+import { UpdateListItemCountAction } from '../customLists/types';
 
 export const loadMovieDetails = (id: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction>) => {
@@ -121,6 +133,98 @@ export const addMediaToBasicList = (
       console.log(e);
     } finally {
       dispatch(setMovieToBasicListLoading(typeList, false));
+    }
+  };
+};
+
+export const checkMovieStatusCustomLists = (id: number) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction>,
+    getState: GetRootState
+  ) => {
+    try {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isLoadingStatus,
+          true
+        )
+      );
+
+      const customLists = selectCustomLists(getState());
+      let filteredCustomLists: ICustomList[] = [];
+
+      for (const customList of customLists) {
+        const res = await ApiAccount.manipulateCustomList(
+          ApiAccount.GET.movieStatusCustomList(+customList.id),
+          ApiAccount.ManipulationCustomListTypes.GET,
+          null,
+          { movie_id: String(id) }
+        );
+        if (!res.item_present) {
+          filteredCustomLists.push(customList);
+        }
+      }
+
+      dispatch(setMovieCustomListsData(filteredCustomLists));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isLoadingStatus,
+          false
+        )
+      );
+    }
+  };
+};
+
+export const addMovieToCustomListsEffect = (
+  customListsData: ISelectOption[],
+  movieId: number
+) => {
+  return async (
+    dispatch: Dispatch<MovieDetailsAction | UpdateListItemCountAction>,
+    getState: GetRootState
+  ) => {
+    try {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isSubmitLoading,
+          true
+        )
+      );
+
+      const customListsIds: number[] = [];
+      for (const customListOption of customListsData) {
+        const res = await ApiAccount.manipulateCustomList(
+          ApiAccount.POST.addMovieCustomList(+customListOption.value),
+          ApiAccount.ManipulationCustomListTypes.POST,
+          { media_id: movieId }
+        );
+        if (res.success) {
+          customListsIds.push(+customListOption.value);
+        }
+      }
+
+      dispatch(addMovieCustomLists(customListsIds));
+
+      for (const customListsId of customListsIds) {
+        const item_count = selectCustomListsItemCount(customListsId)(
+          getState()
+        );
+        item_count !== undefined &&
+          dispatch(updateListItemCount(customListsId, item_count + 1));
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      dispatch(
+        setMovieCustomListsLoading(
+          MovieTypesCustomListsLoadingState.isSubmitLoading,
+          false
+        )
+      );
     }
   };
 };

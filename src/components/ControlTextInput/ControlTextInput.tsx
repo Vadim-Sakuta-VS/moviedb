@@ -5,7 +5,7 @@ import { useController, RegisterOptions, Control } from 'react-hook-form';
 interface ControlProps {
   name: string;
   defaultValue?: string;
-  rules: RegisterOptions;
+  rules?: RegisterOptions;
   control: Control<any>;
   onChange?: (value: string) => void;
   [key: string]: any;

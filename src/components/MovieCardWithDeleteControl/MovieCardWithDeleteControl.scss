@@ -1,0 +1,33 @@
+.movie-card-control {
+  position: relative;
+
+  &__col {
+    position: absolute;
+    top: 0;
+    left: 0;
+    &-inner {
+      height: 100%;
+      background-color: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem;
+    }
+  }
+
+  & > svg.icon-delete {
+    position: absolute;
+    bottom: 5px;
+    right: 17px;
+    fill: #ff0000ff;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  &:hover .movie-card__body {
+    opacity: 1;
+    visibility: visible;
+  }
+}

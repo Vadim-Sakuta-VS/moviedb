@@ -1,12 +1,5 @@
 import React, { useEffect, FC } from 'react';
-import {
-  Accordion,
-  Container,
-  Row,
-  Button,
-  Col,
-  Spinner,
-} from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectGenresData,
@@ -37,10 +30,11 @@ import {
   createValuesStructureNumbers,
   getDefaultValuesSelectField,
 } from '../../utils/selectUtils';
-import clsx from 'clsx';
 import { ApiMovies } from '../../api/apiMovies';
 import { ParsedQs } from 'qs';
 import { ParamObjType } from '../../types/params';
+import Loader from '../Loader/Loader';
+import AccordionCustom from '../AccordionCustom/AccordionCustom';
 
 const MovieListFilterPage: FC = () => {
   const { search, pathname } = useLocation();
@@ -52,10 +46,6 @@ const MovieListFilterPage: FC = () => {
   const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const dispatch = useDispatch();
-  const containerClasses = clsx(
-    'pt-2 pb-2',
-    isGenresLoading && 'd-flex justify-content-center'
-  );
 
   useEffect(() => {
     dispatch(loadGenres());
@@ -123,78 +113,58 @@ const MovieListFilterPage: FC = () => {
   );
 
   return (
-    <Container className={containerClasses}>
-      {isGenresLoading ? (
-        <Spinner animation='border' variant='success' />
-      ) : (
-        <>
-          <Row>
-            <Col>
-              <Accordion>
-                <Row className='mb-1'>
-                  <Col>
-                    <Accordion.Toggle
-                      as={Button}
-                      variant='light'
-                      className='d-flex align-items-center'
-                      eventKey='0'
-                    >
-                      <span className='mr-1'>Filters</span>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        height='24px'
-                        viewBox='0 0 24 24'
-                        width='24px'
-                        fill='#000000'
-                      >
-                        <path d='M0 0h24v24H0V0z' fill='none' />
-                        <path d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z' />
-                      </svg>
-                    </Accordion.Toggle>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Accordion.Collapse eventKey='0'>
-                      <FilterForm
-                        onSubmit={onSubmit}
-                        defaultValues={{
-                          with_genres: defaultGenres,
-                          vote_average: {
-                            gte: defaultVoteAverageGte,
-                            lte: defaultVoteAverageLte,
-                          },
-                          primary_release_year: defaultReleaseYear,
-                          sort_by: defaultSorting,
-                          page: defaultValues.page as string,
-                        }}
-                        values={{
-                          with_genres: createValuesSelectField(genres),
-                          vote_average: {
-                            gte: createValuesSelectField(votesAverageArr),
-                            lte: createValuesSelectField(votesAverageArr),
-                          },
-                          primary_release_year: createValuesSelectField(
-                            releaseYearsArr
-                          ),
-                          sort_by: createValuesSelectField(
-                            ApiMovies.SORTING_TYPES
-                          ),
-                          page: defaultValues.page as string,
-                        }}
-                        isLoading={isMoviesLoading}
-                      />
-                    </Accordion.Collapse>
-                  </Col>
-                </Row>
-              </Accordion>
-            </Col>
-          </Row>
-          <Row>
-            <Col className='p-0 pt-1 d-flex justify-content-center'>
-              {isMoviesLoading ? (
-                <Spinner animation='border' variant='success' />
-              ) : movies.length ? (
+    <Container className='pt-2 pb-2'>
+      <Loader isLoading={isGenresLoading}>
+        <Row>
+          <Col>
+            <AccordionCustom
+              buttonText='Filters'
+              buttonIcon={
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  height='24px'
+                  viewBox='0 0 24 24'
+                  width='24px'
+                  fill='#000000'
+                >
+                  <path d='M0 0h24v24H0V0z' fill='none' />
+                  <path d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z' />
+                </svg>
+              }
+            >
+              <FilterForm
+                onSubmit={onSubmit}
+                defaultValues={{
+                  with_genres: defaultGenres,
+                  vote_average: {
+                    gte: defaultVoteAverageGte,
+                    lte: defaultVoteAverageLte,
+                  },
+                  primary_release_year: defaultReleaseYear,
+                  sort_by: defaultSorting,
+                  page: defaultValues.page as string,
+                }}
+                values={{
+                  with_genres: createValuesSelectField(genres),
+                  vote_average: {
+                    gte: createValuesSelectField(votesAverageArr),
+                    lte: createValuesSelectField(votesAverageArr),
+                  },
+                  primary_release_year: createValuesSelectField(
+                    releaseYearsArr
+                  ),
+                  sort_by: createValuesSelectField(ApiMovies.SORTING_TYPES),
+                  page: defaultValues.page as string,
+                }}
+                isLoading={isMoviesLoading}
+              />
+            </AccordionCustom>
+          </Col>
+        </Row>
+        <Row>
+          <Col className='p-0 pt-1'>
+            <Loader isLoading={isMoviesLoading}>
+              {movies.length ? (
                 <MovieList
                   currentPage={currentPage}
                   totalPages={totalPages}
@@ -202,14 +172,14 @@ const MovieListFilterPage: FC = () => {
                   onChangePage={onChangePage}
                 />
               ) : (
-                <span className='text-center font-weight-bold text-secondary'>
+                <p className='text-center font-weight-bold text-secondary'>
                   Nothing found
-                </span>
+                </p>
               )}
-            </Col>
-          </Row>
-        </>
-      )}
+            </Loader>
+          </Col>
+        </Row>
+      </Loader>
     </Container>
   );
 };

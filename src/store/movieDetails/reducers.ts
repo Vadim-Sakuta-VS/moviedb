@@ -10,6 +10,11 @@ export enum MovieTypesOnlyBooleanState {
   watchlist = 'watchlist',
 }
 
+export enum MovieTypesCustomListsLoadingState {
+  isLoadingStatus = 'isLoadingStatus',
+  isSubmitLoading = 'isSubmitLoading',
+}
+
 export const initialMovieAccountState: IMovieAccountState = {
   id: 0,
   favorite: false,
@@ -32,6 +37,13 @@ const initialState: MovieDetailsState = {
     data: initialMovieAccountState,
     isLoading: false,
     stateListsLoading: { favorite: false, watchlist: false },
+  },
+  custom_lists: {
+    data: [],
+    loading: {
+      isLoadingStatus: false,
+      isSubmitLoading: false,
+    },
   },
 };
 
@@ -96,6 +108,35 @@ function movieDetailsReducer(
             ...state.movieListsAccountState.data,
             [action.payload.type]: action.payload.value,
           },
+        },
+      };
+    case MovieDetailsActions.SET_MOVIE_CUSTOM_LISTS_DATA:
+      return {
+        ...state,
+        custom_lists: {
+          ...state.custom_lists,
+          data: action.payload,
+        },
+      };
+    case MovieDetailsActions.SET_MOVIE_CUSTOM_LISTS_LOADING:
+      return {
+        ...state,
+        custom_lists: {
+          ...state.custom_lists,
+          loading: {
+            ...state.custom_lists.loading,
+            [action.payload.type]: action.payload.isLoading,
+          },
+        },
+      };
+    case MovieDetailsActions.ADD_MOVIE_CUSTOM_LISTS:
+      return {
+        ...state,
+        custom_lists: {
+          ...state.custom_lists,
+          data: state.custom_lists.data.filter(
+            (list) => !action.payload.includes(+list.id)
+          ),
         },
       };
     default:

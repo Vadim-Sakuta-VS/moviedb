@@ -17,3 +17,7 @@ export const selectMovieBasicListLoading = (
   state: RootState
 ): IMovieBasicListLoading =>
   state.movieDetails.movieListsAccountState.stateListsLoading;
+export const selectMovieCustomLists = (state: RootState) =>
+  state.movieDetails.custom_lists.data;
+export const selectMovieCustomListsLoading = (state: RootState) =>
+  state.movieDetails.custom_lists.loading;

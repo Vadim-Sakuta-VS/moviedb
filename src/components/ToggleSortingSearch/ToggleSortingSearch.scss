@@ -1,0 +1,9 @@
+.created-toggle {
+  &__arrow {
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      fill: #28a745;
+    }
+  }
+}

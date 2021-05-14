@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
 import 'swiper/components/pagination/pagination.scss';
@@ -16,6 +16,7 @@ import {
   selectGenresLoading,
 } from '../../store/genres/selectors';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
+import Loader from '../Loader/Loader';
 
 const HomePage: FC = () => {
   const isLoadingGenres = useSelector(selectGenresLoading);
@@ -66,12 +67,10 @@ const HomePage: FC = () => {
         <Col>
           <h2 className='font-weight-bold'>Search movies by genres</h2>
         </Col>
-        <Col className='d-flex justify-content-center'>
-          {isLoadingGenres ? (
-            <Spinner animation='border' variant='success' />
-          ) : (
+        <Col>
+          <Loader isLoading={isLoadingGenres}>
             <Row>{genresLinks}</Row>
-          )}
+          </Loader>
         </Col>
       </Row>
       {movieRows}

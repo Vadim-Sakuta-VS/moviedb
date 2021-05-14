@@ -1,10 +1,12 @@
 import { SelectOptionDif } from './uiTypes';
+import { ICustomList } from './entities';
 
 export type ParamGetObj = {
   [key: string]: string | ParamGetObj;
 };
 
 export interface IListResponse<T> {
+  page: number;
   results: T[];
   total_pages: number;
 }
@@ -36,8 +38,18 @@ export interface UserAuthResponse {
   success: boolean;
   status_message: string;
   status_code?: number;
+  errors?: string[];
+  item_present?: boolean;
 }
 
 export type AuthCommonResponse = UserAuthResponse & { [key: string]: any };
 
 export type UserAuthParam = TokenParam & IUserParam;
+
+export type CustomListParam = Pick<ICustomList, 'name' | 'description'>;
+
+export type MovieCustomListDeleteOptionsType = {
+  isDeletingLoading: boolean;
+  manipulationMovieId: number;
+  onDeleteMovie: (movie_id: number) => void;
+};
