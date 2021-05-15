@@ -9,6 +9,11 @@ interface MovieReviewProps extends IReview {
   maxContentSymbolsToShow: number;
 }
 
+const timeOptions: Intl.DateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+};
+
 const MovieReview: FC<MovieReviewProps> = ({
   author_details,
   content,
@@ -23,8 +28,8 @@ const MovieReview: FC<MovieReviewProps> = ({
   const dateUpdated = new Date(updated_at);
   const localeDateCreated = dateCreated.toLocaleDateString();
   const localeDateUpdated = dateUpdated.toLocaleDateString();
-  const localeTimeCreated = dateCreated.toLocaleTimeString().slice(0, 5);
-  const localeTimeUpdated = dateUpdated.toLocaleTimeString().slice(0, 5);
+  const localeTimeCreated = dateCreated.toLocaleTimeString([], timeOptions);
+  const localeTimeUpdated = dateUpdated.toLocaleTimeString([], timeOptions);
 
   const handleShow = () => setIsShowModal(true);
   const handleClose = () => setIsShowModal(false);
