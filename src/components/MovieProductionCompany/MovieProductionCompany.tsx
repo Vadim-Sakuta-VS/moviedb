@@ -20,12 +20,7 @@ export const MovieProductionCompany: FC<MovieProductionCompanyProps> = ({
 
   return (
     <Col className={colClasses}>
-      <Image
-        src={`${ApiMovies.getImage(logoPath)}`}
-        width={100}
-        height={100}
-        rounded
-      />
+      <Image src={`${ApiMovies.getImage(logoPath)}`} width={100} rounded />
       <p className='mt-2'>{companyName}</p>
     </Col>
   );
