@@ -268,7 +268,11 @@ const MovieDetails: FC = () => {
             </Col>
             <Col className='col-12 col-md-8 col-lg-6 m-auto'>
               <Loader isLoading={isLoadingStatus}>
-                {filteredCustomLists.length ? (
+                {!isAuth ? (
+                  <p className='m-0 text-center font-weight-bold text-secondary'>
+                    Please, sign in system
+                  </p>
+                ) : filteredCustomLists.length ? (
                   <MovieCustomListForm movieId={+id} />
                 ) : (
                   <p className='m-0 text-center font-weight-bold text-secondary'>
