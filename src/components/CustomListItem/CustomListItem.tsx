@@ -7,6 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCustomListsFetchStateByType } from '../../store/customLists/selectors';
 import { CUSTOM_LISTS_ACTIONS_TYPES } from '../../store/customLists/reducers';
 import { deleteCustomList } from '../../store/customLists/effects';
+import styled from 'styled-components';
+
+const StyledItemCount = styled(Col)`
+  font-size: 23px;
+`;
 
 type CustomListItemProps = {
   list: ICustomList;
@@ -57,8 +62,10 @@ const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
             <p>{list.description}</p>
           </Col>
         </Row>
-        <Row style={{ fontSize: 23 }} className='justify-content-center'>
-          <Col className='col-auto'>Item count: {list.item_count}</Col>
+        <Row className='justify-content-center'>
+          <StyledItemCount className='col-auto'>
+            Item count: {list.item_count}
+          </StyledItemCount>
         </Row>
       </Alert>
     </Col>

@@ -1,6 +1,11 @@
 import React, { FC } from 'react';
-import './Loader.scss';
 import { Spinner } from 'react-bootstrap';
+import styled from 'styled-components';
+
+const StyledLoader = styled.div`
+  min-height: inherit;
+  height: inherit;
+`;
 
 interface LoaderProps {
   isLoading: boolean;
@@ -9,9 +14,9 @@ interface LoaderProps {
 const Loader: FC<LoaderProps> = ({ isLoading, children }) => {
   if (isLoading) {
     return (
-      <div className='loader d-flex justify-content-center align-items-center'>
+      <StyledLoader className='d-flex justify-content-center align-items-center'>
         <Spinner animation='border' variant='success' />
-      </div>
+      </StyledLoader>
     );
   }
 

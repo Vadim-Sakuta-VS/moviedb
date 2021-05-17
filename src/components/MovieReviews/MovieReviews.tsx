@@ -53,7 +53,7 @@ const MovieReviews: FC<MovieReviewsProps> = ({ id }) => {
   return (
     <Row>
       <Col xs={12}>
-        <Row className='flex-column reviews'>
+        <Row className='flex-column'>
           <Col className='h4 mb-4 text-center font-weight-bold'>Reviews</Col>
           <Col>
             <Container className='pl-lg-5 pr-lg-5 d-flex flex-column align-items-stretch'>

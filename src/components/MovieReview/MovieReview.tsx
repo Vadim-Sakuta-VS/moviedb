@@ -1,13 +1,22 @@
 import React, { FC, useState } from 'react';
-import './MovieReview.scss';
 import { Alert, Button, Col, Modal, Row } from 'react-bootstrap';
 import { MovieDetailsRow } from '../MovieDetails/MovieDetailsRow';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { IReview } from '../../types/entities';
+import styled from 'styled-components';
+
+const ReviewDateWrapper = styled(Col)`
+  font-size: 12px;
+`;
 
 interface MovieReviewProps extends IReview {
   maxContentSymbolsToShow: number;
 }
+
+const timeOptions: Intl.DateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+};
 
 const MovieReview: FC<MovieReviewProps> = ({
   author_details,
@@ -18,20 +27,22 @@ const MovieReview: FC<MovieReviewProps> = ({
 }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
 
+  maxContentSymbolsToShow =
+    window.innerWidth > 500 ? maxContentSymbolsToShow : 230;
   const isLongContent = content.length > maxContentSymbolsToShow;
   const dateCreated = new Date(created_at);
   const dateUpdated = new Date(updated_at);
   const localeDateCreated = dateCreated.toLocaleDateString();
   const localeDateUpdated = dateUpdated.toLocaleDateString();
-  const localeTimeCreated = dateCreated.toLocaleTimeString().slice(0, 5);
-  const localeTimeUpdated = dateUpdated.toLocaleTimeString().slice(0, 5);
+  const localeTimeCreated = dateCreated.toLocaleTimeString([], timeOptions);
+  const localeTimeUpdated = dateUpdated.toLocaleTimeString([], timeOptions);
 
   const handleShow = () => setIsShowModal(true);
   const handleClose = () => setIsShowModal(false);
 
   return (
     <Alert variant='secondary'>
-      <Row className='review flex-column flex-md-row'>
+      <Row className='flex-column flex-md-row'>
         <Col className='d-flex justify-content-center col-md-auto p-0'>
           <UserAvatar
             username={author_details.username}
@@ -64,7 +75,7 @@ const MovieReview: FC<MovieReviewProps> = ({
             </Col>
           </Row>
           <Row className='justify-content-between'>
-            <Col className='col-auto mb-1 font-weight-bold review-date'>
+            <ReviewDateWrapper className='col-auto mb-1 font-weight-bold'>
               <p className='m-0'>
                 Created: {localeDateCreated} ({localeTimeCreated})
               </p>
@@ -73,7 +84,7 @@ const MovieReview: FC<MovieReviewProps> = ({
                   Updated: {localeDateUpdated} ({localeTimeUpdated})
                 </p>
               )}
-            </Col>
+            </ReviewDateWrapper>
             {isLongContent && (
               <Col className='col-auto'>
                 <Button variant='success' onClick={handleShow}>

@@ -1,9 +1,53 @@
 import React, { FC } from 'react';
-import './MovieCard.scss';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
 import { Link } from 'react-router-dom';
 import { IMovie } from '../../types/entities';
+import styled from 'styled-components';
+
+const StyledCard = styled(Card)`
+  max-width: 400px;
+  min-height: 382px;
+
+  &:hover .movie-card__body {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
+const CardLink = styled(Link)`
+  height: 100%;
+
+  img {
+    height: inherit;
+  }
+
+  @media (max-width: 1023px) {
+    height: auto;
+  }
+`;
+
+const StyledCardBody = styled(Card.Body)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  overflow: auto;
+
+  &:hover {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (max-width: 1023px) {
+    position: static;
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+  }
+`;
 
 interface MovieCardProps {
   movie: IMovie;
@@ -16,11 +60,11 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
       : movie.overview;
 
   return (
-    <Card className=' movie-card flex-grow-1'>
-      <Link to={`/movie/${movie.id}`}>
+    <StyledCard className='flex-grow-1'>
+      <CardLink to={`/movie/${movie.id}`}>
         <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
-      </Link>
-      <Card.Body className='movie-card__body bg-white'>
+      </CardLink>
+      <StyledCardBody className='movie-card__body bg-white'>
         <Card.Title className='font-weight-bold border-bottom border-success'>
           <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
         </Card.Title>
@@ -58,8 +102,8 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
             <Col className='p-0'>{movie.release_date}</Col>
           </Row>
         </Container>
-      </Card.Body>
-    </Card>
+      </StyledCardBody>
+    </StyledCard>
   );
 };
 

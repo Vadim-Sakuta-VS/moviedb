@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.scss';
 import MovieDetails from './components/MovieDetails/MovieDetails';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Page404 from './components/Page404/Page404';
@@ -20,6 +19,11 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import UserListsPage from './components/UserListsPage/UserListsPage';
 import UserListsCustomPage from './components/UserListsCustomPage/UserListsCustomPage';
 import UserListCustomDetailsPage from './components/UserListCustomDetailsPage/UserListCustomDetailsPage';
+import styled from 'styled-components';
+
+const Page = styled.main`
+  min-height: 100vh;
+`;
 
 function App() {
   const isAppLoading = useSelector(selectAppLoading);
@@ -33,7 +37,7 @@ function App() {
     <Router>
       <div className='App'>
         <Loader isLoading={isAppLoading}>
-          <main className='page'>
+          <Page className='page'>
             <Switch>
               <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
               <Route
@@ -76,7 +80,7 @@ function App() {
               </PrivateRoute>
               <Route path='*' component={Page404} />
             </Switch>
-          </main>
+          </Page>
         </Loader>
       </div>
     </Router>

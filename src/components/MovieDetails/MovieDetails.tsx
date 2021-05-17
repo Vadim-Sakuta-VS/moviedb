@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import './MovieDetails.scss';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import { MovieProductionCompany } from '../MovieProductionCompany/MovieProductionCompany';
 import { MovieDetailsRow } from './MovieDetailsRow';
@@ -31,6 +30,18 @@ import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { MovieTypesOnlyBooleanState } from '../../store/movieDetails/reducers';
 import MovieCustomListForm from '../MovieCustomListForm/MovieCustomListForm';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
+import styled from 'styled-components';
+
+const Divider = styled.hr`
+  border-top: 3px dashed grey;
+`;
+
+export const DetailsPosterCol = styled(Col)`
+  @media (max-width: 576px) {
+    flex-basis: 100%;
+    margin-bottom: 1rem;
+  }
+`;
 
 interface MovieDetailsParams {
   id: string;
@@ -138,7 +149,7 @@ const MovieDetails: FC = () => {
         key={c.id}
         logoPath={c.logo_path}
         companyName={c.name}
-        colClassAdditional='production-companies__item'
+        style={{ margin: '0 20px' }}
       />
     ));
 
@@ -147,16 +158,16 @@ const MovieDetails: FC = () => {
       <Loader
         isLoading={isLoading || isMovieAccountStateLoading || movie.id !== +id}
       >
-        <Container className='pt-2 pb-2 movie-details'>
-          <Row className='movie-details__main-row'>
-            <Col>
+        <Container className='pt-2 pb-2'>
+          <Row>
+            <DetailsPosterCol>
               <Image
                 src={`${ApiMovies.getImage(movie.poster_path)}`}
-                alt='Poster image'
+                alt='Movie poster'
                 rounded
                 className='w-100'
               />
-            </Col>
+            </DetailsPosterCol>
             <Col>
               <Container>
                 <Row className='justify-content-end'>
@@ -212,7 +223,7 @@ const MovieDetails: FC = () => {
                 <MovieDetailsRow
                   title='Overview'
                   value={movie.overview}
-                  rowClassAdditional='flex-column'
+                  style={{ flexDirection: 'column' }}
                 />
                 <MovieDetailsRow>
                   <a href={movie.homepage} target='_blank' rel='noreferrer'>
@@ -250,7 +261,7 @@ const MovieDetails: FC = () => {
               </Container>
             </Col>
           </Row>
-          <hr className='divider' />
+          <Divider />
           <Row className='flex-column'>
             <Col className='h4 mb-4 text-center font-weight-bold'>
               Add Movie to your custom lists
@@ -268,7 +279,7 @@ const MovieDetails: FC = () => {
               </Loader>
             </Col>
           </Row>
-          <hr className='divider' />
+          <Divider />
           <Row className='flex-column'>
             <Col className='h4 mb-4 text-center font-weight-bold'>
               Production companies
@@ -288,7 +299,7 @@ const MovieDetails: FC = () => {
               </Container>
             </Col>
           </Row>
-          <hr className='divider' />
+          <Divider />
           <MovieReviews id={movie.id} />
         </Container>
       </Loader>
