@@ -1,5 +1,4 @@
-import { requiredGetParams, SERVER, SERVER_IMAGE } from './constants';
-import { stringifyGetParamsObj } from '../utils/utils';
+import { SERVER_IMAGE } from './constants';
 import { IGenre, IMovie, IReview } from '../types/entities';
 import { ISelectValue } from '../types/uiTypes';
 import {
@@ -8,6 +7,7 @@ import {
   ParamGetObj,
 } from '../types/params';
 import { ImgPathType } from '../types/common';
+import { http } from './restConfig';
 
 interface IGenresResponse {
   genres: IGenre[];
@@ -20,11 +20,11 @@ enum MEDIA_TYPES {
 
 export class ApiMovies {
   static GET: KeyValueStringType = {
-    NOW_PLAYING: `${SERVER}/movie/now_playing`,
-    POPULAR: `${SERVER}/movie/popular`,
-    TOP_RATED: `${SERVER}/movie/top_rated`,
-    UPCOMING: `${SERVER}/movie/upcoming`,
-    DISCOVER: `${SERVER}/discover/movie`,
+    NOW_PLAYING: `/movie/now_playing`,
+    POPULAR: `movie/popular`,
+    TOP_RATED: `/movie/top_rated`,
+    UPCOMING: `/movie/upcoming`,
+    DISCOVER: `/discover/movie`,
   };
 
   static SORTING_TYPES: ISelectValue[] = [
@@ -48,9 +48,8 @@ export class ApiMovies {
 
   static async loadGenres(): Promise<IGenresResponse> {
     try {
-      const paramsStr = stringifyGetParamsObj(requiredGetParams);
-      const res = await fetch(`${SERVER}/genre/movie/list${paramsStr}`);
-      return await res.json();
+      const res = await http.get('/genre/movie/list');
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -62,12 +61,10 @@ export class ApiMovies {
     paramsGETObj: ParamGetObj
   ): Promise<IListResponse<IMovie>> {
     try {
-      const paramsStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        ...paramsGETObj,
+      const res = await http.get(URL, {
+        params: paramsGETObj,
       });
-      const res = await fetch(`${URL}${paramsStr}`);
-      return await res.json();
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -80,9 +77,8 @@ export class ApiMovies {
 
   static async loadMovieDetails(id: number): Promise<IMovie> {
     try {
-      const paramsStr = stringifyGetParamsObj(requiredGetParams);
-      const res = await fetch(`${SERVER}/movie/${id}${paramsStr}`);
-      return await res.json();
+      const res = await http.get(`/movie/${id}`);
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -94,12 +90,10 @@ export class ApiMovies {
     paramsGETObj: ParamGetObj
   ): Promise<IListResponse<IReview>> {
     try {
-      const paramsStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        ...paramsGETObj,
+      const res = await http.get(`/movie/${id}/reviews`, {
+        params: paramsGETObj,
       });
-      const res = await fetch(`${SERVER}/movie/${id}/reviews${paramsStr}`);
-      return await res.json();
+      return await res.data;
     } catch (e) {
       console.log(e);
       throw e;

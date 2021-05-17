@@ -1,5 +1,3 @@
-import { stringifyGetParamsObj } from '../utils/utils';
-import { requiredGetParams, SERVER } from './constants';
 import {
   AuthCommonResponse,
   IUserParam,
@@ -9,6 +7,7 @@ import {
   UserAuthResponse,
 } from '../types/params';
 import { IUser } from '../types/entities';
+import { http } from './restConfig';
 
 export class ApiAuth {
   static async loginUser(user: IUserParam): Promise<UserAuthResponse> {
@@ -20,27 +19,18 @@ export class ApiAuth {
         }, {} as UserAuthResponse);
       };
 
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-      });
-      const requestTokenData = await ApiAuth.createRequestToken(paramStr);
+      const requestTokenData = await ApiAuth.createRequestToken();
 
       if (requestTokenData.success) {
-        const loginObj = await ApiAuth.createSessionWithLogin(
-          {
-            ...user,
-            request_token: requestTokenData.request_token,
-          },
-          paramStr
-        );
+        const loginObj = await ApiAuth.createSessionWithLogin({
+          ...user,
+          request_token: requestTokenData.request_token,
+        });
 
         if (loginObj.success) {
-          const sessionObj = await ApiAuth.createSession(
-            {
-              request_token: loginObj.request_token,
-            },
-            paramStr
-          );
+          const sessionObj = await ApiAuth.createSession({
+            request_token: loginObj.request_token,
+          });
 
           if (sessionObj.success) {
             ApiAuth.saveSessionId(sessionObj.session_id);
@@ -58,51 +48,31 @@ export class ApiAuth {
     }
   }
 
-  private static async createRequestToken(
-    paramStr: string
-  ): Promise<AuthCommonResponse> {
-    const res = await fetch(`${SERVER}/authentication/token/new${paramStr}`);
-    return await res.json();
+  private static async createRequestToken(): Promise<AuthCommonResponse> {
+    const res = await http.get('/authentication/token/new');
+    return res.data;
   }
 
   private static async createSessionWithLogin(
-    userData: UserAuthParam,
-    paramStr: string
+    userData: UserAuthParam
   ): Promise<AuthCommonResponse> {
-    const res = await fetch(
-      `${SERVER}/authentication/token/validate_with_login${paramStr}`,
-      {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      }
+    const res = await http.post(
+      '/authentication/token/validate_with_login',
+      userData
     );
-    return await res.json();
+    return await res.data;
   }
 
   private static async createSession(
-    token: TokenParam,
-    paramStr: string
+    token: TokenParam
   ): Promise<AuthCommonResponse> {
-    const res = await fetch(`${SERVER}/authentication/session/new${paramStr}`, {
-      method: 'POST',
-      body: JSON.stringify(token),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    });
-    return await res.json();
+    const res = await http.post(`/authentication/session/new`, token);
+    return await res.data;
   }
 
   static async logoutUser() {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-      });
-
-      const sessionObj = await ApiAuth.deleteSession(paramStr);
+      const sessionObj = await ApiAuth.deleteSession();
       if (sessionObj.success) {
         ApiAuth.deleteSessionId();
       }
@@ -112,31 +82,19 @@ export class ApiAuth {
     }
   }
 
-  private static async deleteSession(
-    paramStr: string
-  ): Promise<AuthCommonResponse> {
-    const res = await fetch(`${SERVER}/authentication/session${paramStr}`, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        session_id: ApiAuth.getSessionId(),
-      }),
-      headers: {
-        'Content-type': 'application/json',
-      },
+  private static async deleteSession(): Promise<AuthCommonResponse> {
+    const res = await http.delete('/authentication/session', {
+      data: { session_id: ApiAuth.getSessionId() },
     });
-    return await res.json();
+    return res.data;
   }
 
   static async getAccountDetails(): Promise<IUser | null> {
     try {
       const session_id = ApiAuth.getSessionId();
       if (session_id) {
-        const paramStr = stringifyGetParamsObj({
-          ...requiredGetParams,
-          session_id,
-        });
-        const res = await fetch(`${SERVER}/account${paramStr}`);
-        return await res.json();
+        const res = await http.get('/account', { params: { session_id } });
+        return await res.data;
       }
       return null;
     } catch (e) {
