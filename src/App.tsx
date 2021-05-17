@@ -21,6 +21,10 @@ import UserListsCustomPage from './components/UserListsCustomPage/UserListsCusto
 import UserListCustomDetailsPage from './components/UserListCustomDetailsPage/UserListCustomDetailsPage';
 import styled from 'styled-components';
 
+const StyledApp = styled.div`
+  min-height: 100vh;
+`;
+
 const Page = styled.main`
   min-height: 100vh;
 `;
@@ -35,7 +39,7 @@ function App() {
 
   return (
     <Router>
-      <div className='App'>
+      <StyledApp className='App'>
         <Loader isLoading={isAppLoading}>
           <Page className='page'>
             <Switch>
@@ -82,7 +86,7 @@ function App() {
             </Switch>
           </Page>
         </Loader>
-      </div>
+      </StyledApp>
     </Router>
   );
 }
