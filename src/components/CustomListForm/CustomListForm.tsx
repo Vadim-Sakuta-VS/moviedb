@@ -23,7 +23,12 @@ export const initialDefaultValues: CustomListParam = {
 };
 
 const CustomListForm: FC<CustomListFormProps> = ({ defaultValues }) => {
-  const { control, handleSubmit, reset } = useForm<CustomListParam>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isSubmitted },
+  } = useForm<CustomListParam>({
     defaultValues: defaultValues || initialDefaultValues,
   });
   const { isLoading, error_message } = useSelector(
@@ -106,7 +111,7 @@ const CustomListForm: FC<CustomListFormProps> = ({ defaultValues }) => {
         </Col>
       </Row>
       <Row className='justify-content-end align-items-center'>
-        {error_message && (
+        {error_message && isSubmitted && (
           <Col>
             <p className='pl-2 m-0 text-danger'>{error_message}</p>
           </Col>
