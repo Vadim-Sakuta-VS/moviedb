@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import './UserAuth.scss';
 import { Link, useLocation } from 'react-router-dom';
 import { Col, Dropdown, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +14,17 @@ import {
   SortingDateTypes,
 } from '../UserListsPage/UserListsPage';
 import { stringifyGetParamsObj } from '../../utils/utils';
+import styled from 'styled-components';
+
+const DropdownMenuLink = styled(Link)`
+  display: block;
+  line-height: 32px;
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+`;
 
 const UserAuth: FC = () => {
   const location = useLocation();
@@ -49,15 +59,15 @@ const UserAuth: FC = () => {
 
             <Dropdown.Menu style={{ minWidth: '100%' }}>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <Link
+                <DropdownMenuLink
                   to={`/profile/${user.id}`}
-                  className='pl-1 pr-1 menu-dropdown__link'
+                  className='pl-1 pr-1'
                 >
                   Profile
-                </Link>
+                </DropdownMenuLink>
               </DropdownItem>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <Link
+                <DropdownMenuLink
                   to={{
                     pathname: `/lists/${Object.keys(
                       BASIC_LISTS_TYPES
@@ -67,18 +77,15 @@ const UserAuth: FC = () => {
                       page: '1',
                     }),
                   }}
-                  className='pl-1 pr-1 menu-dropdown__link'
+                  className='pl-1 pr-1'
                 >
                   Lists
-                </Link>
+                </DropdownMenuLink>
               </DropdownItem>
               <Dropdown.Item eventKey='1' className='p-0' as='button'>
-                <Link
-                  to='/lists/custom'
-                  className='pl-1 pr-1 menu-dropdown__link'
-                >
+                <DropdownMenuLink to='/lists/custom' className='pl-1 pr-1'>
                   Custom lists
-                </Link>
+                </DropdownMenuLink>
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey='1'

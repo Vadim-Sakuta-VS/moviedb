@@ -1,6 +1,17 @@
 import React, { FC } from 'react';
 import { Form, Row } from 'react-bootstrap';
 import { useController, RegisterOptions, Control } from 'react-hook-form';
+import styled from 'styled-components';
+
+const RowWrapper = styled(Row)`
+  position: relative;
+`;
+
+const StyledFormText = styled(Form.Text)`
+  position: absolute;
+  top: 100%;
+  left: 0;
+`;
 
 interface ControlProps {
   name: string;
@@ -38,7 +49,7 @@ const ControlTextInput: FC<ControlProps> = ({
   };
 
   return (
-    <Row className='m-0' style={{ position: 'relative' }}>
+    <RowWrapper className='m-0'>
       <Form.Control
         isInvalid={errors[name]}
         {...props}
@@ -51,14 +62,11 @@ const ControlTextInput: FC<ControlProps> = ({
         }
       />
       {errors[name] && (
-        <Form.Text
-          className='text-danger'
-          style={{ position: 'absolute', top: '100%', left: 0 }}
-        >
+        <StyledFormText className='text-danger'>
           {errors[name].message}
-        </Form.Text>
+        </StyledFormText>
       )}
-    </Row>
+    </RowWrapper>
   );
 };
 

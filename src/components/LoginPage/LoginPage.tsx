@@ -11,6 +11,16 @@ import {
 import { Redirect, useLocation } from 'react-router-dom';
 import { loginUser } from '../../store/userAuth/effects';
 import { IUserParam } from '../../types/params';
+import styled from 'styled-components';
+
+const StyledHeader = styled.header`
+  min-height: 10vh;
+  margin-bottom: 20vh;
+`;
+
+const LoginFormWrapper = styled(Col)`
+  max-width: 500px;
+`;
 
 interface LocationParams {
   from: Location;
@@ -36,28 +46,34 @@ const LoginPage: FC = () => {
   };
 
   return (
-    <Container className='pt-2 pb-2'>
-      <Row style={{ marginBottom: '200px' }}>
-        <Col>
-          {withLinkWrapper(
-            '/',
-            <Image
-              width={120}
-              src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
+    <>
+      <StyledHeader className='p-1 d-flex align-items-center'>
+        <Container>
+          <Row className='align-items-center'>
+            <Col>
+              {withLinkWrapper(
+                '/',
+                <Image
+                  width={120}
+                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
+                />
+              )}
+            </Col>
+          </Row>
+        </Container>
+      </StyledHeader>
+      <Container className='pt-2 pb-2'>
+        <Row className='justify-content-center'>
+          <LoginFormWrapper>
+            <LoginForm
+              onSubmit={onSubmitHandler}
+              isLoading={isAuthLoading}
+              error_message={statusMessage}
             />
-          )}
-        </Col>
-      </Row>
-      <Row className='justify-content-center'>
-        <Col style={{ maxWidth: 500 }}>
-          <LoginForm
-            onSubmit={onSubmitHandler}
-            isLoading={isAuthLoading}
-            error_message={statusMessage}
-          />
-        </Col>
-      </Row>
-    </Container>
+          </LoginFormWrapper>
+        </Row>
+      </Container>
+    </>
   );
 };
 

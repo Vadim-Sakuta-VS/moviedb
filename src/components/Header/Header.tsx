@@ -1,9 +1,32 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import './Header.scss';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import clsx from 'clsx';
 import UserAuth from '../UserAuth/UserAuth';
+import styled from 'styled-components';
+
+const StyledHeader = styled.header`
+  min-height: 10vh;
+  background-color: #fff;
+  border-bottom: 1px solid #212121;
+`;
+
+type StyledFixedHeaderProps = {
+  isVisible: boolean;
+};
+
+const StyledFixedHeader = styled.header<StyledFixedHeaderProps>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0 0 10px 1px #212121;
+  transform: ${({ isVisible }) =>
+    isVisible ? 'translateY(0)' : 'translateY(-120%)'};
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+  transition: 0.3s;
+  z-index: 11;
+`;
 
 const Header: FC = () => {
   const [isFixedVisible, setIsFixedVisible] = useState<boolean>(false);
@@ -38,15 +61,9 @@ const Header: FC = () => {
     };
   }, []);
 
-  const headerFixedClasses = clsx(
-    'header-fixed',
-    'p-2',
-    isFixedVisible && 'header-fixed--visible'
-  );
-
   return (
     <>
-      <header ref={headerRef} className='header p-1'>
+      <StyledHeader className='d-flex align-items-center p-1'>
         <Container>
           <Row className='align-items-center'>
             <Col>
@@ -60,9 +77,7 @@ const Header: FC = () => {
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
                 <Col>
-                  <Link to='/companies' className='header__link'>
-                    Companies
-                  </Link>
+                  <Link to='/companies'>Companies</Link>
                 </Col>
                 <Col>
                   <UserAuth />
@@ -71,8 +86,12 @@ const Header: FC = () => {
             </Col>
           </Row>
         </Container>
-      </header>
-      <header ref={headerRef} className={headerFixedClasses}>
+      </StyledHeader>
+      <StyledFixedHeader
+        ref={headerRef}
+        className='d-flex align-items-center p-1'
+        isVisible={isFixedVisible}
+      >
         <Container>
           <Row className='align-items-center'>
             <Col>
@@ -84,20 +103,18 @@ const Header: FC = () => {
               </Link>
             </Col>
             <Col className='col-auto'>
-              <Row className='flex-column flex-sm-row'>
-                <Col>
-                  <Link to='/companies' className='header__link'>
-                    Companies
-                  </Link>
+              <Row className='flex-column flex-sm-row align-items-sm-center'>
+                <Col className='order-1 order-sm-0'>
+                  <Link to='/companies'>Companies</Link>
                 </Col>
-                <Col>
+                <Col className='mb-1 mb-sm-0'>
                   <UserAuth />
                 </Col>
               </Row>
             </Col>
           </Row>
         </Container>
-      </header>
+      </StyledFixedHeader>
     </>
   );
 };

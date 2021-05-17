@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import './UserListsPage.scss';
 import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
 import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
 import { KeyValueStringType } from '../../types/params';
@@ -17,6 +16,15 @@ import {
 } from '../../store/movieList/selectors';
 import { changePage } from '../../store/movieList/actionCreators';
 import Loader from '../Loader/Loader';
+import styled from 'styled-components';
+
+const TabLink = styled(Link)`
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  &:hover {
+    text-decoration: none;
+  }
+`;
 
 export const BASIC_LISTS_TYPES: KeyValueStringType = {
   RATED: 'Rated',
@@ -91,8 +99,12 @@ const UserListsPage: FC = () => {
 
   const navItemElements = listsKeys.map((key) => (
     <Nav.Item key={key}>
-      <Nav.Link as='button' eventKey={key}>
-        <Link
+      <Nav.Link
+        as='button'
+        eventKey={key}
+        style={{ padding: 0, backgroundColor: 'transparent' }}
+      >
+        <TabLink
           to={{
             pathname: `/lists/${key.toLowerCase()}`,
             search: stringifyGetParamsObj({
@@ -100,10 +112,9 @@ const UserListsPage: FC = () => {
               page: '1',
             }),
           }}
-          className='tabs__link'
         >
           {BASIC_LISTS_TYPES[key]}
-        </Link>
+        </TabLink>
       </Nav.Link>
     </Nav.Item>
   ));

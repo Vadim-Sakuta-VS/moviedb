@@ -1,27 +1,31 @@
 import React, { FC } from 'react';
-import './MovieProductionCompany.scss';
 import { Col, Image } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
-import clsx from 'clsx';
 import { ImgPathType } from '../../types/common';
+import styled from 'styled-components';
 
-interface MovieProductionCompanyProps {
+const StyledMovieProductionCompany = styled(Col)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+interface MovieProductionCompanyProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   logoPath: ImgPathType;
   companyName: string;
-  colClassAdditional: string;
 }
 
 export const MovieProductionCompany: FC<MovieProductionCompanyProps> = ({
   logoPath,
   companyName,
-  colClassAdditional,
+  style,
 }) => {
-  const colClasses = clsx('col-auto', 'production-company', colClassAdditional);
-
   return (
-    <Col className={colClasses}>
+    <StyledMovieProductionCompany className='col-auto' style={style}>
       <Image src={`${ApiMovies.getImage(logoPath)}`} width={100} rounded />
       <p className='mt-2'>{companyName}</p>
-    </Col>
+    </StyledMovieProductionCompany>
   );
 };

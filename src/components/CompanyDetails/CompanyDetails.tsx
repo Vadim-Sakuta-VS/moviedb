@@ -11,6 +11,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { loadCompanyDetails } from '../../store/companyDetails/effects';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
+import { DetailsPosterCol } from '../MovieDetails/MovieDetails';
 
 interface CompanyDetailsParams {
   id: string;
@@ -37,16 +38,16 @@ const CompanyDetails: FC = () => {
   return (
     <RedirectByNumberId id={id}>
       <Loader isLoading={isLoading || company.id !== +id}>
-        <Container className='pt-2 pb-2 movie-details'>
-          <Row className='movie-details__main-row'>
-            <Col>
+        <Container className='pt-2 pb-2'>
+          <Row>
+            <DetailsPosterCol>
               <Image
                 src={`${ApiMovies.getImage(company.logo_path)}`}
-                alt='Poster image'
+                alt='Company poster'
                 rounded
                 className='w-100'
               />
-            </Col>
+            </DetailsPosterCol>
             <Col>
               <Col className='h3 mb-3 font-weight-bold border-bottom border-success'>
                 {company.name}

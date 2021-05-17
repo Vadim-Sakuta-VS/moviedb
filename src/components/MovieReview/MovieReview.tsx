@@ -1,9 +1,13 @@
 import React, { FC, useState } from 'react';
-import './MovieReview.scss';
 import { Alert, Button, Col, Modal, Row } from 'react-bootstrap';
 import { MovieDetailsRow } from '../MovieDetails/MovieDetailsRow';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { IReview } from '../../types/entities';
+import styled from 'styled-components';
+
+const ReviewDateWrapper = styled(Col)`
+  font-size: 12px;
+`;
 
 interface MovieReviewProps extends IReview {
   maxContentSymbolsToShow: number;
@@ -38,7 +42,7 @@ const MovieReview: FC<MovieReviewProps> = ({
 
   return (
     <Alert variant='secondary'>
-      <Row className='review flex-column flex-md-row'>
+      <Row className='flex-column flex-md-row'>
         <Col className='d-flex justify-content-center col-md-auto p-0'>
           <UserAvatar
             username={author_details.username}
@@ -71,7 +75,7 @@ const MovieReview: FC<MovieReviewProps> = ({
             </Col>
           </Row>
           <Row className='justify-content-between'>
-            <Col className='col-auto mb-1 font-weight-bold review-date'>
+            <ReviewDateWrapper className='col-auto mb-1 font-weight-bold'>
               <p className='m-0'>
                 Created: {localeDateCreated} ({localeTimeCreated})
               </p>
@@ -80,7 +84,7 @@ const MovieReview: FC<MovieReviewProps> = ({
                   Updated: {localeDateUpdated} ({localeTimeUpdated})
                 </p>
               )}
-            </Col>
+            </ReviewDateWrapper>
             {isLongContent && (
               <Col className='col-auto'>
                 <Button variant='success' onClick={handleShow}>
