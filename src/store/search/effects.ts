@@ -13,9 +13,11 @@ import { GetRootState } from '../rootStore';
 import { SearchType } from './reducers';
 import { ApiSearch } from '../../api/ApiSearch';
 import { ParamGetObj } from '../../types/params';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const searchDataByQuery = (params: ParamGetObj) => {
-  return async (dispatch: Dispatch<SearchAction>) => {
+  return async (dispatch: Dispatch<SearchAction | SetAppErrorAction>) => {
     try {
       dispatch(setTypeLoading(true));
 
@@ -30,6 +32,7 @@ export const searchDataByQuery = (params: ParamGetObj) => {
       dispatch(changePage(data.page));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoading(false));
     }
@@ -37,7 +40,10 @@ export const searchDataByQuery = (params: ParamGetObj) => {
 };
 
 export const loadMoreDataByQuery = (params: ParamGetObj) => {
-  return async (dispatch: Dispatch<SearchAction>, getState: GetRootState) => {
+  return async (
+    dispatch: Dispatch<SearchAction | SetAppErrorAction>,
+    getState: GetRootState
+  ) => {
     try {
       dispatch(setTypeLoadingMore(true));
 
@@ -56,6 +62,7 @@ export const loadMoreDataByQuery = (params: ParamGetObj) => {
       dispatch(setTotalPages(data.total_pages));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoadingMore(false));
     }

@@ -8,10 +8,12 @@ import { Dispatch } from 'redux';
 import { MovieReviewsAction } from './types';
 import { GetRootState } from '../rootStore';
 import { selectMovieId, selectMovieReviewsCurrentPage } from './selectors';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const loadMovieReviews = () => {
   return async (
-    dispatch: Dispatch<MovieReviewsAction>,
+    dispatch: Dispatch<MovieReviewsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -27,6 +29,7 @@ export const loadMovieReviews = () => {
       dispatch(setTotalPages(data.total_pages));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoading(false));
     }

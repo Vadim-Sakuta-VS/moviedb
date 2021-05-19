@@ -6,17 +6,22 @@ import {
   setTypeLoading,
   setUserData,
 } from './actionCreators';
-import { setTypeLoading as setTypeAppLoading } from '../app/actionCreators';
+import {
+  setAppError,
+  setTypeLoading as setTypeAppLoading,
+} from '../app/actionCreators';
 import { ApiAuth } from '../../api/apiAuth';
 import { IUserParam } from '../../types/params';
-import { AppAction } from '../app/types';
+import { AppAction, SetAppErrorAction } from '../app/types';
 import { MovieDetailsAction } from '../movieDetails/types';
 import { setMovieAccountState } from '../movieDetails/actionCreators';
 import { initialMovieAccountState } from '../movieDetails/reducers';
 import { loadCustomLists } from '../customLists/effects';
 
 export const loginUser = (user: IUserParam) => {
-  return async (dispatch: Dispatch<UserAuthAction | any>) => {
+  return async (
+    dispatch: Dispatch<UserAuthAction | SetAppErrorAction | any>
+  ) => {
     try {
       dispatch(setTypeLoading(true));
       const userAuthData = await ApiAuth.loginUser(user);
@@ -30,6 +35,7 @@ export const loginUser = (user: IUserParam) => {
       dispatch(loginUserCreator(userAuthData));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoading(false));
     }
@@ -37,13 +43,16 @@ export const loginUser = (user: IUserParam) => {
 };
 
 export const logoutUser = () => {
-  return async (dispatch: Dispatch<UserAuthAction | MovieDetailsAction>) => {
+  return async (
+    dispatch: Dispatch<UserAuthAction | MovieDetailsAction | SetAppErrorAction>
+  ) => {
     try {
       await ApiAuth.logoutUser();
       dispatch(logoutUserCreator());
       dispatch(setMovieAccountState(initialMovieAccountState));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     }
   };
 };
@@ -62,6 +71,7 @@ export const loadUserDataDetails = () => {
       dispatch(setTypeAppLoading(false));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoading(false));
     }
