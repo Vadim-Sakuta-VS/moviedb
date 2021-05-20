@@ -9,7 +9,6 @@ import { loadGenres } from '../../store/genres/effects';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   fillArrayFromTo,
-  parseGetParamsStr,
   sortArray,
   stringifyGetParamsObj,
   TYPES_SORTING,
@@ -34,6 +33,7 @@ import { ParsedQs } from 'qs';
 import { ParamObjType } from '../../types/params';
 import Loader from '../Loader/Loader';
 import AccordionCustom from '../AccordionCustom/AccordionCustom';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 const MovieListFilterPage: FC = () => {
   const location = useLocation();
@@ -44,47 +44,37 @@ const MovieListFilterPage: FC = () => {
   const isMoviesLoading = useSelector(selectMovieListLoading);
   const totalPages = useSelector(selectTotalPages);
   const dispatch = useDispatch();
-
-  const paramObj = parseGetParamsStr(location.search);
-  const currentPage = +paramObj.page || 1;
+  const { paramsObj, currentPage, onChangePage } = useCustomRoute({
+    handleLocationChange,
+  });
 
   useEffect(() => {
     dispatch(loadGenres());
   }, []);
 
-  useEffect(() => {
-    dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramObj)));
-  }, [location, dispatch]);
+  function handleLocationChange() {
+    dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramsObj)));
+  }
 
   const onSubmit = (data: ParamObjType) => {
-    const paramObj = createParamObj(data);
-    const paramStr = stringifyGetParamsObj(paramObj);
-    if (paramStr !== location.search.slice(1)) {
+    const paramsObj = createParamObj(data);
+    const paramsStr = stringifyGetParamsObj(paramsObj);
+    if (paramsStr !== location.search.slice(1)) {
       dispatch(updateData({ isRequiredUpdate: true }));
-      paramObj.page = '1';
+      paramsObj.page = '1';
     }
     history.push({
       pathname: location.pathname,
-      search: stringifyGetParamsObj(paramObj),
+      search: stringifyGetParamsObj(paramsObj),
     });
-  };
-
-  const onChangePage = (page: number) => {
-    if (currentPage !== page) {
-      paramObj.page = page.toString();
-      history.push({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj(paramObj),
-      });
-    }
   };
 
   const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
   const defaultGenres = getDefaultValuesSelectField(
-    paramObj.with_genres,
+    paramsObj.with_genres,
     genres
   );
-  const vote_average = paramObj.vote_average as ParsedQs;
+  const vote_average = paramsObj.vote_average as ParsedQs;
   const defaultVoteAverageGte = getDefaultValuesSelectField(
     vote_average?.gte,
     votesAverageArr
@@ -101,11 +91,11 @@ const MovieListFilterPage: FC = () => {
     )
   );
   const defaultReleaseYear = getDefaultValuesSelectField(
-    paramObj.primary_release_year,
+    paramsObj.primary_release_year,
     releaseYearsArr
   );
   const defaultSorting = getDefaultValuesSelectField(
-    paramObj.sort_by,
+    paramsObj.sort_by,
     ApiMovies.SORTING_TYPES
   );
 
@@ -139,7 +129,7 @@ const MovieListFilterPage: FC = () => {
                   },
                   primary_release_year: defaultReleaseYear,
                   sort_by: defaultSorting,
-                  page: paramObj.page as string,
+                  page: paramsObj.page as string,
                 }}
                 values={{
                   with_genres: createValuesSelectField(genres),
@@ -151,7 +141,7 @@ const MovieListFilterPage: FC = () => {
                     releaseYearsArr
                   ),
                   sort_by: createValuesSelectField(ApiMovies.SORTING_TYPES),
-                  page: paramObj.page as string,
+                  page: paramsObj.page as string,
                 }}
                 isLoading={isMoviesLoading}
               />

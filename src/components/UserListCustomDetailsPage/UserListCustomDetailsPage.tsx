@@ -18,7 +18,8 @@ import {
 import MovieList from '../MovieList/MovieList';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
+import { stringifyGetParamsObj } from '../../utils/utils';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 type UserListCustomDetailsPageParams = {
   id: string;
@@ -41,9 +42,10 @@ const UserListCustomDetailsPage = () => {
   )?.name;
   const manipulationMovieId = useSelector(selectManipulationMovieId);
   const dispatch = useDispatch();
+  const { currentPage, onChangePage } = useCustomRoute({
+    handleChangePage,
+  });
 
-  const paramsObj = parseGetParamsStr(location.search);
-  const currentPage = +paramsObj.page || 1;
   const totalPages = Math.ceil(customListMovies.length / 20);
   const moviesToShow = [...customListMovies]
     .reverse()
@@ -60,6 +62,10 @@ const UserListCustomDetailsPage = () => {
   useEffect(() => {
     isDetailsLoading && setLocalLoading(false);
   }, [isDetailsLoading]);
+
+  function handleChangePage() {
+    window.scrollTo({ top: 0 });
+  }
 
   const onDeleteMovie = async (movie_id: number) => {
     const isSuccess = await dispatch(
@@ -89,16 +95,6 @@ const UserListCustomDetailsPage = () => {
   const onConfirmClearCustomList = () => {
     onHideConfirmModal();
     dispatch(clearCustomListDetailsEffect(+list_id));
-  };
-
-  const onChangePage = (page: number) => {
-    if (currentPage !== page) {
-      history.push({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj({ page: String(page) }),
-      });
-      window.scrollTo({ top: 0 });
-    }
   };
 
   return (

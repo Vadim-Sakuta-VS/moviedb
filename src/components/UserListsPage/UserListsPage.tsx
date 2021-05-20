@@ -1,10 +1,10 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
-import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
 import { KeyValueStringType } from '../../types/params';
 import MovieList from '../MovieList/MovieList';
 import ToggleSortingSearch from '../ToggleSortingSearch/ToggleSortingSearch';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
+import { stringifyGetParamsObj } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUserBasicMovieList } from '../../store/movieList/effects';
 import { ApiAccount } from '../../api/apiAccount';
@@ -15,6 +15,7 @@ import {
 } from '../../store/movieList/selectors';
 import Loader from '../Loader/Loader';
 import styled from 'styled-components';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 const TabLink = styled(Link)`
   display: inline-block;
@@ -37,18 +38,18 @@ export const SortingDateTypes = {
 
 const UserListsPage: FC = () => {
   const location = useLocation();
-  const history = useHistory();
   const movies = useSelector(selectMovieList);
   const totalPages = useSelector(selectTotalPages);
   const isLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const listsKeys = Object.keys(BASIC_LISTS_TYPES);
+  const { paramsObj, currentPage, onChangePage } = useCustomRoute({
+    handleLocationChange,
+  });
 
-  const paramsObj = parseGetParamsStr(location.search);
-  const currentPage = +paramsObj.page || 1;
   const sort_by = paramsObj.sort_by;
 
-  useEffect(() => {
+  function handleLocationChange() {
     if (isPathnameContainsListType()) {
       if (!sort_by) {
         paramsObj.sort_by = SortingDateTypes.desc;
@@ -60,7 +61,7 @@ const UserListsPage: FC = () => {
         )
       );
     }
-  }, [location]);
+  }
 
   const isPathnameContainsListType = () => {
     const pathArr = location.pathname.split('/');
@@ -79,16 +80,6 @@ const UserListsPage: FC = () => {
   if (!isPathnameContainsListType()) {
     return <Redirect to='/page404' />;
   }
-
-  const onChangePage = (page: number) => {
-    if (currentPage !== page) {
-      paramsObj.page = page.toString();
-      history.push({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj(paramsObj),
-      });
-    }
-  };
 
   const navItemElements = listsKeys.map((key) => (
     <Nav.Item key={key}>
