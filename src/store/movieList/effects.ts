@@ -4,7 +4,6 @@ import {
   setMoviesTypeLoading,
   setTotalPages,
 } from './actionCreators';
-import { selectCurrentPage } from './selectors';
 import { parseGetParamsStr } from '../../utils/utils';
 import { Dispatch } from 'redux';
 import { MovieListAction } from './types';
@@ -38,18 +37,12 @@ export const loadUserBasicMovieList = (
 };
 
 export const loadMovies = (URL: string, paramsObj = {}) => {
-  return async (
-    dispatch: Dispatch<MovieListAction>,
-    getState: GetRootState
-  ) => {
+  return async (dispatch: Dispatch<MovieListAction>) => {
     try {
       dispatch(setMoviesTypeLoading(true));
-      const currentPage = selectCurrentPage(getState());
+      console.log(paramsObj);
 
-      const data = await ApiMovies.loadMovieList(URL, {
-        page: currentPage.toString(),
-        ...paramsObj,
-      });
+      const data = await ApiMovies.loadMovieList(URL, paramsObj);
 
       dispatch(setMovies(data.results || []));
       dispatch(setTotalPages(data.total_pages));

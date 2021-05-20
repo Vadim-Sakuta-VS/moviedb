@@ -9,12 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadUserBasicMovieList } from '../../store/movieList/effects';
 import { ApiAccount } from '../../api/apiAccount';
 import {
-  selectCurrentPage,
   selectMovieList,
   selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
-import { changePage } from '../../store/movieList/actionCreators';
 import Loader from '../Loader/Loader';
 import styled from 'styled-components';
 
@@ -41,23 +39,18 @@ const UserListsPage: FC = () => {
   const location = useLocation();
   const history = useHistory();
   const movies = useSelector(selectMovieList);
-  const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const isLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const listsKeys = Object.keys(BASIC_LISTS_TYPES);
 
-  useEffect(() => {
-    return () => {
-      dispatch(changePage(1));
-    };
-  }, []);
+  const paramsObj = parseGetParamsStr(location.search);
+  const currentPage = +paramsObj.page || 1;
+  const sort_by = paramsObj.sort_by;
 
   useEffect(() => {
     if (isPathnameContainsListType()) {
-      const paramsObj = parseGetParamsStr(location.search);
-      dispatch(changePage(+paramsObj.page || 1));
-      if (!paramsObj.sort_by) {
+      if (!sort_by) {
         paramsObj.sort_by = SortingDateTypes.desc;
       }
       dispatch(
@@ -67,7 +60,7 @@ const UserListsPage: FC = () => {
         )
       );
     }
-  }, [location.search, location.pathname]);
+  }, [location]);
 
   const isPathnameContainsListType = () => {
     const pathArr = location.pathname.split('/');
@@ -88,13 +81,13 @@ const UserListsPage: FC = () => {
   }
 
   const onChangePage = (page: number) => {
-    const paramsObj = parseGetParamsStr(location.search);
-    paramsObj.page = page.toString();
-    history.push({
-      pathname: location.pathname,
-      search: stringifyGetParamsObj(paramsObj),
-    });
-    dispatch(changePage(page));
+    if (currentPage !== page) {
+      paramsObj.page = page.toString();
+      history.push({
+        pathname: location.pathname,
+        search: stringifyGetParamsObj(paramsObj),
+      });
+    }
   };
 
   const navItemElements = listsKeys.map((key) => (

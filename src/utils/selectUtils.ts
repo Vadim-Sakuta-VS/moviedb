@@ -5,12 +5,20 @@ export const createParamObj = (data: ParamObjType): ParamObjReturnType => {
   return Object.entries(data).reduce((acc, [key, value]) => {
     if (Array.isArray(value) && value.length) {
       return { ...acc, [key]: value.map((v) => v.value).join(',') };
-    } else if (typeof value === 'object' && (value as ISelectOption).value) {
+    } else if (
+      value &&
+      typeof value === 'object' &&
+      (value as ISelectOption).value
+    ) {
       return { ...acc, [key]: (value as ISelectOption).value };
-    } else if (typeof value === 'object' && Object.keys(value).length) {
+    } else if (
+      value &&
+      typeof value === 'object' &&
+      Object.keys(value).length
+    ) {
       return { ...acc, [key]: createParamObj(value as ParamObjType) };
     }
-    return { ...acc, [key]: value };
+    return { ...acc, [key]: value || '' };
   }, {});
 };
 

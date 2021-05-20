@@ -46,6 +46,7 @@ const ControlSelect: FC<ControlSelectProps> = ({
             <Select
               {...field}
               isMulti={isMulti}
+              isClearable={true}
               options={options as readonly any[] | undefined}
               {...props}
             />

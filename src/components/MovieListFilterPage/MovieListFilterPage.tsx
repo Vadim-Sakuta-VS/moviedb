@@ -17,13 +17,12 @@ import {
 import FilterForm from '../FilterForm/FilterForm';
 import { loadDiscoverMovies } from '../../store/movieList/effects';
 import {
-  selectCurrentPage,
   selectMovieList,
   selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import MovieList from '../MovieList/MovieList';
-import { changePage, updateData } from '../../store/movieList/actionCreators';
+import { updateData } from '../../store/movieList/actionCreators';
 import {
   createParamObj,
   createValuesSelectField,
@@ -37,57 +36,55 @@ import Loader from '../Loader/Loader';
 import AccordionCustom from '../AccordionCustom/AccordionCustom';
 
 const MovieListFilterPage: FC = () => {
-  const { search, pathname } = useLocation();
+  const location = useLocation();
   const history = useHistory();
   const genres = useSelector(selectGenresData);
   const isGenresLoading = useSelector(selectGenresLoading);
   const movies = useSelector(selectMovieList);
   const isMoviesLoading = useSelector(selectMovieListLoading);
-  const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const dispatch = useDispatch();
 
+  const paramObj = parseGetParamsStr(location.search);
+  const currentPage = +paramObj.page || 1;
+
   useEffect(() => {
     dispatch(loadGenres());
-    const paramObj = parseGetParamsStr(search);
-    if (paramObj.page) {
-      dispatch(changePage(+paramObj.page));
-    }
   }, []);
 
   useEffect(() => {
-    const paramObj = parseGetParamsStr(search);
-    if (!paramObj.page) {
-      paramObj.page = '1';
-      dispatch(updateData({ isRequiredUpdate: true }));
-    }
     dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramObj)));
-  }, [search, dispatch]);
+  }, [location, dispatch]);
 
   const onSubmit = (data: ParamObjType) => {
     const paramObj = createParamObj(data);
     const paramStr = stringifyGetParamsObj(paramObj);
-    if (paramStr !== search) {
+    if (paramStr !== location.search.slice(1)) {
       dispatch(updateData({ isRequiredUpdate: true }));
       paramObj.page = '1';
     }
-    history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
+    history.push({
+      pathname: location.pathname,
+      search: stringifyGetParamsObj(paramObj),
+    });
   };
 
   const onChangePage = (page: number) => {
-    const paramObj = parseGetParamsStr(search);
-    paramObj.page = page.toString();
-    dispatch(changePage(page));
-    history.replace({ pathname, search: stringifyGetParamsObj(paramObj) });
+    if (currentPage !== page) {
+      paramObj.page = page.toString();
+      history.push({
+        pathname: location.pathname,
+        search: stringifyGetParamsObj(paramObj),
+      });
+    }
   };
 
   const votesAverageArr = createValuesStructureNumbers(fillArrayFromTo(0, 10));
-  const defaultValues = parseGetParamsStr(search);
   const defaultGenres = getDefaultValuesSelectField(
-    defaultValues.with_genres,
+    paramObj.with_genres,
     genres
   );
-  const vote_average = defaultValues.vote_average as ParsedQs;
+  const vote_average = paramObj.vote_average as ParsedQs;
   const defaultVoteAverageGte = getDefaultValuesSelectField(
     vote_average?.gte,
     votesAverageArr
@@ -104,11 +101,11 @@ const MovieListFilterPage: FC = () => {
     )
   );
   const defaultReleaseYear = getDefaultValuesSelectField(
-    defaultValues.primary_release_year,
+    paramObj.primary_release_year,
     releaseYearsArr
   );
   const defaultSorting = getDefaultValuesSelectField(
-    defaultValues.sort_by,
+    paramObj.sort_by,
     ApiMovies.SORTING_TYPES
   );
 
@@ -142,7 +139,7 @@ const MovieListFilterPage: FC = () => {
                   },
                   primary_release_year: defaultReleaseYear,
                   sort_by: defaultSorting,
-                  page: defaultValues.page as string,
+                  page: paramObj.page as string,
                 }}
                 values={{
                   with_genres: createValuesSelectField(genres),
@@ -154,7 +151,7 @@ const MovieListFilterPage: FC = () => {
                     releaseYearsArr
                   ),
                   sort_by: createValuesSelectField(ApiMovies.SORTING_TYPES),
-                  page: defaultValues.page as string,
+                  page: paramObj.page as string,
                 }}
                 isLoading={isMoviesLoading}
               />

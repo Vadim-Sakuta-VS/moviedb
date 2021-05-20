@@ -42,6 +42,15 @@ const UserListCustomDetailsPage = () => {
   const manipulationMovieId = useSelector(selectManipulationMovieId);
   const dispatch = useDispatch();
 
+  const paramsObj = parseGetParamsStr(location.search);
+  const currentPage = +paramsObj.page || 1;
+  const totalPages = Math.ceil(customListMovies.length / 20);
+  const moviesToShow = [...customListMovies]
+    .reverse()
+    .slice(20 * (currentPage - 1), 20 * currentPage);
+  const isCorrectCurrentPage =
+    !isNaN(currentPage) && currentPage > 0 && currentPage <= totalPages;
+
   useEffect(() => {
     if (!isNaN(+list_id) && +list_id > 0) {
       dispatch(loadCustomListDetailsData(+list_id));
@@ -59,7 +68,7 @@ const UserListCustomDetailsPage = () => {
 
     if (
       ((isSuccess as unknown) as boolean) &&
-      +currentPage === totalPages &&
+      currentPage === totalPages &&
       customListMovies.length % 20 === 1
     ) {
       history.replace({
@@ -83,7 +92,7 @@ const UserListCustomDetailsPage = () => {
   };
 
   const onChangePage = (page: number) => {
-    if (+parseGetParamsStr(location.search).page !== page) {
+    if (currentPage !== page) {
       history.push({
         pathname: location.pathname,
         search: stringifyGetParamsObj({ page: String(page) }),
@@ -91,14 +100,6 @@ const UserListCustomDetailsPage = () => {
       window.scrollTo({ top: 0 });
     }
   };
-
-  const currentPage = parseGetParamsStr(location.search).page || 1;
-  const totalPages = Math.ceil(customListMovies.length / 20);
-  const moviesToShow = [...customListMovies]
-    .reverse()
-    .slice(20 * (+currentPage - 1), 20 * +currentPage);
-  const isCorrectCurrentPage =
-    !isNaN(+currentPage) && currentPage > 0 && currentPage <= totalPages;
 
   return (
     <RedirectByNumberId id={list_id}>
