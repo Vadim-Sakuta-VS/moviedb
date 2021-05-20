@@ -45,6 +45,14 @@ const StyledVideoWrapper = styled(Col)`
     width: 100%;
     min-height: 500px;
   }
+
+  @media (max-width: 767px) {
+    & > div,
+    & > div iframe {
+      min-height: 350px;
+      max-height: 350px;
+    }
+  }
 `;
 
 export const DetailsPosterCol = styled(Col)`
