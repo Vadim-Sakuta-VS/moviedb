@@ -1,8 +1,9 @@
 import { SERVER_IMAGE } from './constants';
-import { IGenre, IMovie, IReview } from '../types/entities';
+import { IGenre, IMovie, IReview, IVideo } from '../types/entities';
 import { ISelectValue } from '../types/uiTypes';
 import {
   IListResponse,
+  IVideoResponse,
   KeyValueStringType,
   ParamGetObj,
 } from '../types/params';
@@ -93,7 +94,17 @@ export class ApiMovies {
       const res = await http.get(`/movie/${id}/reviews`, {
         params: paramsGETObj,
       });
-      return await res.data;
+      return res.data;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  static async loadMovieVideos(id: number): Promise<IVideo[]> {
+    try {
+      const res = await http.get<IVideoResponse>(`/movie/${id}/videos`);
+      return res.data.results;
     } catch (e) {
       console.log(e);
       throw e;

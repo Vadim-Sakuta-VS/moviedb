@@ -20,6 +20,7 @@ import {
   selectMovieCustomListsLoading,
   selectMovieDetails,
   selectMovieDetailsLoading,
+  selectMovieVideo,
 } from '../../store/movieDetails/selectors';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import Loader from '../Loader/Loader';
@@ -32,9 +33,18 @@ import MovieCustomListForm from '../MovieCustomListForm/MovieCustomListForm';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
 import styled from 'styled-components';
 import ScrollToTopOnMount from '../helpers/ScrollToTopOnMount';
+import YouTube from 'react-youtube';
 
 const Divider = styled.hr`
   border-top: 3px dashed grey;
+`;
+
+const StyledVideoWrapper = styled(Col)`
+  & > div,
+  & > div iframe {
+    width: 100%;
+    min-height: 500px;
+  }
 `;
 
 export const DetailsPosterCol = styled(Col)`
@@ -53,6 +63,7 @@ const MovieDetails: FC = () => {
   const history = useHistory();
   const location = useLocation();
   const movie = useSelector(selectMovieDetails);
+  const video = useSelector(selectMovieVideo);
   const movieAccountState = useSelector(selectMovieAccountState);
   const isMovieAccountStateLoading = useSelector(
     selectMovieAccountStateLoading
@@ -264,6 +275,39 @@ const MovieDetails: FC = () => {
             </Col>
           </Row>
           <Divider />
+          {!!video.key && (
+            <>
+              <Row className='flex-column'>
+                <Col className='h4 mb-3 text-center font-weight-bold'>
+                  Movie video ({video.type})
+                </Col>
+                <StyledVideoWrapper>
+                  <YouTube videoId={video.key} />
+                </StyledVideoWrapper>
+              </Row>
+              <Divider />
+            </>
+          )}
+          <Row className='flex-column'>
+            <Col className='h4 mb-4 text-center font-weight-bold'>
+              Production companies
+            </Col>
+            <Col>
+              <Container className='pl-5 pr-5'>
+                <Row className='justify-content-center production-companies'>
+                  {productionCompaniesElements &&
+                  productionCompaniesElements.length ? (
+                    productionCompaniesElements
+                  ) : (
+                    <span className='text-center font-weight-bold text-secondary'>
+                      Unknown
+                    </span>
+                  )}
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+          <Divider />
           <Row className='flex-column'>
             <Col className='h4 mb-4 text-center font-weight-bold'>
               Add Movie to your custom lists
@@ -283,26 +327,6 @@ const MovieDetails: FC = () => {
                   </p>
                 )}
               </Loader>
-            </Col>
-          </Row>
-          <Divider />
-          <Row className='flex-column'>
-            <Col className='h4 mb-4 text-center font-weight-bold'>
-              Production companies
-            </Col>
-            <Col>
-              <Container className='pl-5 pr-5'>
-                <Row className='justify-content-center production-companies'>
-                  {productionCompaniesElements &&
-                  productionCompaniesElements.length ? (
-                    productionCompaniesElements
-                  ) : (
-                    <span className='text-center font-weight-bold text-secondary'>
-                      Unknown
-                    </span>
-                  )}
-                </Row>
-              </Container>
             </Col>
           </Row>
           <Divider />

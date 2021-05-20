@@ -21,3 +21,4 @@ export const selectMovieCustomLists = (state: RootState) =>
   state.movieDetails.custom_lists.data;
 export const selectMovieCustomListsLoading = (state: RootState) =>
   state.movieDetails.custom_lists.loading;
+export const selectMovieVideo = (state: RootState) => state.movieDetails.video;
