@@ -53,7 +53,7 @@ const MovieListFilterPage: FC = () => {
   }, []);
 
   function handleLocationChange() {
-    dispatch(loadDiscoverMovies(stringifyGetParamsObj(paramsObj)));
+    dispatch(loadDiscoverMovies(paramsObj));
   }
 
   const onSubmit = (data: ParamObjType) => {

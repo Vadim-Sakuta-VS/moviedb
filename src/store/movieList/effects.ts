@@ -4,7 +4,6 @@ import {
   setMoviesTypeLoading,
   setTotalPages,
 } from './actionCreators';
-import { parseGetParamsStr } from '../../utils/utils';
 import { Dispatch } from 'redux';
 import { MovieListAction } from './types';
 import { GetRootState } from '../rootStore';
@@ -13,15 +12,15 @@ import { selectUserDataDetails } from '../userAuth/selectors';
 import { ApiAccount } from '../../api/apiAccount';
 import { ApiAuth } from '../../api/apiAuth';
 
-export const loadMoviesByType = (movieType: string) => {
+export const loadMoviesByType = (movieType: string, paramsObj: ParamGetObj) => {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(loadMovies(ApiMovies.GET[movieType.toUpperCase()]));
+    dispatch(loadMovies(ApiMovies.GET[movieType.toUpperCase()], paramsObj));
   };
 };
 
-export const loadDiscoverMovies = (paramStr: string) => {
+export const loadDiscoverMovies = (paramsObj: ParamGetObj) => {
   return async (dispatch: Dispatch<any>) => {
-    dispatch(loadMovies(ApiMovies.GET.DISCOVER, parseGetParamsStr(paramStr)));
+    dispatch(loadMovies(ApiMovies.GET.DISCOVER, paramsObj));
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
 import { Link, useLocation, Redirect } from 'react-router-dom';
 import { KeyValueStringType } from '../../types/params';
@@ -37,6 +37,8 @@ export const SortingDateTypes = {
 };
 
 const UserListsPage: FC = () => {
+  const [prevListType, setPrevListType] = useState('');
+  const [prevLocation, setPrevLocation] = useState('');
   const location = useLocation();
   const movies = useSelector(selectMovieList);
   const totalPages = useSelector(selectTotalPages);
@@ -50,16 +52,20 @@ const UserListsPage: FC = () => {
   const sort_by = paramsObj.sort_by;
 
   function handleLocationChange() {
-    if (isPathnameContainsListType()) {
+    const currentListType = getListType() as keyof typeof ApiAccount.GET;
+    const isRightType = isPathnameContainsListType();
+    const currentLocation = location.search.slice(1);
+
+    if (
+      (isRightType && prevListType !== currentListType) ||
+      (isRightType && prevLocation !== currentLocation)
+    ) {
       if (!sort_by) {
         paramsObj.sort_by = SortingDateTypes.desc;
       }
-      dispatch(
-        loadUserBasicMovieList(
-          getListType() as keyof typeof ApiAccount.GET,
-          paramsObj
-        )
-      );
+      dispatch(loadUserBasicMovieList(currentListType, paramsObj));
+      setPrevListType(currentListType);
+      setPrevLocation(currentLocation);
     }
   }
 

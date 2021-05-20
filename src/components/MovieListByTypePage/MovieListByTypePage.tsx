@@ -4,19 +4,18 @@ import { Col, Container, Row } from 'react-bootstrap';
 import MovieList from '../MovieList/MovieList';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectCurrentPage,
   selectMovieList,
   selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
 import {
-  changePage,
   setMoviesType,
   updateData,
 } from '../../store/movieList/actionCreators';
 import { loadMoviesByType } from '../../store/movieList/effects';
 import { getMovieTypeTitle } from '../../utils/movieUtils';
 import Loader from '../Loader/Loader';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 interface MovieListByTypePageParams {
   type: string;
@@ -24,25 +23,23 @@ interface MovieListByTypePageParams {
 
 const MovieListByTypePage: FC = () => {
   const { type } = useParams<MovieListByTypePageParams>();
-  const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const movies = useSelector(selectMovieList);
   const isMoviesLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const typeTitle = getMovieTypeTitle(type);
+  const { paramsObj, currentPage, onChangePage } = useCustomRoute({
+    handleLocationChange,
+  });
 
   useEffect(() => {
     dispatch(setMoviesType(type));
     dispatch(updateData({ movieType: type }));
   }, [type, dispatch]);
 
-  useEffect(() => {
-    dispatch(loadMoviesByType(type));
-  }, [currentPage, type, dispatch]);
-
-  const onChangePage = (page: number) => {
-    dispatch(changePage(page));
-  };
+  function handleLocationChange() {
+    dispatch(loadMoviesByType(type, paramsObj));
+  }
 
   return (
     <Container className='pt-2 pb-2'>

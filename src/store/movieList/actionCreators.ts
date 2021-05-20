@@ -1,5 +1,4 @@
 import {
-  ChangePageAction,
   MovieListActions,
   SetMoviesAction,
   SetMoviesTypeAction,
@@ -14,11 +13,6 @@ export const setMoviesTypeLoading = (
 ): SetMoviesTypeLoadingAction => ({
   type: MovieListActions.SET_MOVIES_TYPE_LOADING,
   payload: isLoading,
-});
-
-export const changePage = (page: number): ChangePageAction => ({
-  type: MovieListActions.CHANGE_PAGE,
-  payload: page,
 });
 
 export const setTotalPages = (totalPages: number): SetTotalPagesAction => ({
