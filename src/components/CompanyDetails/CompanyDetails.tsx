@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { loadCompanyDetails } from '../../store/companyDetails/effects';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
 import { DetailsPosterCol } from '../MovieDetails/MovieDetails';
+import ScrollToTopOnMount from '../helpers/ScrollToTopOnMount';
 
 interface CompanyDetailsParams {
   id: string;
@@ -37,6 +38,7 @@ const CompanyDetails: FC = () => {
 
   return (
     <RedirectByNumberId id={id}>
+      <ScrollToTopOnMount />
       <Loader isLoading={isLoading || company.id !== +id}>
         <Container className='pt-2 pb-2'>
           <Row>

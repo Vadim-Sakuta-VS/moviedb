@@ -64,7 +64,6 @@ export function sortArray(
 
 export function stringifyGetParamsObj(obj: ParamGetObj) {
   return qs.stringify(obj, {
-    addQueryPrefix: true,
     allowDots: true,
   });
 }

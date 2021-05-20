@@ -1,5 +1,3 @@
-import { requiredGetParams, SERVER } from './constants';
-import { stringifyGetParamsObj } from '../utils/utils';
 import { ApiAuth } from './apiAuth';
 import {
   AuthCommonResponse,
@@ -7,48 +5,50 @@ import {
   ParamGetObj,
 } from '../types/params';
 import { ICustomList, IMovieAccountState } from '../types/entities';
+import { http } from './restConfig';
+import { AxiosRequestConfig } from 'axios';
 
 export class ApiAccount {
   static POST = {
     favorite(account_id: number) {
-      return `${SERVER}/account/${account_id}/favorite`;
+      return `/account/${account_id}/favorite`;
     },
     watchlist(account_id: number) {
-      return `${SERVER}/account/${account_id}/watchlist`;
+      return `/account/${account_id}/watchlist`;
     },
     createCustomList() {
-      return `${SERVER}/list`;
+      return `/list`;
     },
     addMovieCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}/add_item`;
+      return `/list/${list_id}/add_item`;
     },
     removeMovieCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}/remove_item`;
+      return `/list/${list_id}/remove_item`;
     },
     clearCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}/clear`;
+      return `/list/${list_id}/clear`;
     },
   };
   static GET = {
     rated(account_id: number) {
-      return `${SERVER}/account/${account_id}/rated/movies`;
+      return `/account/${account_id}/rated/movies`;
     },
     favorite(account_id: number) {
-      return `${SERVER}/account/${account_id}/favorite/movies`;
+      return `/account/${account_id}/favorite/movies`;
     },
     watchlist(account_id: number) {
-      return `${SERVER}/account/${account_id}/watchlist/movies`;
+      return `/account/${account_id}/watchlist/movies`;
     },
     getDetailsCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}`;
+      return `/list/${list_id}`;
     },
     movieStatusCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}/item_status`;
+      return `/list/${list_id}/item_status`;
     },
   };
   static DELETE = {
     deleteCustomList(list_id: number) {
-      return `${SERVER}/list/${list_id}`;
+      return `/list/${list_id}`;
     },
   };
   static ManipulationCustomListTypes = {
@@ -61,14 +61,10 @@ export class ApiAccount {
     movieId: number
   ): Promise<IMovieAccountState> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
+      const res = await http.get(`/movie/${movieId}/account_states`, {
+        params: { session_id: ApiAuth.getSessionId() },
       });
-      const res = await fetch(
-        `${SERVER}/movie/${movieId}/account_states${paramStr}`
-      );
-      return await res.json();
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -80,18 +76,12 @@ export class ApiAccount {
     value: number
   ): Promise<AuthCommonResponse> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
-      });
-      const res = await fetch(`${SERVER}/movie/${movieId}/rating${paramStr}`, {
-        method: 'POST',
-        body: JSON.stringify({ value }),
-        headers: {
-          'Content-type': 'application/json',
-        },
-      });
-      return await res.json();
+      const res = await http.post(
+        `/movie/${movieId}/rating`,
+        { value },
+        { params: { session_id: ApiAuth.getSessionId() } }
+      );
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -100,17 +90,10 @@ export class ApiAccount {
 
   static async deleteRatingMovie(movieId: number): Promise<AuthCommonResponse> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
+      const res = await http.delete(`/movie/${movieId}/rating`, {
+        params: { session_id: ApiAuth.getSessionId() },
       });
-      const res = await fetch(`${SERVER}/movie/${movieId}/rating${paramStr}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-        },
-      });
-      return await res.json();
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -125,22 +108,16 @@ export class ApiAccount {
     valueList: boolean
   ): Promise<AuthCommonResponse> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
-      });
-      const res = await fetch(`${URL}${paramStr}`, {
-        method: 'POST',
-        body: JSON.stringify({
+      const res = await http.post(
+        URL,
+        {
           media_type,
           media_id,
           [typeList]: valueList,
-        }),
-        headers: {
-          'Content-type': 'application/json',
         },
-      });
-      return await res.json();
+        { params: { session_id: ApiAuth.getSessionId() } }
+      );
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -152,15 +129,10 @@ export class ApiAccount {
     page: number
   ): Promise<IListResponse<ICustomList>> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        session_id: String(ApiAuth.getSessionId()),
-        page: String(page),
+      const res = await http.get(`/account/${account_id}/lists`, {
+        params: { session_id: ApiAuth.getSessionId(), page },
       });
-      const res = await fetch(
-        `${SERVER}/account/${account_id}/lists${paramStr}`
-      );
-      return await res.json();
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;
@@ -174,24 +146,18 @@ export class ApiAccount {
     paramGetObj?: ParamGetObj
   ): Promise<AuthCommonResponse> {
     try {
-      const paramStr = stringifyGetParamsObj({
-        ...requiredGetParams,
-        ...paramGetObj,
-        session_id: String(ApiAuth.getSessionId()),
-      });
-
-      let fetchOptions: RequestInit = {
+      const config: AxiosRequestConfig = {
         method,
-        headers: {
-          'Content-type': 'application/json',
-        },
+        url: URL,
+        params: { ...paramGetObj, session_id: ApiAuth.getSessionId() },
       };
+
       if (body) {
-        fetchOptions.body = JSON.stringify(body);
+        config.data = body;
       }
 
-      const res = await fetch(`${URL}${paramStr}`, fetchOptions);
-      return await res.json();
+      const res = await http(config);
+      return res.data;
     } catch (e) {
       console.log(e);
       throw e;

@@ -76,10 +76,10 @@ const Header: FC = () => {
             </Col>
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
-                <Col>
+                <Col className='order-1 order-sm-0'>
                   <Link to='/companies'>Companies</Link>
                 </Col>
-                <Col>
+                <Col className='mb-1 mb-sm-0'>
                   <UserAuth />
                 </Col>
               </Row>

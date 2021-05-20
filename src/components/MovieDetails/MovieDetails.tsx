@@ -31,6 +31,7 @@ import { MovieTypesOnlyBooleanState } from '../../store/movieDetails/reducers';
 import MovieCustomListForm from '../MovieCustomListForm/MovieCustomListForm';
 import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
 import styled from 'styled-components';
+import ScrollToTopOnMount from '../helpers/ScrollToTopOnMount';
 
 const Divider = styled.hr`
   border-top: 3px dashed grey;
@@ -155,6 +156,7 @@ const MovieDetails: FC = () => {
 
   return (
     <RedirectByNumberId id={id}>
+      <ScrollToTopOnMount />
       <Loader
         isLoading={isLoading || isMovieAccountStateLoading || movie.id !== +id}
       >
@@ -268,7 +270,11 @@ const MovieDetails: FC = () => {
             </Col>
             <Col className='col-12 col-md-8 col-lg-6 m-auto'>
               <Loader isLoading={isLoadingStatus}>
-                {filteredCustomLists.length ? (
+                {!isAuth ? (
+                  <p className='m-0 text-center font-weight-bold text-secondary'>
+                    Please, sign in system
+                  </p>
+                ) : filteredCustomLists.length ? (
                   <MovieCustomListForm movieId={+id} />
                 ) : (
                   <p className='m-0 text-center font-weight-bold text-secondary'>
