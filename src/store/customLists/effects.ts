@@ -5,10 +5,12 @@ import { GetRootState } from '../rootStore';
 import { selectUserDataDetails } from '../userAuth/selectors';
 import { deleteList, setFetchState, setListsData } from './actionCreators';
 import { CUSTOM_LISTS_ACTIONS_TYPES } from './reducers';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const loadCustomLists = () => {
   return async (
-    dispatch: Dispatch<CustomListsAction>,
+    dispatch: Dispatch<CustomListsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -17,12 +19,13 @@ export const loadCustomLists = () => {
       dispatch(setListsData(res.results));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     }
   };
 };
 
 export const deleteCustomList = (list_id: number) => {
-  return async (dispatch: Dispatch<CustomListsAction>) => {
+  return async (dispatch: Dispatch<CustomListsAction | SetAppErrorAction>) => {
     try {
       dispatch(
         setFetchState(CUSTOM_LISTS_ACTIONS_TYPES.deleting, {
@@ -37,6 +40,7 @@ export const deleteCustomList = (list_id: number) => {
       dispatch(deleteList(list_id));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setFetchState(CUSTOM_LISTS_ACTIONS_TYPES.deleting, { isLoading: false })

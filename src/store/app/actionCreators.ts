@@ -1,6 +1,11 @@
-import { AppAction, SET_TYPE_LOADING } from './types';
+import { AppAction, AppActions, SetAppErrorAction } from './types';
 
 export const setTypeLoading = (isLoading: boolean): AppAction => ({
-  type: SET_TYPE_LOADING,
+  type: AppActions.SET_TYPE_LOADING,
   payload: isLoading,
+});
+
+export const setAppError = (hasError: boolean): SetAppErrorAction => ({
+  type: AppActions.SET_APP_ERROR,
+  payload: hasError,
 });

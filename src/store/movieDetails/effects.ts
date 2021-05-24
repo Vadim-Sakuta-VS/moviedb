@@ -33,9 +33,11 @@ import { ICustomList } from '../../types/entities';
 import { ISelectOption } from '../../types/uiTypes';
 import { updateListItemCount } from '../customLists/actionCreators';
 import { UpdateListItemCountAction } from '../customLists/types';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const loadMovieDetails = (id: number) => {
-  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+  return async (dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>) => {
     try {
       dispatch(setTypeLoading(true));
       const data = await ApiMovies.loadMovieDetails(id);
@@ -46,6 +48,7 @@ export const loadMovieDetails = (id: number) => {
       dispatch(setMovieDetails(data));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setTypeLoading(false));
     }
@@ -53,7 +56,7 @@ export const loadMovieDetails = (id: number) => {
 };
 
 export const rateMovie = (movieId: number, value: number) => {
-  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+  return async (dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>) => {
     try {
       const ratingRes = await ApiAccount.rateMovie(movieId, value);
       if (ratingRes.status_code === 1 || ratingRes.status_code === 12) {
@@ -63,12 +66,13 @@ export const rateMovie = (movieId: number, value: number) => {
       dispatch(setMovieRating(0));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     }
   };
 };
 
 export const deleteRatingMovie = (movieId: number) => {
-  return async (dispatch: Dispatch<MovieDetailsAction>) => {
+  return async (dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>) => {
     try {
       const ratingRes = await ApiAccount.deleteRatingMovie(movieId);
       if (ratingRes.status_code === 13) {
@@ -76,13 +80,14 @@ export const deleteRatingMovie = (movieId: number) => {
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     }
   };
 };
 
 export const loadMovieAccountState = (movieId: number) => {
   return async (
-    dispatch: Dispatch<MovieDetailsAction>,
+    dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -100,6 +105,7 @@ export const loadMovieAccountState = (movieId: number) => {
       dispatch(setMovieAccountState(initialMovieAccountState));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setMovieAccountStateLoading(false));
     }
@@ -112,7 +118,7 @@ export const addMediaToBasicList = (
   media_id: number
 ) => {
   return async (
-    dispatch: Dispatch<MovieDetailsAction>,
+    dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -131,6 +137,7 @@ export const addMediaToBasicList = (
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setMovieToBasicListLoading(typeList, false));
     }
@@ -139,7 +146,7 @@ export const addMediaToBasicList = (
 
 export const checkMovieStatusCustomLists = (id: number) => {
   return async (
-    dispatch: Dispatch<MovieDetailsAction>,
+    dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -168,6 +175,7 @@ export const checkMovieStatusCustomLists = (id: number) => {
       dispatch(setMovieCustomListsData(filteredCustomLists));
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setMovieCustomListsLoading(
@@ -184,7 +192,9 @@ export const addMovieToCustomListsEffect = (
   movieId: number
 ) => {
   return async (
-    dispatch: Dispatch<MovieDetailsAction | UpdateListItemCountAction>,
+    dispatch: Dispatch<
+      MovieDetailsAction | UpdateListItemCountAction | SetAppErrorAction
+    >,
     getState: GetRootState
   ) => {
     try {
@@ -218,6 +228,7 @@ export const addMovieToCustomListsEffect = (
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setMovieCustomListsLoading(

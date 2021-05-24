@@ -12,7 +12,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUserDataDetails } from './store/userAuth/effects';
-import { selectAppLoading } from './store/app/selectors';
+import { selectAppError, selectAppLoading } from './store/app/selectors';
 import Loader from './components/Loader/Loader';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
@@ -20,6 +20,7 @@ import UserListsPage from './components/UserListsPage/UserListsPage';
 import UserListsCustomPage from './components/UserListsCustomPage/UserListsCustomPage';
 import UserListCustomDetailsPage from './components/UserListCustomDetailsPage/UserListCustomDetailsPage';
 import styled from 'styled-components';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -31,6 +32,7 @@ const Page = styled.main`
 
 function App() {
   const isAppLoading = useSelector(selectAppLoading);
+  const hasError = useSelector(selectAppError);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,52 +42,58 @@ function App() {
   return (
     <Router>
       <StyledApp className='App'>
-        <Loader isLoading={isAppLoading}>
-          <Page className='page'>
-            <Switch>
-              <Route exact path='/' render={() => withHeaderLayout(HomePage)} />
-              <Route
-                exact
-                path='/movies/:type'
-                render={() => withHeaderLayout(MovieListByTypePage)}
-              />
-              <Route
-                exact
-                path='/movies'
-                render={() => withHeaderLayout(MovieListFilterPage)}
-              />
-              <Route
-                exact
-                path='/movie/:id'
-                render={() => withHeaderLayout(MovieDetails)}
-              />
-              <Route
-                exact
-                path='/search'
-                render={() => withHeaderLayout(SearchPage)}
-              />
-              <Route
-                exact
-                path='/company/:id'
-                render={() => withHeaderLayout(CompanyDetails)}
-              />
-              <Route exact path='/login' component={LoginPage} />
-              <PrivateRoute exact path='/profile/:id'>
-                {withHeaderLayout(ProfilePage)}
-              </PrivateRoute>
-              <PrivateRoute exact path='/lists/custom'>
-                {withHeaderLayout(UserListsCustomPage)}
-              </PrivateRoute>
-              <PrivateRoute exact path='/lists/custom/:id'>
-                {withHeaderLayout(UserListCustomDetailsPage)}
-              </PrivateRoute>
-              <PrivateRoute path='/lists'>
-                {withHeaderLayout(UserListsPage)}
-              </PrivateRoute>
-              <Route path='*' component={Page404} />
-            </Switch>
-          </Page>
-        </Loader>
+        <ErrorBoundary hasError={hasError}>
+          <Loader isLoading={isAppLoading}>
+            <Page className='page'>
+              <Switch>
+                <Route
+                  exact
+                  path='/'
+                  render={() => withHeaderLayout(HomePage)}
+                />
+                <Route
+                  exact
+                  path='/movies/:type'
+                  render={() => withHeaderLayout(MovieListByTypePage)}
+                />
+                <Route
+                  exact
+                  path='/movies'
+                  render={() => withHeaderLayout(MovieListFilterPage)}
+                />
+                <Route
+                  exact
+                  path='/movie/:id'
+                  render={() => withHeaderLayout(MovieDetails)}
+                />
+                <Route
+                  exact
+                  path='/search'
+                  render={() => withHeaderLayout(SearchPage)}
+                />
+                <Route
+                  exact
+                  path='/company/:id'
+                  render={() => withHeaderLayout(CompanyDetails)}
+                />
+                <Route exact path='/login' component={LoginPage} />
+                <PrivateRoute exact path='/profile/:id'>
+                  {withHeaderLayout(ProfilePage)}
+                </PrivateRoute>
+                <PrivateRoute exact path='/lists/custom'>
+                  {withHeaderLayout(UserListsCustomPage)}
+                </PrivateRoute>
+                <PrivateRoute exact path='/lists/custom/:id'>
+                  {withHeaderLayout(UserListCustomDetailsPage)}
+                </PrivateRoute>
+                <PrivateRoute path='/lists'>
+                  {withHeaderLayout(UserListsPage)}
+                </PrivateRoute>
+                <Route path='*' component={Page404} />
+              </Switch>
+            </Page>
+          </Loader>
+        </ErrorBoundary>
       </StyledApp>
     </Router>
   );

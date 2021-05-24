@@ -43,6 +43,7 @@ const UserAuth: FC = () => {
           <Link
             to={{ pathname: '/login', state: { from: location } }}
             className='btn btn-outline-success'
+            style={{ minWidth: '6rem' }}
           >
             Sign In
           </Link>

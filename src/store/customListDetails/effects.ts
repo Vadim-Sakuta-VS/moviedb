@@ -19,10 +19,12 @@ import {
 } from '../customLists/selectors';
 import { GetRootState } from '../rootStore';
 import { updateListItemCount } from '../customLists/actionCreators';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const loadCustomListDetailsData = (list_id: number) => {
   return async (
-    dispatch: Dispatch<CustomListDetailsAction>,
+    dispatch: Dispatch<CustomListDetailsAction | SetAppErrorAction>,
     getState: GetRootState
   ) => {
     try {
@@ -50,6 +52,7 @@ export const loadCustomListDetailsData = (list_id: number) => {
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setCustomListDetailsLoading(
@@ -66,7 +69,9 @@ export const deleteMovieCustomListEffect = (
   movie_id: number
 ) => {
   return async (
-    dispatch: Dispatch<CustomListDetailsAction | UpdateListItemCountAction>,
+    dispatch: Dispatch<
+      CustomListDetailsAction | UpdateListItemCountAction | SetAppErrorAction
+    >,
     getState: GetRootState
   ) => {
     try {
@@ -93,6 +98,7 @@ export const deleteMovieCustomListEffect = (
       return false;
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setCustomListDetailsLoading(
@@ -106,7 +112,9 @@ export const deleteMovieCustomListEffect = (
 
 export const clearCustomListDetailsEffect = (list_id: number) => {
   return async (
-    dispatch: Dispatch<CustomListDetailsAction | UpdateListItemCountAction>
+    dispatch: Dispatch<
+      CustomListDetailsAction | UpdateListItemCountAction | SetAppErrorAction
+    >
   ) => {
     try {
       dispatch(
@@ -131,6 +139,7 @@ export const clearCustomListDetailsEffect = (list_id: number) => {
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(
         setCustomListDetailsLoading(
