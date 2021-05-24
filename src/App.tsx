@@ -3,7 +3,7 @@ import MovieDetails from './components/MovieDetails/MovieDetails';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Page404 from './components/Page404/Page404';
 import { withHeaderLayout } from './components/HOC/withHeaderLayout';
-import CompaniesList from './components/CompaniesList/CompaniesList';
+import SearchPage from './components/SearchPage/SearchPage';
 import CompanyDetails from './components/CompanyDetails/CompanyDetails';
 import HomePage from './components/HomePage/HomePage';
 import MovieListByTypePage from './components/MovieListByTypePage/MovieListByTypePage';
@@ -61,8 +61,8 @@ function App() {
               />
               <Route
                 exact
-                path='/companies'
-                render={() => withHeaderLayout(CompaniesList)}
+                path='/search'
+                render={() => withHeaderLayout(SearchPage)}
               />
               <Route
                 exact

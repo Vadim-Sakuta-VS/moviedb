@@ -2,46 +2,62 @@ import React, { FC } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
-import Control from '../ControlTextInput/ControlTextInput';
+import ControlTextInput from '../ControlTextInput/ControlTextInput';
+import ControlSelect from '../ControlSelect/ControlSelect';
+import { ISelectOption } from '../../types/uiTypes';
 
 interface SearchFormProps {
-  queryValue: string;
+  searchTypesOptions: ISelectOption[];
   onChange?: (value: string) => void;
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: SearchFormValues) => void;
   isLoading: boolean;
+  defaultValues?: SearchFormValues;
 }
 
-type FormValues = {
+export type SearchFormValues = {
   query: string;
+  search_type: ISelectOption;
 };
 
 const SearchForm: FC<SearchFormProps> = ({
-  queryValue,
+  searchTypesOptions,
   onChange,
   onSubmit,
   isLoading,
+  defaultValues = {},
   ...props
 }) => {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit } = useForm<SearchFormValues>({
+    defaultValues,
+  });
 
-  const onSubmitHandler: SubmitHandler<FormValues> = (data) => {
+  const onSubmitHandler: SubmitHandler<SearchFormValues> = (data) => {
     onSubmit(data);
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmitHandler)} className='w-100' {...props}>
-      <Row>
-        <Col className='p-0'>
-          <Control
+      <Row className='flex-column'>
+        <Col className='p-0 mb-2'>
+          <ControlSelect
+            placeholder='Search type'
+            control={control}
+            isMulti={false}
+            name='search_type'
+            options={searchTypesOptions}
+            rules={{ required: 'Required field!' }}
+          />
+        </Col>
+        <Col className='p-0 mb-3'>
+          <ControlTextInput
             name='query'
             rules={{ required: 'Required field!' }}
-            defaultValue={queryValue}
             placeholder='Query...'
             onChange={onChange}
             control={control}
           />
         </Col>
-        <Col className='col-auto p-0'>
+        <Col className='col-auto p-0 d-flex justify-content-end'>
           <ButtonLoad
             type='submit'
             textValue='Search'
