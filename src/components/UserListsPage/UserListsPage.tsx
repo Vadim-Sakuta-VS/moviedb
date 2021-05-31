@@ -1,22 +1,21 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
-import { Link, useHistory, useLocation, Redirect } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
 import { KeyValueStringType } from '../../types/params';
 import MovieList from '../MovieList/MovieList';
 import ToggleSortingSearch from '../ToggleSortingSearch/ToggleSortingSearch';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
+import { stringifyGetParamsObj } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUserBasicMovieList } from '../../store/movieList/effects';
 import { ApiAccount } from '../../api/apiAccount';
 import {
-  selectCurrentPage,
   selectMovieList,
   selectMovieListLoading,
   selectTotalPages,
 } from '../../store/movieList/selectors';
-import { changePage } from '../../store/movieList/actionCreators';
 import Loader from '../Loader/Loader';
 import styled from 'styled-components';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 const TabLink = styled(Link)`
   display: inline-block;
@@ -38,36 +37,37 @@ export const SortingDateTypes = {
 };
 
 const UserListsPage: FC = () => {
+  const [prevListType, setPrevListType] = useState('');
+  const [prevLocation, setPrevLocation] = useState('');
   const location = useLocation();
-  const history = useHistory();
   const movies = useSelector(selectMovieList);
-  const currentPage = useSelector(selectCurrentPage);
   const totalPages = useSelector(selectTotalPages);
   const isLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const listsKeys = Object.keys(BASIC_LISTS_TYPES);
+  const { paramsObj, currentPage, onChangePage } = useCustomRoute({
+    handleLocationChange,
+  });
 
-  useEffect(() => {
-    return () => {
-      dispatch(changePage(1));
-    };
-  }, []);
+  const sort_by = paramsObj.sort_by;
 
-  useEffect(() => {
-    if (isPathnameContainsListType()) {
-      const paramsObj = parseGetParamsStr(location.search);
-      dispatch(changePage(+paramsObj.page || 1));
-      if (!paramsObj.sort_by) {
+  function handleLocationChange() {
+    const currentListType = getListType() as keyof typeof ApiAccount.GET;
+    const isRightType = isPathnameContainsListType();
+    const currentLocation = location.search.slice(1);
+
+    if (
+      (isRightType && prevListType !== currentListType) ||
+      (isRightType && prevLocation !== currentLocation)
+    ) {
+      if (!sort_by) {
         paramsObj.sort_by = SortingDateTypes.desc;
       }
-      dispatch(
-        loadUserBasicMovieList(
-          getListType() as keyof typeof ApiAccount.GET,
-          paramsObj
-        )
-      );
+      dispatch(loadUserBasicMovieList(currentListType, paramsObj));
+      setPrevListType(currentListType);
+      setPrevLocation(currentLocation);
     }
-  }, [location.search, location.pathname]);
+  }
 
   const isPathnameContainsListType = () => {
     const pathArr = location.pathname.split('/');
@@ -86,16 +86,6 @@ const UserListsPage: FC = () => {
   if (!isPathnameContainsListType()) {
     return <Redirect to='/page404' />;
   }
-
-  const onChangePage = (page: number) => {
-    const paramsObj = parseGetParamsStr(location.search);
-    paramsObj.page = page.toString();
-    history.push({
-      pathname: location.pathname,
-      search: stringifyGetParamsObj(paramsObj),
-    });
-    dispatch(changePage(page));
-  };
 
   const navItemElements = listsKeys.map((key) => (
     <Nav.Item key={key}>

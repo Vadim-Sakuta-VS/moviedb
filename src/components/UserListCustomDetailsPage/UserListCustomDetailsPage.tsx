@@ -18,7 +18,8 @@ import {
 import MovieList from '../MovieList/MovieList';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
+import { stringifyGetParamsObj } from '../../utils/utils';
+import { useCustomRoute } from '../../hooks/useCustomRoute';
 
 type UserListCustomDetailsPageParams = {
   id: string;
@@ -41,6 +42,16 @@ const UserListCustomDetailsPage = () => {
   )?.name;
   const manipulationMovieId = useSelector(selectManipulationMovieId);
   const dispatch = useDispatch();
+  const { currentPage, onChangePage } = useCustomRoute({
+    handleChangePage,
+  });
+
+  const totalPages = Math.ceil(customListMovies.length / 20);
+  const moviesToShow = [...customListMovies]
+    .reverse()
+    .slice(20 * (currentPage - 1), 20 * currentPage);
+  const isCorrectCurrentPage =
+    !isNaN(currentPage) && currentPage > 0 && currentPage <= totalPages;
 
   useEffect(() => {
     if (!isNaN(+list_id) && +list_id > 0) {
@@ -52,6 +63,10 @@ const UserListCustomDetailsPage = () => {
     isDetailsLoading && setLocalLoading(false);
   }, [isDetailsLoading]);
 
+  function handleChangePage() {
+    window.scrollTo({ top: 0 });
+  }
+
   const onDeleteMovie = async (movie_id: number) => {
     const isSuccess = await dispatch(
       deleteMovieCustomListEffect(+list_id, movie_id)
@@ -59,7 +74,7 @@ const UserListCustomDetailsPage = () => {
 
     if (
       ((isSuccess as unknown) as boolean) &&
-      +currentPage === totalPages &&
+      currentPage === totalPages &&
       customListMovies.length % 20 === 1
     ) {
       history.replace({
@@ -81,24 +96,6 @@ const UserListCustomDetailsPage = () => {
     onHideConfirmModal();
     dispatch(clearCustomListDetailsEffect(+list_id));
   };
-
-  const onChangePage = (page: number) => {
-    if (+parseGetParamsStr(location.search).page !== page) {
-      history.push({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj({ page: String(page) }),
-      });
-      window.scrollTo({ top: 0 });
-    }
-  };
-
-  const currentPage = parseGetParamsStr(location.search).page || 1;
-  const totalPages = Math.ceil(customListMovies.length / 20);
-  const moviesToShow = [...customListMovies]
-    .reverse()
-    .slice(20 * (+currentPage - 1), 20 * +currentPage);
-  const isCorrectCurrentPage =
-    !isNaN(+currentPage) && currentPage > 0 && currentPage <= totalPages;
 
   return (
     <RedirectByNumberId id={list_id}>

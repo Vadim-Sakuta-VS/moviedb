@@ -4,8 +4,6 @@ import {
   setMoviesTypeLoading,
   setTotalPages,
 } from './actionCreators';
-import { selectCurrentPage } from './selectors';
-import { parseGetParamsStr } from '../../utils/utils';
 import { Dispatch } from 'redux';
 import { MovieListAction } from './types';
 import { GetRootState } from '../rootStore';
@@ -16,7 +14,7 @@ import { ApiAuth } from '../../api/apiAuth';
 import { SetAppErrorAction } from '../app/types';
 import { setAppError } from '../app/actionCreators';
 
-export const loadMoviesByType = (movieType: string) => {
+export const loadMoviesByType = (movieType: string, paramsObj: ParamGetObj) => {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(loadMovies(ApiMovies.GET[movieType.toUpperCase()]));
@@ -27,7 +25,7 @@ export const loadMoviesByType = (movieType: string) => {
   };
 };
 
-export const loadDiscoverMovies = (paramStr: string) => {
+export const loadDiscoverMovies = (paramsObj: ParamGetObj) => {
   return async (dispatch: Dispatch<any>) => {
     try {
       dispatch(loadMovies(ApiMovies.GET.DISCOVER, parseGetParamsStr(paramStr)));
@@ -62,12 +60,9 @@ export const loadMovies = (URL: string, paramsObj = {}) => {
   ) => {
     try {
       dispatch(setMoviesTypeLoading(true));
-      const currentPage = selectCurrentPage(getState());
+      console.log(paramsObj);
 
-      const data = await ApiMovies.loadMovieList(URL, {
-        page: currentPage.toString(),
-        ...paramsObj,
-      });
+      const data = await ApiMovies.loadMovieList(URL, paramsObj);
 
       dispatch(setMovies(data.results || []));
       dispatch(setTotalPages(data.total_pages));

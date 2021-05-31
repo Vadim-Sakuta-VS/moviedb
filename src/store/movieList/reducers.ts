@@ -2,7 +2,6 @@ import { MovieListAction, MovieListActions, MovieListState } from './types';
 
 const initialState: MovieListState = {
   data: [],
-  currentPage: 1,
   totalPages: 0,
   isLoading: false,
   movieType: '',
@@ -13,8 +12,6 @@ function movieListReducer(
   action: MovieListAction
 ): MovieListState {
   switch (action.type) {
-    case MovieListActions.CHANGE_PAGE:
-      return { ...state, currentPage: action.payload };
     case MovieListActions.SET_TOTAL_PAGES:
       return { ...state, totalPages: action.payload };
     case MovieListActions.SET_MOVIES_TYPE_LOADING:

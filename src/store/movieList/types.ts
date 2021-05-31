@@ -1,17 +1,11 @@
 import { IMovie } from '../../types/entities';
 
 export enum MovieListActions {
-  CHANGE_PAGE = 'MOVIE_LIST/CHANGE_PAGE',
   SET_TOTAL_PAGES = 'MOVIE_LIST/SET_TOTAL_PAGES',
   SET_MOVIES_TYPE_LOADING = 'MOVIE_LIST/SET_MOVIES_TYPE_LOADING',
   SET_MOVIES = 'MOVIE_LIST/SET_MOVIES',
   SET_MOVIES_TYPE = 'MOVIE_LIST/SET_MOVIES_TYPE',
   UPDATE_DATA = 'MOVIE_LIST/UPDATE_DATA',
-}
-
-export interface ChangePageAction {
-  type: MovieListActions.CHANGE_PAGE;
-  payload: number;
 }
 
 export interface SetTotalPagesAction {
@@ -43,7 +37,6 @@ export interface UpdateDataAction {
 }
 
 export type MovieListAction =
-  | ChangePageAction
   | SetTotalPagesAction
   | SetMoviesTypeLoadingAction
   | SetMoviesAction
@@ -52,7 +45,6 @@ export type MovieListAction =
 
 export interface MovieListState {
   data: IMovie[];
-  currentPage: number;
   totalPages: number;
   isLoading: boolean;
   movieType: string;
