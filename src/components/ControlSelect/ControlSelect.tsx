@@ -42,14 +42,27 @@ const ControlSelect: FC<ControlSelectProps> = ({
           name={name}
           control={control}
           rules={rules}
-          render={({ field }) => (
-            <Select
-              {...field}
-              isMulti={isMulti}
-              isClearable={true}
-              options={options as readonly any[] | undefined}
-              {...props}
-            />
+          render={({ field, fieldState: { error } }) => (
+            <Row className='flex-column'>
+              <Col>
+                <Select
+                  {...field}
+                  isMulti={isMulti}
+                  isClearable={true}
+                  options={options as readonly any[] | undefined}
+                  {...props}
+                  styles={{
+                    control: (base) =>
+                      error ? { ...base, borderColor: '#dc3545' } : base,
+                  }}
+                />
+              </Col>
+              {error && (
+                <Col className='text-danger'>
+                  <small>{error.message}</small>
+                </Col>
+              )}
+            </Row>
           )}
         />
       </Col>

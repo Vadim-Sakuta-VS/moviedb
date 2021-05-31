@@ -77,7 +77,7 @@ const Header: FC = () => {
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
                 <Col className='order-1 order-sm-0'>
-                  <Link to='/companies'>Companies</Link>
+                  <Link to='/search'>Search</Link>
                 </Col>
                 <Col className='mb-1 mb-sm-0'>
                   <UserAuth />
@@ -105,7 +105,7 @@ const Header: FC = () => {
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
                 <Col className='order-1 order-sm-0'>
-                  <Link to='/companies'>Companies</Link>
+                  <Link to='/search'>Search</Link>
                 </Col>
                 <Col className='mb-1 mb-sm-0'>
                   <UserAuth />

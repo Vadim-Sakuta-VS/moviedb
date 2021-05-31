@@ -10,6 +10,7 @@ export type SelectOptionDif = ISelectOption[] | ISelectOption;
 
 export interface BaseSelectProps {
   label?: string;
+  placeholder?: string;
   name: string;
   options: ValueType<ISelectOption, true> | ValueType<ISelectOption, false>;
 }

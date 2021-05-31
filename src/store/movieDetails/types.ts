@@ -4,6 +4,7 @@ import {
   IMovieAccountState,
   IMovieBasicListLoading,
   IMovieCustomListsLoading,
+  IVideo,
 } from '../../types/entities';
 import { MovieTypesCustomListsLoadingState } from './reducers';
 
@@ -18,6 +19,7 @@ export enum MovieDetailsActions {
   SET_MOVIE_CUSTOM_LISTS_DATA = 'MOVIE_DETAILS/SET_MOVIE_CUSTOM_LISTS_DATA',
   SET_MOVIE_CUSTOM_LISTS_LOADING = 'MOVIE_DETAILS/SET_MOVIE_CUSTOM_LISTS_LOADING',
   ADD_MOVIE_CUSTOM_LISTS = 'MOVIE_DETAILS/ADD_MOVIE_CUSTOM_LISTS',
+  SET_MOVIE_VIDEO = 'MOVIE_DETAILS/SET_MOVIE_VIDEO',
 }
 
 export interface SetMovieDetailsAction {
@@ -73,6 +75,11 @@ export type AddMovieCustomListsAction = {
   payload: number[];
 };
 
+export type SetMovieVideoAction = {
+  type: MovieDetailsActions.SET_MOVIE_VIDEO;
+  payload: IVideo;
+};
+
 export type MovieDetailsAction =
   | SetMovieDetailsAction
   | SetTypeLoadingAction
@@ -83,7 +90,8 @@ export type MovieDetailsAction =
   | SetMovieToBasicListLoadingAction
   | SetMovieCustomListsDataAction
   | SetMovieCustomListsLoadingAction
-  | AddMovieCustomListsAction;
+  | AddMovieCustomListsAction
+  | SetMovieVideoAction;
 
 export interface MovieDetailsState {
   isLoading: boolean;
@@ -97,4 +105,5 @@ export interface MovieDetailsState {
     data: ICustomList[];
     loading: IMovieCustomListsLoading;
   };
+  video: IVideo;
 }

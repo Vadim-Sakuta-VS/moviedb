@@ -4,9 +4,14 @@ import { selectMoviesDataByType } from './selectors';
 import { Dispatch } from 'redux';
 import { HomeAction } from './types';
 import { GetRootState } from '../rootStore';
+import { SetAppErrorAction } from '../app/types';
+import { setAppError } from '../app/actionCreators';
 
 export const loadMoviesData = (movieType: string) => {
-  return async (dispatch: Dispatch<HomeAction>, getState: GetRootState) => {
+  return async (
+    dispatch: Dispatch<HomeAction | SetAppErrorAction>,
+    getState: GetRootState
+  ) => {
     try {
       const { data } = selectMoviesDataByType(movieType)(getState());
       if (!data.length) {
@@ -23,6 +28,7 @@ export const loadMoviesData = (movieType: string) => {
       }
     } catch (e) {
       console.log(e);
+      dispatch(setAppError(true));
     } finally {
       dispatch(setMovieTypeLoading(movieType, false));
     }

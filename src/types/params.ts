@@ -1,5 +1,5 @@
 import { SelectOptionDif } from './uiTypes';
-import { ICustomList } from './entities';
+import { ICustomList, IVideo } from './entities';
 
 export type ParamGetObj = {
   [key: string]: string | ParamGetObj;
@@ -52,4 +52,9 @@ export type MovieCustomListDeleteOptionsType = {
   isDeletingLoading: boolean;
   manipulationMovieId: number;
   onDeleteMovie: (movie_id: number) => void;
+};
+
+export type IVideoResponse = {
+  id: number;
+  results: IVideo[];
 };

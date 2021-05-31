@@ -28,12 +28,7 @@ const MovieCustomListForm: FC<MovieCustomListFormProps> = ({ movieId }) => {
   );
   const dispatch = useDispatch();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<MovieCustomListFormValues>({
+  const { control, handleSubmit, reset } = useForm<MovieCustomListFormValues>({
     defaultValues: {
       custom_lists: [filteredCustomListsOptions[0]],
     },
@@ -49,7 +44,7 @@ const MovieCustomListForm: FC<MovieCustomListFormProps> = ({ movieId }) => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmitHandler)}>
-      <Row className='align-items-center'>
+      <Row>
         <Col className='pr-0'>
           <ControlSelect
             control={control}
@@ -72,15 +67,6 @@ const MovieCustomListForm: FC<MovieCustomListFormProps> = ({ movieId }) => {
           />
         </Col>
       </Row>
-      {errors.custom_lists && (
-        <Row>
-          <Col>
-            <p className='text-danger m-0'>
-              {errors.custom_lists && (errors.custom_lists as any).message}
-            </p>
-          </Col>
-        </Row>
-      )}
     </Form>
   );
 };

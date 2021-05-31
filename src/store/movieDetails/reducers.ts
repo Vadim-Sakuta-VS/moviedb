@@ -3,7 +3,7 @@ import {
   MovieDetailsActions,
   MovieDetailsState,
 } from './types';
-import { IMovieAccountState } from '../../types/entities';
+import { IMovieAccountState, IVideo } from '../../types/entities';
 
 export enum MovieTypesOnlyBooleanState {
   favorite = 'favorite',
@@ -20,6 +20,17 @@ export const initialMovieAccountState: IMovieAccountState = {
   favorite: false,
   rated: false,
   watchlist: false,
+};
+
+export const initialMovieVideoState: IVideo = {
+  id: '',
+  key: '',
+  site: '',
+  size: '',
+  name: '',
+  type: '',
+  iso_639_1: '',
+  iso_3166_1: '',
 };
 
 const initialState: MovieDetailsState = {
@@ -45,6 +56,7 @@ const initialState: MovieDetailsState = {
       isSubmitLoading: false,
     },
   },
+  video: initialMovieVideoState,
 };
 
 function movieDetailsReducer(
@@ -139,6 +151,8 @@ function movieDetailsReducer(
           ),
         },
       };
+    case MovieDetailsActions.SET_MOVIE_VIDEO:
+      return { ...state, video: action.payload };
     default:
       return state;
   }
