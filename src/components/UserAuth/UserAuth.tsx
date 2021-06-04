@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
 import { Col, Dropdown, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,10 +13,9 @@ import {
   BASIC_LISTS_TYPES,
   SortingDateTypes,
 } from '../UserListsPage/UserListsPage';
-import { stringifyGetParamsObj } from '../../utils/utils';
 import styled from 'styled-components';
 
-const DropdownMenuLink = styled(Link)`
+const DropdownMenuLink = styled.a`
   display: block;
   line-height: 32px;
   color: inherit;
@@ -27,13 +26,15 @@ const DropdownMenuLink = styled(Link)`
 `;
 
 const UserAuth: FC = () => {
-  const location = useLocation();
-  const isAuth = useSelector(selectUserAuthStatus);
-  const user = useSelector(selectUserDataDetails);
-  const dispatch = useDispatch();
+  // const location = useLocation();
+  // const isAuth = useSelector(selectUserAuthStatus);
+  const isAuth = false;
+  // const user = useSelector(selectUserDataDetails);
+  const user = { id: 1, username: '' };
+  // const dispatch = useDispatch();
 
   const onLogoutHandler = () => {
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
   };
 
   return (
@@ -41,11 +42,12 @@ const UserAuth: FC = () => {
       {!isAuth ? (
         <Col>
           <Link
-            to={{ pathname: '/login', state: { from: location } }}
-            className='btn btn-outline-success'
-            style={{ minWidth: '6rem' }}
+            href='/login'
+            // to={{ pathname: '/login', state: { from: location } }}
           >
-            Sign In
+            <a className='btn btn-outline-success' style={{ minWidth: '6rem' }}>
+              Sign In
+            </a>
           </Link>
         </Col>
       ) : (
@@ -60,33 +62,32 @@ const UserAuth: FC = () => {
 
             <Dropdown.Menu style={{ minWidth: '100%' }}>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <DropdownMenuLink
-                  to={`/profile/${user.id}`}
-                  className='pl-1 pr-1'
-                >
-                  Profile
-                </DropdownMenuLink>
+                <Link href={`/profile/${user.id}`}>
+                  <DropdownMenuLink className='pl-1 pr-1'>
+                    Profile
+                  </DropdownMenuLink>
+                </Link>
               </DropdownItem>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <DropdownMenuLink
-                  to={{
+                <Link
+                  href={{
                     pathname: `/lists/${Object.keys(
                       BASIC_LISTS_TYPES
                     )[0].toLowerCase()}`,
-                    search: stringifyGetParamsObj({
-                      sort_by: SortingDateTypes.desc,
-                      page: '1',
-                    }),
+                    query: { sort_by: SortingDateTypes.desc, page: '1' },
                   }}
-                  className='pl-1 pr-1'
                 >
-                  Lists
-                </DropdownMenuLink>
+                  <DropdownMenuLink className='pl-1 pr-1'>
+                    Lists
+                  </DropdownMenuLink>
+                </Link>
               </DropdownItem>
               <Dropdown.Item eventKey='1' className='p-0' as='button'>
-                <DropdownMenuLink to='/lists/custom' className='pl-1 pr-1'>
-                  Custom lists
-                </DropdownMenuLink>
+                <Link href='/lists/custom'>
+                  <DropdownMenuLink className='pl-1 pr-1'>
+                    Custom lists
+                  </DropdownMenuLink>
+                </Link>
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey='1'

@@ -2,10 +2,9 @@ import React, { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination } from 'swiper';
-import './MoviesSliderRow.scss';
 import MovieSlide from './MovieSlide';
 import { withLinkWrapper } from '../HOC/withLinkWrapper';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { IMovie } from '../../types/entities';
 import Loader from '../Loader/Loader';
 
@@ -14,7 +13,7 @@ SwiperCore.use([Pagination]);
 interface MoviesSliderRowProps {
   title: string;
   movies: IMovie[];
-  isLoading: boolean;
+  isLoading?: boolean;
   typeMovies: string;
 }
 
@@ -52,12 +51,12 @@ const MoviesSliderRow: FC<MoviesSliderRowProps> = ({
     <Row className='flex-column'>
       <Col className='d-flex align-items-center justify-content-between'>
         <h2 className='font-weight-bold'>{title}</h2>
-        <Link to={`/movies/${typeMovies}`} className='text-danger'>
-          Все
+        <Link href={`/movies/${typeMovies}`}>
+          <a className='text-danger'>Все</a>
         </Link>
       </Col>
       <Col>
-        <Loader isLoading={isLoading}>
+        <Loader isLoading={!!isLoading}>
           <Swiper
             spaceBetween={10}
             pagination={{ clickable: true }}

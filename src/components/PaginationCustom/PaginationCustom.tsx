@@ -1,5 +1,4 @@
 import React, { useEffect, useState, FC } from 'react';
-import './PaginationCustom.scss';
 import { Pagination } from 'react-bootstrap';
 import { fillArrayFromTo } from '../../utils/utils';
 

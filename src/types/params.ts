@@ -15,6 +15,10 @@ export type KeyValueStringType = {
   [key: string]: string;
 };
 
+export type KeyStringValueAnyType = {
+  [key: string]: any;
+};
+
 export type ParamObjType = {
   [key: string]: SelectOptionDif | string | ParamObjType;
 };

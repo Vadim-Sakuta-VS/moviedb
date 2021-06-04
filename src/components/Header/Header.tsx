@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import UserAuth from '../UserAuth/UserAuth';
 import styled from 'styled-components';
 
@@ -67,17 +67,21 @@ const Header: FC = () => {
         <Container>
           <Row className='align-items-center'>
             <Col>
-              <Link to='/'>
-                <Image
-                  width={120}
-                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
-                />
+              <Link href='/'>
+                <a>
+                  <Image
+                    width={120}
+                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
+                  />
+                </a>
               </Link>
             </Col>
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
                 <Col className='order-1 order-sm-0'>
-                  <Link to='/search'>Search</Link>
+                  <Link href='/search'>
+                    <a>Search</a>
+                  </Link>
                 </Col>
                 <Col className='mb-1 mb-sm-0'>
                   <UserAuth />
@@ -95,17 +99,21 @@ const Header: FC = () => {
         <Container>
           <Row className='align-items-center'>
             <Col>
-              <Link to='/'>
-                <Image
-                  width={120}
-                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
-                />
+              <Link href='/'>
+                <a>
+                  <Image
+                    width={120}
+                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
+                  />
+                </a>
               </Link>
             </Col>
             <Col className='col-auto'>
               <Row className='flex-column flex-sm-row align-items-sm-center'>
                 <Col className='order-1 order-sm-0'>
-                  <Link to='/search'>Search</Link>
+                  <Link href='/search'>
+                    <a>Search</a>
+                  </Link>
                 </Col>
                 <Col className='mb-1 mb-sm-0'>
                   <UserAuth />
