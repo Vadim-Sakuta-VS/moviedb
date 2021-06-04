@@ -22,13 +22,15 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.3.0",
     "swiper": "^6.5.6",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "next": "latest"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +64,7 @@
     "@types/styled-components": "^5.1.9",
     "prettier": "^2.2.1",
     "redux-devtools-extension": "^2.13.9",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "babel-plugin-styled-components": "^1.12.0"
   }
 }
