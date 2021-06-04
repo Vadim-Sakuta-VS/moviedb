@@ -14,6 +14,7 @@ import {
   SortingDateTypes,
 } from '../UserListsPage/UserListsPage';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const DropdownMenuLink = styled.a`
   display: block;
@@ -26,25 +27,20 @@ const DropdownMenuLink = styled.a`
 `;
 
 const UserAuth: FC = () => {
-  // const location = useLocation();
-  // const isAuth = useSelector(selectUserAuthStatus);
-  const isAuth = false;
-  // const user = useSelector(selectUserDataDetails);
-  const user = { id: 1, username: '' };
-  // const dispatch = useDispatch();
+  const router = useRouter();
+  const isAuth = useSelector(selectUserAuthStatus);
+  const user = useSelector(selectUserDataDetails);
+  const dispatch = useDispatch();
 
   const onLogoutHandler = () => {
-    // dispatch(logoutUser());
+    dispatch(logoutUser());
   };
 
   return (
     <Row>
       {!isAuth ? (
         <Col>
-          <Link
-            href='/login'
-            // to={{ pathname: '/login', state: { from: location } }}
-          >
+          <Link href={{ pathname: '/login', query: { asPath: router.asPath } }}>
             <a className='btn btn-outline-success' style={{ minWidth: '6rem' }}>
               Sign In
             </a>
@@ -62,7 +58,7 @@ const UserAuth: FC = () => {
 
             <Dropdown.Menu style={{ minWidth: '100%' }}>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <Link href={`/profile/${user.id}`}>
+                <Link href={`/profile/${user.id}`} passHref={true}>
                   <DropdownMenuLink className='pl-1 pr-1'>
                     Profile
                   </DropdownMenuLink>
@@ -76,6 +72,7 @@ const UserAuth: FC = () => {
                     )[0].toLowerCase()}`,
                     query: { sort_by: SortingDateTypes.desc, page: '1' },
                   }}
+                  passHref={true}
                 >
                   <DropdownMenuLink className='pl-1 pr-1'>
                     Lists
@@ -83,7 +80,7 @@ const UserAuth: FC = () => {
                 </Link>
               </DropdownItem>
               <Dropdown.Item eventKey='1' className='p-0' as='button'>
-                <Link href='/lists/custom'>
+                <Link href='/lists/custom' passHref={true}>
                   <DropdownMenuLink className='pl-1 pr-1'>
                     Custom lists
                   </DropdownMenuLink>

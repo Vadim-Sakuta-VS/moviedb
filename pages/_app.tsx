@@ -6,11 +6,21 @@ import '../src/components/MoviesSliderRow/MoviesSliderRow.scss';
 import '../src/components/PaginationCustom/PaginationCustom.scss';
 import { Provider } from 'react-redux';
 import { store } from '../src/store/rootStore';
+import styled from 'styled-components';
+import PageWrapper from '../src/components/PageWrapper/PageWrapper';
+
+const StyledApp = styled.div`
+  min-height: 100vh;
+`;
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Provider store={store}>
-      <Component {...pageProps} />
+      <StyledApp>
+        <PageWrapper>
+          <Component {...pageProps} />
+        </PageWrapper>
+      </StyledApp>
     </Provider>
   );
 };

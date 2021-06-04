@@ -2,7 +2,7 @@ import { UserAuthAction, UserAuthActions, UserAuthState } from './types';
 
 const initialState: UserAuthState = {
   success: false,
-  isLoading: false,
+  isLoading: true,
   status_message: '',
   user: {
     id: 0,
@@ -31,7 +31,7 @@ function userAuthReducer(
     case UserAuthActions.SET_USER_DATA:
       return { ...state, user: action.payload, success: true };
     case UserAuthActions.LOGOUT_USER:
-      return initialState;
+      return { ...initialState, isLoading: false };
     default:
       return state;
   }
