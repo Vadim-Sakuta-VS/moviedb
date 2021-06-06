@@ -12,15 +12,23 @@ import {
 import {
   changePage,
   setMovieId,
+  setMovieReviews,
+  setTotalPages,
 } from '../../store/movieReviews/actionCreators';
 import { loadMovieReviews } from '../../store/movieReviews/effects';
+import { IReview } from '../../types/entities';
+import { IListResponse } from '../../types/params';
 
 interface MovieReviewsProps {
   id: number;
+  initialReviewsData: IListResponse<IReview>;
 }
 
-const MovieReviews: FC<MovieReviewsProps> = ({ id }) => {
-  const movieReviews = useSelector(selectMovieReviews);
+const MovieReviews: FC<MovieReviewsProps> = ({ id, initialReviewsData }) => {
+  let movieReviews = useSelector(selectMovieReviews);
+  movieReviews = !movieReviews.length
+    ? initialReviewsData.results
+    : movieReviews;
   const currentPage = useSelector(selectMovieReviewsCurrentPage);
   const totalPages = useSelector(selectMovieReviewsTotalPages);
   const isLoading = useSelector(selectMovieReviewsLoading);
@@ -28,10 +36,15 @@ const MovieReviews: FC<MovieReviewsProps> = ({ id }) => {
 
   useEffect(() => {
     dispatch(setMovieId(id));
-  }, [id, dispatch]);
+    dispatch(changePage(initialReviewsData.page));
+    dispatch(setTotalPages(initialReviewsData.total_pages));
+    dispatch(setMovieReviews(initialReviewsData.results));
+  }, []);
 
   useEffect(() => {
-    dispatch(loadMovieReviews());
+    if (currentPage !== initialReviewsData.page) {
+      dispatch(loadMovieReviews());
+    }
   }, [currentPage, dispatch]);
 
   const handleChangePage = () => {

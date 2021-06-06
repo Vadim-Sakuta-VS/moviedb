@@ -28,7 +28,11 @@ const MovieReview: FC<MovieReviewProps> = ({
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
 
   maxContentSymbolsToShow =
-    window.innerWidth > 500 ? maxContentSymbolsToShow : 230;
+    typeof window === 'undefined'
+      ? maxContentSymbolsToShow
+      : window.innerWidth > 500
+      ? maxContentSymbolsToShow
+      : 230;
   const isLongContent = content.length > maxContentSymbolsToShow;
   const dateCreated = new Date(created_at);
   const dateUpdated = new Date(updated_at);

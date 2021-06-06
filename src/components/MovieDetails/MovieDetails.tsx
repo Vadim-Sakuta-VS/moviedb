@@ -338,7 +338,10 @@ const MovieDetails: FC = () => {
             </Col>
           </Row>
           <Divider />
-          <MovieReviews id={movie.id} />
+          <MovieReviews
+            id={movie.id}
+            initialReviewsData={{ results: [], page: 1, total_pages: 0 }}
+          />
         </Container>
       </Loader>
     </RedirectByNumberId>
