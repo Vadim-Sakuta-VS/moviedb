@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useHistory, useLocation } from 'react-router-dom';
 import { parseGetParamsStr, stringifyGetParamsObj } from '../../utils/utils';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import { ParamGetObj } from '../../types/params';
 
 const ToggleIcon = styled.svg`
   cursor: pointer;
@@ -25,18 +26,19 @@ const ToggleSortingSearch: FC<ToggleSortingSearchProps> = ({
   ascValue,
   descValue,
 }) => {
-  const location = useLocation();
-  const history = useHistory();
+  const router = useRouter();
   const [isToggle, setIsToggle] = useState(false);
 
+  const locationSearch = stringifyGetParamsObj(router.query as ParamGetObj);
+
   useEffect(() => {
-    setIsToggle(location.search.includes(ascValue));
-  }, [location.search]);
+    setIsToggle(locationSearch.includes(ascValue));
+  }, [locationSearch]);
 
   const onToggleHandler = (sortValue: string) => {
-    const paramObj = parseGetParamsStr(location.search);
-    history.push({
-      pathname: location.pathname,
+    const paramObj = parseGetParamsStr(locationSearch);
+    router.push({
+      pathname: router.pathname,
       search: stringifyGetParamsObj({ ...paramObj, [keyType]: sortValue }),
     });
   };

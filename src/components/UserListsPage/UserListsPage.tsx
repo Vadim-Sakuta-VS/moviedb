@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Col, Container, Nav, Row, Tab } from 'react-bootstrap';
-import { Link, useLocation, Redirect } from 'react-router-dom';
+import Link from 'next/link';
 import { KeyValueStringType } from '../../types/params';
 import MovieList from '../MovieList/MovieList';
 import ToggleSortingSearch from '../ToggleSortingSearch/ToggleSortingSearch';
@@ -17,7 +17,7 @@ import Loader from '../Loader/Loader';
 import styled from 'styled-components';
 import { useCustomRoute } from '../../hooks/useCustomRoute';
 
-const TabLink = styled(Link)`
+const TabLink = styled.a`
   display: inline-block;
   padding: 0.5rem 1rem;
   &:hover {
@@ -39,27 +39,24 @@ export const SortingDateTypes = {
 const UserListsPage: FC = () => {
   const [prevListType, setPrevListType] = useState('');
   const [prevLocation, setPrevLocation] = useState('');
-  const location = useLocation();
+
   const movies = useSelector(selectMovieList);
   const totalPages = useSelector(selectTotalPages);
   const isLoading = useSelector(selectMovieListLoading);
   const dispatch = useDispatch();
   const listsKeys = Object.keys(BASIC_LISTS_TYPES);
-  const { paramsObj, currentPage, onChangePage } = useCustomRoute({
+  const { paramsObj, currentPage, onChangePage, router } = useCustomRoute({
     handleLocationChange,
   });
 
+  const locationSearch = stringifyGetParamsObj(paramsObj);
   const sort_by = paramsObj.sort_by;
 
   function handleLocationChange() {
     const currentListType = getListType() as keyof typeof ApiAccount.GET;
-    const isRightType = isPathnameContainsListType();
-    const currentLocation = location.search.slice(1);
+    const currentLocation = locationSearch;
 
-    if (
-      (isRightType && prevListType !== currentListType) ||
-      (isRightType && prevLocation !== currentLocation)
-    ) {
+    if (prevListType !== currentListType || prevLocation !== currentLocation) {
       if (!sort_by) {
         paramsObj.sort_by = SortingDateTypes.desc;
       }
@@ -69,23 +66,10 @@ const UserListsPage: FC = () => {
     }
   }
 
-  const isPathnameContainsListType = () => {
-    const pathArr = location.pathname.split('/');
-    return (
-      (pathArr.length === 3 &&
-        listsKeys.some((key) => pathArr.includes(key.toLowerCase()))) ||
-      location.pathname === '/lists'
-    );
-  };
-
   const getListType = () => {
-    const pathArr = location.pathname.split('/');
+    const pathArr = router.asPath.split(/[\/?]/g);
     return pathArr[2] || listsKeys[0].toLowerCase();
   };
-
-  if (!isPathnameContainsListType()) {
-    return <Redirect to='/page404' />;
-  }
 
   const navItemElements = listsKeys.map((key) => (
     <Nav.Item key={key}>
@@ -94,17 +78,17 @@ const UserListsPage: FC = () => {
         eventKey={key}
         style={{ padding: 0, backgroundColor: 'transparent' }}
       >
-        <TabLink
-          to={{
+        <Link
+          href={{
             pathname: `/lists/${key.toLowerCase()}`,
-            search: stringifyGetParamsObj({
+            query: {
               sort_by: SortingDateTypes.desc,
               page: '1',
-            }),
+            },
           }}
         >
-          {BASIC_LISTS_TYPES[key]}
-        </TabLink>
+          <TabLink>{BASIC_LISTS_TYPES[key]}</TabLink>
+        </Link>
       </Nav.Link>
     </Nav.Item>
   ));

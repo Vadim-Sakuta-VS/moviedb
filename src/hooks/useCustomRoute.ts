@@ -1,6 +1,8 @@
 import { ParamGetObj } from '../types/params';
 import { useRouter } from 'next/router';
 import { parseGetParamsStr, stringifyGetParamsObj } from '../utils/utils';
+import { NextRouter } from 'next/dist/next-server/lib/router/router';
+import { useEffect } from 'react';
 
 type UseCustomRouteParamsType = {
   handleLocationChange?: () => void;
@@ -11,6 +13,7 @@ type UseCustomRouteReturnType = {
   paramsObj: ParamGetObj;
   currentPage: number;
   onChangePage: (page: number) => void;
+  router: NextRouter;
 };
 
 export const useCustomRoute = ({
@@ -23,6 +26,10 @@ export const useCustomRoute = ({
   );
   const currentPage = +paramsObj.page || 1;
 
+  useEffect(() => {
+    handleLocationChange && handleLocationChange();
+  }, [router.query]);
+
   const onChangePage = (page: number) => {
     if (currentPage !== page) {
       paramsObj.page = page.toString();
@@ -34,5 +41,5 @@ export const useCustomRoute = ({
     }
   };
 
-  return { paramsObj, currentPage, onChangePage };
+  return { paramsObj, currentPage, onChangePage, router };
 };
