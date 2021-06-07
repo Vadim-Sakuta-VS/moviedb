@@ -58,7 +58,7 @@ const UserAuth: FC = () => {
 
             <Dropdown.Menu style={{ minWidth: '100%' }}>
               <DropdownItem eventKey='1' className='p-0' as='button'>
-                <Link href={`/profile/${user.id}`} passHref={true}>
+                <Link href='/profile' passHref={true}>
                   <DropdownMenuLink className='pl-1 pr-1'>
                     Profile
                   </DropdownMenuLink>
