@@ -39,7 +39,7 @@ const CompanyLinkItem: FC<CompanyLinkItemProps> = ({
       style={{ maxWidth: 320 }}
     >
       <StyledAlert variant='secondary' className='h-100 m-0 p-0'>
-        <Link href={pathLink}>
+        <Link href={pathLink} passHref={true}>
           <StyledLink className='h-100 d-flex flex-column justify-content-center align-items-center p-3 text-dark'>
             <Image width={100} rounded src={ApiMovies.getImage(pathLogo)} />
             <p className='m-0 mt-1 text-center'>{title}</p>
