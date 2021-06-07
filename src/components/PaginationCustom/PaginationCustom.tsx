@@ -17,7 +17,8 @@ const PaginationCustom: FC<PaginationCustomProps> = ({
 }) => {
   const [pagesNumbers, setPagesNumbers] = useState<number[]>([]);
   const isShowArrows = totalPages > 1;
-  pagesToShow = window.innerWidth > 420 ? pagesToShow : 4;
+  pagesToShow =
+    typeof window !== 'undefined' && window.innerWidth > 420 ? pagesToShow : 4;
 
   useEffect(() => {
     const averagePage = Math.round(pagesToShow / 2);

@@ -22,7 +22,6 @@ const StyledBackdrop = styled.div`
   visibility: ${(props: StyledBackdropProps) =>
     props.isVisible ? 'visible' : 'hidden'};
   opacity: ${(props: StyledBackdropProps) => (props.isVisible ? 1 : 0)};
-  transition: 0.2s;
   z-index: 20;
 `;
 

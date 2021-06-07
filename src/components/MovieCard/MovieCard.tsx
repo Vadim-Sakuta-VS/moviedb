@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { ApiMovies } from '../../api/apiMovies';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { IMovie } from '../../types/entities';
 import styled from 'styled-components';
 
@@ -15,7 +15,7 @@ const StyledCard = styled(Card)`
   }
 `;
 
-const CardLink = styled(Link)`
+const CardLink = styled.a`
   height: 100%;
 
   img {
@@ -61,12 +61,16 @@ const MovieCard: FC<MovieCardProps> = ({ movie }) => {
 
   return (
     <StyledCard className='flex-grow-1'>
-      <CardLink to={`/movie/${movie.id}`}>
-        <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
-      </CardLink>
+      <Link href={`/movie/${movie.id}`}>
+        <CardLink>
+          <Card.Img variant='top' src={ApiMovies.getImage(movie.poster_path)} />
+        </CardLink>
+      </Link>
       <StyledCardBody className='movie-card__body bg-white'>
         <Card.Title className='font-weight-bold border-bottom border-success'>
-          <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
+          <Link href={`/movie/${movie.id}`}>
+            <a>{movie.title}</a>
+          </Link>
         </Card.Title>
         <Container className='p-0 mb-2'>
           <Col className='p-0 font-weight-bold h6 mb-1'>Overview:</Col>

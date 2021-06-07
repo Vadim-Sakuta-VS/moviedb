@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
 import { ParamGetObj } from '../types/params';
-import { useHistory, useLocation } from 'react-router-dom';
-import { parseGetParamsStr, stringifyGetParamsObj } from '../utils/utils';
+import { useRouter } from 'next/router';
+import { ParsedUrlQueryInput } from 'querystring';
 
 type UseCustomRouteParamsType = {
   handleLocationChange?: () => void;
@@ -18,21 +17,16 @@ export const useCustomRoute = ({
   handleLocationChange,
   handleChangePage,
 }: UseCustomRouteParamsType): UseCustomRouteReturnType => {
-  const history = useHistory();
-  const location = useLocation();
-  const paramsObj = parseGetParamsStr(location.search);
+  const router = useRouter();
+  const paramsObj = router.query as ParamGetObj;
   const currentPage = +paramsObj.page || 1;
-
-  useEffect(() => {
-    handleLocationChange && handleLocationChange();
-  }, [location]);
 
   const onChangePage = (page: number) => {
     if (currentPage !== page) {
       paramsObj.page = page.toString();
-      history.push({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj(paramsObj),
+      router.push({
+        pathname: router.pathname,
+        query: paramsObj as ParsedUrlQueryInput,
       });
       handleChangePage && handleChangePage();
     }
