@@ -2,6 +2,7 @@ import { withHeaderLayout } from '../../src/components/HOC/withHeaderLayout';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { BASIC_LISTS_TYPES } from '../../src/components/UserListsPage/UserListsPage';
 import UserListsPage from '../../src/components/UserListsPage/UserListsPage';
+import withAuth from '../../src/components/HOC/withAuth';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = Object.keys(BASIC_LISTS_TYPES).map((key) => ({
@@ -20,4 +21,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default withHeaderLayout(UserListsPage);
+export default withAuth(withHeaderLayout(UserListsPage));
