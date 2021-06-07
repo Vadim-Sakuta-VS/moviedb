@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Alert, Col, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import ButtonLoad from '../ButtonLoad/ButtonLoad';
 import { ICustomList } from '../../types/entities';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +33,9 @@ const CustomListItem: FC<CustomListItemProps> = ({ list }) => {
         <Row>
           <Col>
             <h4>
-              <Link to={`/lists/custom/${list.id}`}>{list.name}</Link>
+              <Link href={`/custom_lists/${list.id}`}>
+                <a>{list.name}</a>
+              </Link>
             </h4>
           </Col>
           <Col className='col-auto'>

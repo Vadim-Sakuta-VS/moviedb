@@ -80,7 +80,7 @@ const UserAuth: FC = () => {
                 </Link>
               </DropdownItem>
               <Dropdown.Item eventKey='1' className='p-0' as='button'>
-                <Link href='/lists/custom' passHref={true}>
+                <Link href='/custom_lists' passHref={true}>
                   <DropdownMenuLink className='pl-1 pr-1'>
                     Custom lists
                   </DropdownMenuLink>
