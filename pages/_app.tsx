@@ -8,12 +8,23 @@ import { Provider } from 'react-redux';
 import { store } from '../src/store/rootStore';
 import styled from 'styled-components';
 import PageWrapper from '../src/components/PageWrapper/PageWrapper';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const StyledApp = styled.div`
   min-height: 100vh;
 `;
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.beforePopState((state) => {
+      state.options.scroll = false;
+      return true;
+    });
+  }, []);
+
   return (
     <Provider store={store}>
       <StyledApp>

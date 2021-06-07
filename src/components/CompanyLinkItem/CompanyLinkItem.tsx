@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Alert, Col, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ApiMovies } from '../../api/apiMovies';
 import { ImgPathType } from '../../types/common';
 import styled from 'styled-components';
@@ -16,7 +16,7 @@ const StyledAlert = styled(Alert)<AlertProps>`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   &:hover {
     text-decoration: none;
   }
@@ -39,13 +39,12 @@ const CompanyLinkItem: FC<CompanyLinkItemProps> = ({
       style={{ maxWidth: 320 }}
     >
       <StyledAlert variant='secondary' className='h-100 m-0 p-0'>
-        <StyledLink
-          to={pathLink}
-          className='h-100 d-flex flex-column justify-content-center align-items-center p-3 text-dark'
-        >
-          <Image width={100} rounded src={ApiMovies.getImage(pathLogo)} />
-          <p className='m-0 mt-1 text-center'>{title}</p>
-        </StyledLink>
+        <Link href={pathLink}>
+          <StyledLink className='h-100 d-flex flex-column justify-content-center align-items-center p-3 text-dark'>
+            <Image width={100} rounded src={ApiMovies.getImage(pathLogo)} />
+            <p className='m-0 mt-1 text-center'>{title}</p>
+          </StyledLink>
+        </Link>
       </StyledAlert>
     </Col>
   );

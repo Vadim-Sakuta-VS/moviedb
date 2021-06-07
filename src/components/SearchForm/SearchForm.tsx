@@ -10,7 +10,7 @@ interface SearchFormProps {
   searchTypesOptions: ISelectOption[];
   onChange?: (value: string) => void;
   onSubmit: (data: SearchFormValues) => void;
-  isLoading: boolean;
+  isLoading?: boolean;
   defaultValues?: SearchFormValues;
 }
 
@@ -61,7 +61,7 @@ const SearchForm: FC<SearchFormProps> = ({
           <ButtonLoad
             type='submit'
             textValue='Search'
-            isLoading={isLoading}
+            isLoading={!!isLoading}
             style={{ minWidth: '6rem', minHeight: '38px' }}
           />
         </Col>
