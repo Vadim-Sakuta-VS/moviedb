@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
-import RedirectByNumberId from '../RedirectByNumberId/RedirectByNumberId';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearCustomListDetailsEffect,
@@ -21,16 +19,11 @@ import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import { stringifyGetParamsObj } from '../../utils/utils';
 import { useCustomRoute } from '../../hooks/useCustomRoute';
 
-type UserListCustomDetailsPageParams = {
-  id: string;
-};
-
 const UserListCustomDetailsPage = () => {
   const [localLoading, setLocalLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
-  const history = useHistory();
-  const location = useLocation();
-  const { id: list_id } = useParams<UserListCustomDetailsPageParams>();
+  const { currentPage, onChangePage, router } = useCustomRoute({});
+  const list_id = +router.query.id!;
   const {
     isDetailsLoading,
     isRemoveMovieLoading: isDeletingLoading,
@@ -40,11 +33,9 @@ const UserListCustomDetailsPage = () => {
   const nameList = useSelector(selectCustomLists).find(
     (list) => list.id === +list_id
   )?.name;
+  const customListsLength = useSelector(selectCustomLists).length;
   const manipulationMovieId = useSelector(selectManipulationMovieId);
   const dispatch = useDispatch();
-  const { currentPage, onChangePage } = useCustomRoute({
-    handleChangePage,
-  });
 
   const totalPages = Math.ceil(customListMovies.length / 20);
   const moviesToShow = [...customListMovies]
@@ -54,18 +45,12 @@ const UserListCustomDetailsPage = () => {
     !isNaN(currentPage) && currentPage > 0 && currentPage <= totalPages;
 
   useEffect(() => {
-    if (!isNaN(+list_id) && +list_id > 0) {
-      dispatch(loadCustomListDetailsData(+list_id));
-    }
-  }, []);
+    dispatch(loadCustomListDetailsData(+list_id));
+  }, [customListsLength]);
 
   useEffect(() => {
     isDetailsLoading && setLocalLoading(false);
   }, [isDetailsLoading]);
-
-  function handleChangePage() {
-    window.scrollTo({ top: 0 });
-  }
 
   const onDeleteMovie = async (movie_id: number) => {
     const isSuccess = await dispatch(
@@ -77,9 +62,12 @@ const UserListCustomDetailsPage = () => {
       currentPage === totalPages &&
       customListMovies.length % 20 === 1
     ) {
-      history.replace({
-        pathname: location.pathname,
-        search: stringifyGetParamsObj({ page: String(totalPages - 1) }),
+      router.replace({
+        pathname: router.pathname,
+        search: stringifyGetParamsObj({
+          id: String(list_id),
+          page: String(totalPages - 1),
+        }),
       });
     }
   };
@@ -98,7 +86,7 @@ const UserListCustomDetailsPage = () => {
   };
 
   return (
-    <RedirectByNumberId id={list_id}>
+    <>
       <Container className='pt-2 pb-2'>
         {nameList && (
           <Row className='align-items-center'>
@@ -149,7 +137,7 @@ const UserListCustomDetailsPage = () => {
         onConfirm={onConfirmClearCustomList}
         onHide={onHideConfirmModal}
       />
-    </RedirectByNumberId>
+    </>
   );
 };
 
