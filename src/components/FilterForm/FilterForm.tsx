@@ -23,7 +23,7 @@ interface FilterFormProps {
   onSubmit: (data: FilterFormValues) => void;
   defaultValues: FilterFormValues;
   values: FilterFormValues;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const FilterForm: FC<FilterFormProps> = ({
@@ -96,7 +96,7 @@ const FilterForm: FC<FilterFormProps> = ({
           <ButtonLoad
             type='submit'
             textValue='Search'
-            isLoading={isLoading}
+            isLoading={!!isLoading}
             style={{ minWidth: '6rem', minHeight: '38px' }}
           />
         </Col>

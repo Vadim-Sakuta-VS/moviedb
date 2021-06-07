@@ -1,6 +1,6 @@
 import { ParamGetObj } from '../types/params';
 import { useRouter } from 'next/router';
-import { ParsedUrlQueryInput } from 'querystring';
+import { parseGetParamsStr, stringifyGetParamsObj } from '../utils/utils';
 
 type UseCustomRouteParamsType = {
   handleLocationChange?: () => void;
@@ -18,7 +18,9 @@ export const useCustomRoute = ({
   handleChangePage,
 }: UseCustomRouteParamsType): UseCustomRouteReturnType => {
   const router = useRouter();
-  const paramsObj = router.query as ParamGetObj;
+  const paramsObj = parseGetParamsStr(
+    stringifyGetParamsObj(router.query as ParamGetObj)
+  );
   const currentPage = +paramsObj.page || 1;
 
   const onChangePage = (page: number) => {
@@ -26,7 +28,7 @@ export const useCustomRoute = ({
       paramsObj.page = page.toString();
       router.push({
         pathname: router.pathname,
-        query: paramsObj as ParsedUrlQueryInput,
+        search: stringifyGetParamsObj(paramsObj),
       });
       handleChangePage && handleChangePage();
     }
