@@ -5,8 +5,6 @@ import { movieListReducer } from './movieList/reducers';
 import { movieDetailsReducer } from './movieDetails/reducers';
 import { movieReviewsReducer } from './movieReviews/reducers';
 import { searchReducer } from './search/reducers';
-import { companyDetailsReducer } from './companyDetails/reducers';
-import { homeReducer } from './home/reducers';
 import { genresReducer } from './genres/reducers';
 import { userAuthReducer } from './userAuth/reducers';
 import { appReducer } from './app/reducers';
@@ -18,8 +16,6 @@ const rootReducer = combineReducers({
   movieDetails: movieDetailsReducer,
   movieReviews: movieReviewsReducer,
   search: searchReducer,
-  companyDetails: companyDetailsReducer,
-  home: homeReducer,
   genres: genresReducer,
   userAuth: userAuthReducer,
   app: appReducer,

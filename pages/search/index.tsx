@@ -9,6 +9,7 @@ import {
   selectSearchTotalPages,
 } from '../../src/store/search/selectors';
 import {
+  isClientSide,
   parseGetParamsStr,
   stringifyGetParamsObj,
 } from '../../src/utils/utils';
@@ -52,12 +53,11 @@ const SearchPage: NextPage = () => {
   }, []);
 
   if (
-    typeof window !== 'undefined' &&
+    isClientSide() &&
     paramObj.search_type &&
     !Object.keys(SearchTypes).includes(String(paramObj.search_type))
   ) {
-    router.replace('page404');
-    return null;
+    router.replace('/page404');
   }
 
   const searchTypesOptions = Object.entries(SearchTypes).map(

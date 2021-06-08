@@ -74,3 +74,11 @@ export function parseGetParamsStr(str: string): ParamGetObj {
     allowDots: true,
   }) as ParamGetObj;
 }
+
+export function isClientSide() {
+  return typeof window !== 'undefined';
+}
+
+export function isPositiveNumberId(value: any) {
+  return !isNaN(value) && value > 0;
+}

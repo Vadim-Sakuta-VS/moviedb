@@ -1,6 +1,5 @@
 import {
   AddMovieCustomListsAction,
-  MovieDetailsAction,
   MovieDetailsActions,
   SetMovieAccountStateAction,
   SetMovieAccountStateLoadingAction,
@@ -9,26 +8,9 @@ import {
   SetMovieRatingAction,
   SetMovieToBasicListAction,
   SetMovieToBasicListLoadingAction,
-  SetMovieVideoAction,
-  SetTypeLoadingAction,
 } from './types';
-import {
-  ICustomList,
-  IMovie,
-  IMovieAccountState,
-  IVideo,
-} from '../../types/entities';
+import { ICustomList, IMovieAccountState } from '../../types/entities';
 import { MovieTypesCustomListsLoadingState } from './reducers';
-
-export const setMovieDetails = (movie: IMovie): MovieDetailsAction => ({
-  type: MovieDetailsActions.SET_MOVIE_DETAILS,
-  payload: movie,
-});
-
-export const setTypeLoading = (isLoading: boolean): SetTypeLoadingAction => ({
-  type: MovieDetailsActions.SET_TYPE_LOADING,
-  payload: isLoading,
-});
 
 export const setMovieRating = (value: number): SetMovieRatingAction => ({
   type: MovieDetailsActions.SET_MOVIE_RATING,
@@ -85,9 +67,4 @@ export const addMovieCustomLists = (
 ): AddMovieCustomListsAction => ({
   type: MovieDetailsActions.ADD_MOVIE_CUSTOM_LISTS,
   payload: customListsIds,
-});
-
-export const setMovieVideo = (video: IVideo): SetMovieVideoAction => ({
-  type: MovieDetailsActions.SET_MOVIE_VIDEO,
-  payload: video,
 });

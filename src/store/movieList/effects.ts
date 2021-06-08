@@ -14,28 +14,6 @@ import { ApiAuth } from '../../api/apiAuth';
 import { SetAppErrorAction } from '../app/types';
 import { setAppError } from '../app/actionCreators';
 
-export const loadMoviesByType = (movieType: string, paramsObj: ParamGetObj) => {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch(loadMovies(ApiMovies.GET[movieType.toUpperCase()], paramsObj));
-    } catch (e) {
-      console.log(e);
-      dispatch(setAppError(true));
-    }
-  };
-};
-
-export const loadDiscoverMovies = (paramsObj: ParamGetObj) => {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch(loadMovies(ApiMovies.GET.DISCOVER, paramsObj));
-    } catch (e) {
-      console.log(e);
-      dispatch(setAppError(true));
-    }
-  };
-};
-
 export const loadUserBasicMovieList = (
   type: keyof typeof ApiAccount.GET,
   paramsObj: ParamGetObj

@@ -5,19 +5,15 @@ import {
   setMovieAccountStateLoading,
   setMovieCustomListsData,
   setMovieCustomListsLoading,
-  setMovieDetails,
   setMovieRating,
   setMovieToBasicList,
   setMovieToBasicListLoading,
-  setMovieVideo,
-  setTypeLoading,
 } from './actionCreators';
 import { MovieDetailsAction } from './types';
 import { Dispatch } from 'redux';
 import { ApiAccount } from '../../api/apiAccount';
 import {
   initialMovieAccountState,
-  initialMovieVideoState,
   MovieTypesCustomListsLoadingState,
   MovieTypesOnlyBooleanState,
 } from './reducers';
@@ -37,30 +33,6 @@ import { updateListItemCount } from '../customLists/actionCreators';
 import { UpdateListItemCountAction } from '../customLists/types';
 import { SetAppErrorAction } from '../app/types';
 import { setAppError } from '../app/actionCreators';
-
-export const loadMovieDetails = (id: number) => {
-  return async (dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>) => {
-    try {
-      dispatch(setTypeLoading(true));
-      const data = await ApiMovies.loadMovieDetails(id);
-      if (!data.id) {
-        window.location.replace('/page404');
-        return;
-      }
-      const videos = await ApiMovies.loadMovieVideos(data.id);
-
-      dispatch(setMovieDetails(data));
-      videos.length
-        ? dispatch(setMovieVideo(videos[0]))
-        : dispatch(setMovieVideo(initialMovieVideoState));
-    } catch (e) {
-      console.log(e);
-      dispatch(setAppError(true));
-    } finally {
-      dispatch(setTypeLoading(false));
-    }
-  };
-};
 
 export const rateMovie = (movieId: number, value: number) => {
   return async (dispatch: Dispatch<MovieDetailsAction | SetAppErrorAction>) => {

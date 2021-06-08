@@ -69,10 +69,7 @@ const Header: FC = () => {
             <Col>
               <Link href='/'>
                 <a>
-                  <Image
-                    width={120}
-                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
-                  />
+                  <Image width={120} src='/images/logo.png' alt='Logo' />
                 </a>
               </Link>
             </Col>
@@ -101,10 +98,7 @@ const Header: FC = () => {
             <Col>
               <Link href='/'>
                 <a>
-                  <Image
-                    width={120}
-                    src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Fox_Movies_%28Asia%29_logo.svg/1280px-Fox_Movies_%28Asia%29_logo.svg.png'
-                  />
+                  <Image width={120} src='/images/logo.png' alt='Logo' />
                 </a>
               </Link>
             </Col>

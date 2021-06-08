@@ -6,7 +6,7 @@ import MoviesSliderRow from '../src/components/MoviesSliderRow/MoviesSliderRow';
 import { ApiMovies } from '../src/api/apiMovies';
 import { IGenre, IMovie } from '../src/types/entities';
 import Link from 'next/link';
-import { MOVIE_TYPES } from '../src/store/home/reducers';
+import { MOVIE_TYPES } from '../src/store/home/constants';
 import { KeyStringValueAnyType } from '../src/types/params';
 import { withHeaderLayout } from '../src/components/HOC/withHeaderLayout';
 import { setGenres } from '../src/store/genres/actionCreators';
@@ -71,7 +71,7 @@ const HomePage: NextPage<HomePageProps> = ({ genres, moviesData }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+export const getStaticProps: GetStaticProps = async () => {
   const genresData = await ApiMovies.loadGenres();
 
   const moviesData: KeyStringValueAnyType = {};

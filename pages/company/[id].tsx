@@ -1,11 +1,12 @@
 import { Col, Container, Image, Row } from 'react-bootstrap';
-import { DetailsPosterCol } from '../../src/components/MovieDetails/MovieDetails';
 import { ApiMovies } from '../../src/api/apiMovies';
 import { MovieDetailsRow } from '../../src/components/MovieDetails/MovieDetailsRow';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { withHeaderLayout } from '../../src/components/HOC/withHeaderLayout';
 import { ApiCompanies } from '../../src/api/apiCompanies';
 import { ICompany } from '../../src/types/entities';
+import { DetailsPosterCol } from '../movie/[id]';
+import { isPositiveNumberId } from '../../src/utils/utils';
 
 type CompanyPageProps = {
   company: ICompany;
@@ -61,7 +62,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
   const id = +String(params.id);
-  if (isNaN(id) || (!isNaN(id) && id < 1)) {
+  if (!isPositiveNumberId(id)) {
     return {
       notFound: true,
     };

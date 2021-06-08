@@ -6,10 +6,7 @@ import {
   setTypeLoading,
   setUserData,
 } from './actionCreators';
-import {
-  setAppError,
-  setTypeLoading as setTypeAppLoading,
-} from '../app/actionCreators';
+import { setAppError } from '../app/actionCreators';
 import { ApiAuth } from '../../api/apiAuth';
 import { IUserParam } from '../../types/params';
 import { AppAction, SetAppErrorAction } from '../app/types';
@@ -67,8 +64,6 @@ export const loadUserDataDetails = () => {
       }
 
       await dispatch(loadCustomLists());
-
-      dispatch(setTypeAppLoading(false));
     } catch (e) {
       console.log(e);
       dispatch(setAppError(true));

@@ -29,11 +29,9 @@ const LoginPage: NextPage = () => {
   const isAuthLoading = useSelector(selectAuthLoading);
   const statusMessage = useSelector(selectStatusMessage);
   const dispatch = useDispatch();
-  console.log(router);
 
   if (isAuth) {
     router.replace(router.query.asPath ? String(router.query.asPath) : '/');
-    return null;
   }
 
   const onSubmitHandler = (user: IUserParam) => {

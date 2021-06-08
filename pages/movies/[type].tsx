@@ -3,7 +3,7 @@ import { useCustomRoute } from '../../src/hooks/useCustomRoute';
 import { Col, Container, Row } from 'react-bootstrap';
 import MovieList from '../../src/components/MovieList/MovieList';
 import { GetServerSideProps, NextPage } from 'next';
-import { MOVIE_TYPES } from '../../src/store/home/reducers';
+import { MOVIE_TYPES } from '../../src/store/home/constants';
 import { ApiMovies } from '../../src/api/apiMovies';
 import { ParamGetObj } from '../../src/types/params';
 import { IMovie } from '../../src/types/entities';

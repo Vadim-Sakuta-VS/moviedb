@@ -18,13 +18,6 @@ function movieListReducer(
       return { ...state, isLoading: action.payload };
     case MovieListActions.SET_MOVIES:
       return { ...state, data: action.payload };
-    case MovieListActions.SET_MOVIES_TYPE:
-      return { ...state, movieType: action.payload };
-    case MovieListActions.UPDATE_DATA:
-      return action.payload.movieType === state.movieType &&
-        !action.payload.isRequiredUpdate
-        ? state
-        : initialState;
     default:
       return state;
   }

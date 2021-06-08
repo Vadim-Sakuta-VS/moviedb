@@ -1,14 +1,9 @@
 import { RootState } from '../rootStore';
 import {
-  IMovie,
   IMovieAccountState,
   IMovieBasicListLoading,
 } from '../../types/entities';
 
-export const selectMovieDetails = (state: RootState): IMovie =>
-  state.movieDetails.movie;
-export const selectMovieDetailsLoading = (state: RootState): boolean =>
-  state.movieDetails.isLoading;
 export const selectMovieAccountState = (state: RootState): IMovieAccountState =>
   state.movieDetails.movieListsAccountState.data;
 export const selectMovieAccountStateLoading = (state: RootState): boolean =>
@@ -21,4 +16,3 @@ export const selectMovieCustomLists = (state: RootState) =>
   state.movieDetails.custom_lists.data;
 export const selectMovieCustomListsLoading = (state: RootState) =>
   state.movieDetails.custom_lists.loading;
-export const selectMovieVideo = (state: RootState) => state.movieDetails.video;

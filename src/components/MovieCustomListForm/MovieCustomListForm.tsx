@@ -61,7 +61,7 @@ const MovieCustomListForm: FC<MovieCustomListFormProps> = ({ movieId }) => {
             textValue='Add'
             style={{
               minWidth: '4rem',
-              maxHeight: 36,
+              minHeight: 38,
               marginBottom: '.5rem',
             }}
           />

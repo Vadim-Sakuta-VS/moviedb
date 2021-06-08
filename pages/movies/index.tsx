@@ -21,7 +21,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import AccordionCustom from '../../src/components/AccordionCustom/AccordionCustom';
 import FilterForm from '../../src/components/FilterForm/FilterForm';
 import MovieList from '../../src/components/MovieList/MovieList';
-import { useRouter } from 'next/router';
 import { GetServerSideProps, NextPage } from 'next';
 import { IGenre, IMovie } from '../../src/types/entities';
 import { setGenres } from '../../src/store/genres/actionCreators';
@@ -38,10 +37,9 @@ const MovieListFilterPage: NextPage<MoviesDataType> = ({
   movies,
   totalPages,
 }) => {
-  const router = useRouter();
   const genres = useSelector(selectGenresData);
   const dispatch = useDispatch();
-  const { paramsObj, currentPage, onChangePage } = useCustomRoute({});
+  const { paramsObj, currentPage, onChangePage, router } = useCustomRoute({});
 
   useEffect(() => {
     if (!genres.length) {

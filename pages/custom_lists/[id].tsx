@@ -2,6 +2,7 @@ import UserListCustomDetailsPage from '../../src/components/UserListCustomDetail
 import { withHeaderLayout } from '../../src/components/HOC/withHeaderLayout';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import withAuth from '../../src/components/HOC/withAuth';
+import { isPositiveNumberId } from '../../src/utils/utils';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
@@ -12,7 +13,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
   const id = +String(params.id);
-  if (isNaN(id) || (!isNaN(id) && id < 1)) {
+  if (!isPositiveNumberId(id)) {
     return {
       notFound: true,
     };

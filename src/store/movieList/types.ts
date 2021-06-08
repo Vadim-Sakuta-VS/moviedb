@@ -4,8 +4,6 @@ export enum MovieListActions {
   SET_TOTAL_PAGES = 'MOVIE_LIST/SET_TOTAL_PAGES',
   SET_MOVIES_TYPE_LOADING = 'MOVIE_LIST/SET_MOVIES_TYPE_LOADING',
   SET_MOVIES = 'MOVIE_LIST/SET_MOVIES',
-  SET_MOVIES_TYPE = 'MOVIE_LIST/SET_MOVIES_TYPE',
-  UPDATE_DATA = 'MOVIE_LIST/UPDATE_DATA',
 }
 
 export interface SetTotalPagesAction {
@@ -23,25 +21,10 @@ export interface SetMoviesAction {
   payload: IMovie[];
 }
 
-export interface SetMoviesTypeAction {
-  type: MovieListActions.SET_MOVIES_TYPE;
-  payload: string;
-}
-
-export interface UpdateDataAction {
-  type: MovieListActions.UPDATE_DATA;
-  payload: {
-    movieType?: string;
-    isRequiredUpdate?: boolean;
-  };
-}
-
 export type MovieListAction =
   | SetTotalPagesAction
   | SetMoviesTypeLoadingAction
-  | SetMoviesAction
-  | SetMoviesTypeAction
-  | UpdateDataAction;
+  | SetMoviesAction;
 
 export interface MovieListState {
   data: IMovie[];

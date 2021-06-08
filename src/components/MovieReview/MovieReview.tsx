@@ -4,6 +4,7 @@ import { MovieDetailsRow } from '../MovieDetails/MovieDetailsRow';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import { IReview } from '../../types/entities';
 import styled from 'styled-components';
+import { isClientSide } from '../../utils/utils';
 
 const ReviewDateWrapper = styled(Col)`
   font-size: 12px;
@@ -27,12 +28,11 @@ const MovieReview: FC<MovieReviewProps> = ({
 }) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
 
-  maxContentSymbolsToShow =
-    typeof window === 'undefined'
-      ? maxContentSymbolsToShow
-      : window.innerWidth > 500
-      ? maxContentSymbolsToShow
-      : 230;
+  maxContentSymbolsToShow = !isClientSide()
+    ? maxContentSymbolsToShow
+    : window.innerWidth > 500
+    ? maxContentSymbolsToShow
+    : 230;
   const isLongContent = content.length > maxContentSymbolsToShow;
   const dateCreated = new Date(created_at);
   const dateUpdated = new Date(updated_at);

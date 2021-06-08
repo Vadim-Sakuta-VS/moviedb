@@ -34,6 +34,8 @@ import { withHeaderLayout } from '../../src/components/HOC/withHeaderLayout';
 import { useRouter } from 'next/router';
 import { IMovie, IReview, IVideo } from '../../src/types/entities';
 import { IListResponse } from '../../src/types/params';
+import { isPositiveNumberId } from '../../src/utils/utils';
+import { selectCustomLists } from '../../src/store/customLists/selectors';
 
 const Divider = styled.hr`
   border-top: 3px dashed grey;
@@ -82,6 +84,7 @@ const MoviePage: NextPage<MoviePageProps> = ({
   } = useSelector(selectMovieBasicListLoading);
   const isAuth = useSelector(selectUserAuthStatus);
   const { isLoadingStatus } = useSelector(selectMovieCustomListsLoading);
+  const customListsLength = useSelector(selectCustomLists).length;
   const filteredCustomLists = useSelector(selectMovieCustomLists);
   const dispatch = useDispatch();
 
@@ -91,7 +94,7 @@ const MoviePage: NextPage<MoviePageProps> = ({
     if (isCorrectId()) {
       dispatch(checkMovieStatusCustomLists(+id));
     }
-  }, [id, dispatch]);
+  }, [id, customListsLength, dispatch]);
 
   useEffect(() => {
     if (isCorrectId()) {
@@ -345,7 +348,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params = {} }) => {
   const id = +String(params.id);
-  if (isNaN(id) || (!isNaN(id) && id < 1)) {
+  if (!isPositiveNumberId(id)) {
     return {
       notFound: true,
     };

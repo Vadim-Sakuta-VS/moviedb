@@ -34,16 +34,6 @@ export const initialMovieVideoState: IVideo = {
 };
 
 const initialState: MovieDetailsState = {
-  isLoading: false,
-  movie: {
-    id: 0,
-    poster_path: '',
-    title: '',
-    overview: '',
-    vote_average: 0,
-    vote_count: 0,
-    release_date: '',
-  },
   movieListsAccountState: {
     data: initialMovieAccountState,
     isLoading: false,
@@ -56,7 +46,6 @@ const initialState: MovieDetailsState = {
       isSubmitLoading: false,
     },
   },
-  video: initialMovieVideoState,
 };
 
 function movieDetailsReducer(
@@ -64,13 +53,6 @@ function movieDetailsReducer(
   action: MovieDetailsAction
 ): MovieDetailsState {
   switch (action.type) {
-    case MovieDetailsActions.SET_MOVIE_DETAILS:
-      return {
-        ...state,
-        movie: action.payload,
-      };
-    case MovieDetailsActions.SET_TYPE_LOADING:
-      return { ...state, isLoading: action.payload };
     case MovieDetailsActions.SET_MOVIE_RATING:
       return {
         ...state,
@@ -151,8 +133,6 @@ function movieDetailsReducer(
           ),
         },
       };
-    case MovieDetailsActions.SET_MOVIE_VIDEO:
-      return { ...state, video: action.payload };
     default:
       return state;
   }

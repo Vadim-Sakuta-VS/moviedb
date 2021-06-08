@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import PageWrapper from '../src/components/PageWrapper/PageWrapper';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Head from 'next/head';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -27,6 +28,15 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
+      <Head>
+        <title>Movie DB</title>
+        <meta
+          name='description'
+          content='Web site created using NextJS. Movie DB. TMDB API.'
+        />
+        <meta name='keywords' content='JavaScript, React, Next, TMDB, Movie' />
+        <link rel='icon' href='images/favicon.png' type='image/png' />
+      </Head>
       <StyledApp>
         <PageWrapper>
           <Component {...pageProps} />
