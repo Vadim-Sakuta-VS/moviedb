@@ -81,10 +81,14 @@ const SearchPage: NextPage = () => {
 
   const onSubmitHandler = (data: SearchFormValues) => {
     const paramObj = createParamObj({ ...data });
-    router.replace({
-      pathname: router.pathname,
-      search: stringifyGetParamsObj(paramObj),
-    });
+    router.replace(
+      {
+        pathname: router.pathname,
+        search: stringifyGetParamsObj(paramObj),
+      },
+      undefined,
+      { shallow: true }
+    );
     dispatch(searchDataByQuery(paramObj));
   };
 
